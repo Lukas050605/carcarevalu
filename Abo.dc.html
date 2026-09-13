@@ -27,6 +27,7 @@
   @media (max-width: 900px) { .ccv-desknav { display: none !important } }
 </style>
 </helmet>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#efeae0"/><text x="50" y="58" font-family="Archivo,Arial,sans-serif" font-size="26" font-weight="700" fill="#7d5d24" text-anchor="middle">CCV</text></svg></template>
 
 <header style="position: sticky; top: 0; z-index: 80; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(239,234,224,0.86); border-bottom: 1px solid rgba(138,106,47,0.26)">
   <div style="max-width: 1280px; margin: 0 auto; padding: 15px 24px; display: flex; align-items: center; gap: 30px">
@@ -35,6 +36,7 @@
       <a href="CAR CARE VALU.dc.html" style="color: #3b3427; transition: color 0.25s">Zurück zur Startseite</a>
       <a href="#abo-pakete" style="color: #3b3427; transition: color 0.25s">Abo-Pakete</a>
       <a href="#abo-faq" style="color: #3b3427; transition: color 0.25s">FAQ</a>
+      <a href="#agb" style="color: #3b3427; transition: color 0.25s">AGB</a>
     </nav>
     <a href="{{ buchungsUrlAbo }}" target="_blank" rel="noopener" style="margin-left: auto; display: inline-flex; align-items: center; gap: 9px; padding: 11px 20px; border-radius: 8px; background: #cdb48a; color: #14110d; font-weight: 700; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s" style-hover="transform: translateY(-2px); box-shadow: 0 12px 26px -12px rgba(90,70,35,0.45)">Abo anfragen</a>
   </div>
@@ -75,9 +77,9 @@
       <div style="display: flex; flex-direction: column; gap: 5px">
         <div style="display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap">
           <span style="font-family: Archivo, sans-serif; font-weight: 700; font-size: clamp(26px, 3.2vw, 36px); letter-spacing: -0.02em; color: #1b1712">{{ aboPreis2 }}</span>
-          <span style="font-family: Archivo, sans-serif; font-weight: 600; font-size: 18px; color: #6b6152; text-decoration: line-through">45 €</span>
+          <span style="font-family: Archivo, sans-serif; font-weight: 600; font-size: 18px; color: #6b6152; text-decoration: line-through">59 €</span>
         </div>
-        <span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; color: #5f5648">PRO REINIGUNG</span>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; color: #5f5648">90 MIN. PRO TERMIN</span>
       </div>
       <ul style="margin: 0; padding: 20px 0 0; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; color: #241f18; border-top: 1px solid rgba(138,106,47,0.4)">
         <li style="display: flex; gap: 10px"><span style="color: #7d5d24">✓</span>Mobile Innenreinigung</li>
@@ -89,10 +91,10 @@
       </ul>
       <div style="border: 1px solid rgba(138,106,47,0.4); border-radius: 12px; padding: 16px 18px; background: rgba(255,255,255,0.55); display: flex; flex-direction: column; gap: 10px">
         <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #7d5d24">⭐ ABO-VORTEILE — KOMFORT-ABO</span>
-        <div style="display: flex; gap: 10px; font-size: 14px; color: #241f18"><span style="font-family: 'JetBrains Mono', monospace; color: #7d5d24">1</span><span><strong style="font-weight: 600">Preisvorteil:</strong> 40 € statt 45 € pro Reinigung</span></div>
+        <div style="display: flex; gap: 10px; font-size: 14px; color: #241f18"><span style="font-family: 'JetBrains Mono', monospace; color: #7d5d24">1</span><span><strong style="font-weight: 600">Preisvorteil:</strong> 40 € statt 59 € pro Termin</span></div>
         <div style="display: flex; gap: 10px; font-size: 14px; color: #241f18"><span style="font-family: 'JetBrains Mono', monospace; color: #7d5d24">2</span><span><strong style="font-weight: 600">Fester Termin:</strong> 1 Termin im Monat, den du dir sicherst</span></div>
       </div>
-      <a href="{{ buchungsUrlAbo }}" target="_blank" rel="noopener" style="margin-top: auto; text-align: center; padding: 16px 20px; border-radius: 9px; background: #cdb48a; color: #14110d; font-weight: 700; font-size: 13px; letter-spacing: 0.07em; text-transform: uppercase; transition: transform 0.3s, background 0.3s, color 0.3s" style-hover="transform: translateY(-2px); background: #1b1712; color: #f3efe7">Abo anfragen</a>
+      <a href="{{ buchungsUrlKomfort }}" target="_blank" rel="noopener" style="margin-top: auto; text-align: center; padding: 16px 20px; border-radius: 9px; background: #cdb48a; color: #14110d; font-weight: 700; font-size: 13px; letter-spacing: 0.07em; text-transform: uppercase; transition: transform 0.3s, background 0.3s, color 0.3s" style-hover="transform: translateY(-2px); background: #1b1712; color: #f3efe7">Komfort-Abo buchen</a>
     </div>
 
     <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s 0.14s cubic-bezier(0.16,1,0.3,1), transform 0.8s 0.14s cubic-bezier(0.16,1,0.3,1), border-color 0.4s; border: 1px solid rgba(138,106,47,0.26); border-radius: 18px; padding: 30px 26px; background: rgba(255,255,255,0.66); display: flex; flex-direction: column; gap: 16px" style-hover="border-color: rgba(138,106,47,0.6)">
@@ -103,9 +105,9 @@
       <div style="display: flex; flex-direction: column; gap: 5px">
         <div style="display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap">
           <span style="font-family: Archivo, sans-serif; font-weight: 700; font-size: clamp(24px, 3vw, 32px); letter-spacing: -0.02em; color: #241f18">{{ aboPreis3 }}</span>
-          <span style="font-family: Archivo, sans-serif; font-weight: 600; font-size: 18px; color: #6b6152; text-decoration: line-through">55 €</span>
+          <span style="font-family: Archivo, sans-serif; font-weight: 600; font-size: 18px; color: #6b6152; text-decoration: line-through">69 €</span>
         </div>
-        <span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; color: #5f5648">PRO REINIGUNG</span>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; color: #5f5648">120 MIN. PRO TERMIN</span>
       </div>
       <ul style="margin: 0; padding: 20px 0 0; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; color: #3b3427; border-top: 1px solid rgba(138,106,47,0.24)">
         <li style="display: flex; gap: 10px"><span style="color: #7d5d24">✓</span>Alle Leistungen aus Komfort Abo</li>
@@ -115,14 +117,14 @@
       </ul>
       <div style="border: 1px solid rgba(138,106,47,0.34); border-radius: 12px; padding: 16px 18px; background: rgba(255,255,255,0.55); display: flex; flex-direction: column; gap: 10px">
         <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #7d5d24">⭐ ABO-VORTEILE — EXKLUSIV-PAKET</span>
-        <div style="display: flex; gap: 10px; font-size: 14px; color: #241f18"><span style="font-family: 'JetBrains Mono', monospace; color: #7d5d24">1</span><span><strong style="font-weight: 600">Preisvorteil:</strong> 50 € statt 55 € pro Reinigung</span></div>
+        <div style="display: flex; gap: 10px; font-size: 14px; color: #241f18"><span style="font-family: 'JetBrains Mono', monospace; color: #7d5d24">1</span><span><strong style="font-weight: 600">Preisvorteil:</strong> 50 € statt 69 € pro Termin</span></div>
         <div style="display: flex; gap: 10px; font-size: 14px; color: #241f18"><span style="font-family: 'JetBrains Mono', monospace; color: #7d5d24">2</span><span>2 Reinigungen pro Monat zum Preis von 1</span></div>
         <div style="display: flex; gap: 10px; font-size: 14px; color: #241f18; padding-top: 10px; border-top: 1px solid rgba(138,106,47,0.24)"><span style="color: #7d5d24">✓</span><span><strong style="font-weight: 600">Zusatzleistung im Abo inklusive:</strong> Polster-Auffrischung <span style="color: #58503f">(leicht feucht, kein Deep Cleaning)</span></span></div>
       </div>
-      <a href="{{ buchungsUrlAbo }}" target="_blank" rel="noopener" style="margin-top: auto; text-align: center; padding: 15px 20px; border-radius: 9px; border: 1px solid rgba(27,23,18,0.22); color: #1b1712; font-weight: 700; font-size: 13px; letter-spacing: 0.07em; text-transform: uppercase; transition: background 0.3s" style-hover="background: rgba(138,106,47,0.12)">Abo anfragen</a>
+      <a href="{{ buchungsUrlExklusiv }}" target="_blank" rel="noopener" style="margin-top: auto; text-align: center; padding: 15px 20px; border-radius: 9px; border: 1px solid rgba(27,23,18,0.22); color: #1b1712; font-weight: 700; font-size: 13px; letter-spacing: 0.07em; text-transform: uppercase; transition: background 0.3s" style-hover="background: rgba(138,106,47,0.12)">Exklusiv-Paket buchen</a>
     </div>
   </div>
-  <p data-reveal="" style="opacity: 0; transform: translateY(20px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); margin: 26px 0 0; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #5f5648; line-height: 1.8">Preise gelten pro Reinigung im laufenden Abo. Monatlich kündbar.</p>
+  <p data-reveal="" style="opacity: 0; transform: translateY(20px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); margin: 26px 0 0; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #5f5648; line-height: 1.8">Preise gelten pro Termin im laufenden Abo. Monatlich kündbar.</p>
 </section>
 
 <section style="padding: clamp(64px, 8vw, 108px) 24px; background: linear-gradient(180deg, #e7e0d3, #efeae0); border-top: 1px solid rgba(138,106,47,0.26)">
@@ -194,6 +196,88 @@
   </div>
 </section>
 
+<section id="agb" style="padding: clamp(64px, 8vw, 100px) 24px; border-top: 1px solid rgba(138,106,47,0.26)">
+  <div style="max-width: 920px; margin: 0 auto">
+    <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1)">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.22em; color: #7d5d24">04 — AGB</span>
+      <h2 style="font-family: Archivo, sans-serif; font-weight: 700; font-size: clamp(26px, 3.8vw, 42px); line-height: 1.06; letter-spacing: -0.025em; margin: 18px 0 10px">AGB – Innenraumreinigungs-Abos</h2>
+      <p style="margin: 0 0 30px; font-size: 15px; color: #58503f">Für alle Abo-Modelle gültig.</p>
+    </div>
+    <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s 0.06s cubic-bezier(0.16,1,0.3,1), transform 0.8s 0.06s cubic-bezier(0.16,1,0.3,1); display: flex; flex-direction: column; gap: 2px">
+      <details style="border-bottom: 1px solid rgba(138,106,47,0.28)">
+        <summary style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 19px 0; font-family: Archivo, sans-serif; font-weight: 600; font-size: 17px; color: #1b1712"><span style="display: flex; gap: 14px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #7d5d24">01</span>Vertragsgegenstand</span><span style="color: #7d5d24; font-size: 20px">+</span></summary>
+        <div style="margin: 0 0 22px; font-size: 15px; line-height: 1.72; color: #453e30; max-width: 70ch; display: flex; flex-direction: column; gap: 12px">
+          <p style="margin: 0">Mit Abschluss eines Abos erwerben Sie eine regelmäßig wiederkehrende Fahrzeug-Innenraumreinigung gemäß dem von Ihnen gewählten Paket (Basis-, Komfort- oder Exklusiv-Abo).</p>
+          <p style="margin: 0">Die jeweiligen Leistungen ergeben sich aus der aktuellen Leistungsbeschreibung des Anbieters.</p>
+        </div>
+      </details>
+      <details style="border-bottom: 1px solid rgba(138,106,47,0.28)">
+        <summary style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 19px 0; font-family: Archivo, sans-serif; font-weight: 600; font-size: 17px; color: #1b1712"><span style="display: flex; gap: 14px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #7d5d24">02</span>Laufzeit &amp; Verlängerung</span><span style="color: #7d5d24; font-size: 20px">+</span></summary>
+        <p style="margin: 0 0 22px; font-size: 15px; line-height: 1.72; color: #453e30; max-width: 70ch">Das Abo läuft monatlich und verlängert sich automatisch um jeweils einen weiteren Monat, sofern es nicht spätestens 7 Tage vor Monatsende schriftlich oder digital gekündigt wird.</p>
+      </details>
+      <details style="border-bottom: 1px solid rgba(138,106,47,0.28)">
+        <summary style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 19px 0; font-family: Archivo, sans-serif; font-weight: 600; font-size: 17px; color: #1b1712"><span style="display: flex; gap: 14px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #7d5d24">03</span>Terminvergabe durch den Kunden</span><span style="color: #7d5d24; font-size: 20px">+</span></summary>
+        <div style="margin: 0 0 22px; font-size: 15px; line-height: 1.72; color: #453e30; max-width: 70ch; display: flex; flex-direction: column; gap: 12px">
+          <p style="margin: 0">Die Terminbuchung erfolgt durch den Kunden selbst über das bereitgestellte Buchungssystem.</p>
+          <p style="margin: 0">Werden Termine vom Kunden nicht gebucht, nicht wahrgenommen oder nicht rechtzeitig abgesagt, besteht kein Anspruch auf Ersatztermine.</p>
+        </div>
+      </details>
+      <details style="border-bottom: 1px solid rgba(138,106,47,0.28)">
+        <summary style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 19px 0; font-family: Archivo, sans-serif; font-weight: 600; font-size: 17px; color: #1b1712"><span style="display: flex; gap: 14px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #7d5d24">04</span>Rückerstattungsregel</span><span style="color: #7d5d24; font-size: 20px">+</span></summary>
+        <div style="margin: 0 0 22px; font-size: 15px; line-height: 1.72; color: #453e30; max-width: 70ch; display: flex; flex-direction: column; gap: 12px">
+          <p style="margin: 0">Gilt für alle Abos, sofern im Angebot enthalten. Wenn ein Abo eine Rückerstattung vorsieht (z. B. 15 € für einen ungenutzten zweiten Termin), gelten folgende Bedingungen für alle Abo-Modelle:</p>
+          <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 9px">
+            <li style="display: flex; gap: 11px"><span style="color: #7d5d24">—</span>Der erste Termin des Monats muss wahrgenommen worden sein.</li>
+            <li style="display: flex; gap: 11px"><span style="color: #7d5d24">—</span>Der zweite Termin wurde nicht genutzt oder rechtzeitig abgesagt.</li>
+            <li style="display: flex; gap: 11px"><span style="color: #7d5d24">—</span>Die Höhe der Rückerstattung richtet sich nach dem jeweiligen Abo-Modell.</li>
+            <li style="display: flex; gap: 11px"><span style="color: #7d5d24">—</span>Rückerstattungen werden am Monatsende verrechnet oder gutgeschrieben.</li>
+            <li style="display: flex; gap: 11px"><span style="color: #7d5d24">—</span>Werden beide Termine nicht gebucht oder nicht wahrgenommen, besteht kein Anspruch auf Rückerstattung.</li>
+          </ul>
+        </div>
+      </details>
+      <details style="border-bottom: 1px solid rgba(138,106,47,0.28)">
+        <summary style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 19px 0; font-family: Archivo, sans-serif; font-weight: 600; font-size: 17px; color: #1b1712"><span style="display: flex; gap: 14px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #7d5d24">05</span>Preise &amp; Zahlung</span><span style="color: #7d5d24; font-size: 20px">+</span></summary>
+        <div style="margin: 0 0 22px; font-size: 15px; line-height: 1.72; color: #453e30; max-width: 70ch; display: flex; flex-direction: column; gap: 12px">
+          <p style="margin: 0">Die Abrechnung erfolgt monatlich im Voraus über die vom Kunden gewählte Zahlungsmethode.</p>
+          <p style="margin: 0">Alle Preise sind Endpreise laut Leistungsübersicht.</p>
+        </div>
+      </details>
+      <details style="border-bottom: 1px solid rgba(138,106,47,0.28)">
+        <summary style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 19px 0; font-family: Archivo, sans-serif; font-weight: 600; font-size: 17px; color: #1b1712"><span style="display: flex; gap: 14px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #7d5d24">06</span>Stornierungen &amp; Verspätungen</span><span style="color: #7d5d24; font-size: 20px">+</span></summary>
+        <div style="margin: 0 0 22px; font-size: 15px; line-height: 1.72; color: #453e30; max-width: 70ch; display: flex; flex-direction: column; gap: 12px">
+          <p style="margin: 0">Termine können bis 24 Stunden vorher kostenlos storniert oder verschoben werden.</p>
+          <p style="margin: 0">Bei späteren Absagen oder Nichterscheinen wird der Termin voll berechnet.</p>
+        </div>
+      </details>
+      <details style="border-bottom: 1px solid rgba(138,106,47,0.28)">
+        <summary style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 19px 0; font-family: Archivo, sans-serif; font-weight: 600; font-size: 17px; color: #1b1712"><span style="display: flex; gap: 14px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #7d5d24">07</span>Leistungsumfang &amp; Durchführungsort</span><span style="color: #7d5d24; font-size: 20px">+</span></summary>
+        <div style="margin: 0 0 22px; font-size: 15px; line-height: 1.72; color: #453e30; max-width: 70ch; display: flex; flex-direction: column; gap: 12px">
+          <p style="margin: 0">Der Umfang richtet sich nach dem gebuchten Paket (Basis, Komfort oder Exklusiv).</p>
+          <p style="margin: 0">Die Reinigung erfolgt vor Ort beim Anbieter oder am vereinbarten Standort.</p>
+        </div>
+      </details>
+      <details style="border-bottom: 1px solid rgba(138,106,47,0.28)">
+        <summary style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 19px 0; font-family: Archivo, sans-serif; font-weight: 600; font-size: 17px; color: #1b1712"><span style="display: flex; gap: 14px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #7d5d24">08</span>Haftungsausschluss</span><span style="color: #7d5d24; font-size: 20px">+</span></summary>
+        <div style="margin: 0 0 22px; font-size: 15px; line-height: 1.72; color: #453e30; max-width: 70ch; display: flex; flex-direction: column; gap: 12px">
+          <p style="margin: 0">Es wird keine Haftung für bereits vorhandene Schäden, empfindliche Materialien oder Wertgegenstände übernommen, die im Fahrzeug zurückgelassen wurden.</p>
+          <p style="margin: 0">Der Anbieter haftet nur für Schäden, die durch vorsätzliche oder grob fahrlässige Handlungen entstehen.</p>
+        </div>
+      </details>
+      <details style="border-bottom: 1px solid rgba(138,106,47,0.28)">
+        <summary style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 19px 0; font-family: Archivo, sans-serif; font-weight: 600; font-size: 17px; color: #1b1712"><span style="display: flex; gap: 14px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #7d5d24">09</span>Kündigung</span><span style="color: #7d5d24; font-size: 20px">+</span></summary>
+        <div style="margin: 0 0 22px; font-size: 15px; line-height: 1.72; color: #453e30; max-width: 70ch; display: flex; flex-direction: column; gap: 12px">
+          <p style="margin: 0">Das Abo kann mit einer Frist von 7 Tagen zum Monatsende gekündigt werden.</p>
+          <p style="margin: 0">Bereits abgebuchte Monatsbeiträge werden nicht rückerstattet.</p>
+        </div>
+      </details>
+      <details style="border-bottom: 1px solid rgba(138,106,47,0.28)">
+        <summary style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 19px 0; font-family: Archivo, sans-serif; font-weight: 600; font-size: 17px; color: #1b1712"><span style="display: flex; gap: 14px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #7d5d24">10</span>Änderungen</span><span style="color: #7d5d24; font-size: 20px">+</span></summary>
+        <p style="margin: 0 0 22px; font-size: 15px; line-height: 1.72; color: #453e30; max-width: 70ch">Der Anbieter behält sich das Recht vor, Preise oder Leistungen mit angemessener Vorankündigung anzupassen.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
 <footer style="border-top: 1px solid rgba(138,106,47,0.26); background: #f3efe7; padding: clamp(40px, 5vw, 64px) 24px 30px">
   <div style="max-width: 1280px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 20px 34px; align-items: center; justify-content: space-between">
     <a href="CAR CARE VALU.dc.html" style="display: flex; align-items: baseline; gap: 7px; font-family: Archivo, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0.16em; color: #1b1712"><span>CAR CARE</span><span style="color: #7d5d24; font-weight: 800">VALU</span></a>
@@ -201,14 +285,15 @@
       <a href="CAR CARE VALU.dc.html" style="color: #4e4636">Startseite</a>
       <a href="mailto:info@carcarevalu.de" style="color: #4e4636">info@carcarevalu.de</a>
       <a href="tel:+4915126718415" style="color: #4e4636">+49 151 26718415</a>
-      <a href="https://www.carcarevalu.de/impressum" style="color: #58503f">Impressum</a>
+      <a href="#agb" style="color: #4e4636">AGB</a>
+      <a href="Impressum.dc.html" style="color: #58503f">Impressum</a>
     </div>
   </div>
   <p style="max-width: 1280px; margin: 24px auto 0; padding-top: 20px; border-top: 1px solid rgba(27,23,18,0.11); font-size: 13px; color: #58503f">© 2026 CAR CARE VALU · Mobile Fahrzeugpflege im Wetteraukreis &amp; Main-Kinzig-Kreis</p>
 </footer>
 
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;buchungsUrlAbo&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://app.acuityscheduling.com/schedule.php?owner=37613678&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Buchung&quot;},&quot;aboName2&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;KOMFORT-ABO&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Komfort-Abo&quot;},&quot;aboIntervall2&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Der Einstieg ins Abo – regelmäßige Innenpflege.&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Komfort-Abo&quot;},&quot;aboPreis2&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;40 €&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Komfort-Abo&quot;},&quot;aboName3&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;EXKLUSIV-PAKET&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Exklusiv-Paket&quot;},&quot;aboIntervall3&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Volle Pflege inklusive Polster-Auffrischung.&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Exklusiv-Paket&quot;},&quot;aboPreis3&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;50 €&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Exklusiv-Paket&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;buchungsUrlAbo&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://app.acuityscheduling.com/schedule.php?owner=37613678&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Buchung&quot;},&quot;buchungsUrlKomfort&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://app.acuityscheduling.com/catalog.php?owner=37613678&amp;action=addCart&amp;clear=1&amp;id=2097859&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Buchung&quot;},&quot;buchungsUrlExklusiv&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://app.acuityscheduling.com/catalog.php?owner=37613678&amp;action=addCart&amp;clear=1&amp;id=2097867&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Buchung&quot;},&quot;aboName2&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;KOMFORT-ABO&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Komfort-Abo&quot;},&quot;aboIntervall2&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Der Einstieg ins Abo – regelmäßige Innenpflege.&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Komfort-Abo&quot;},&quot;aboPreis2&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;40 €&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Komfort-Abo&quot;},&quot;aboName3&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;EXKLUSIV-PAKET&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Exklusiv-Paket&quot;},&quot;aboIntervall3&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Volle Pflege inklusive Polster-Auffrischung.&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Exklusiv-Paket&quot;},&quot;aboPreis3&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;50 €&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Exklusiv-Paket&quot;}}">
 class Component extends DCLogic {
   componentDidMount() {
     this.io = new IntersectionObserver((entries) => {
@@ -220,11 +305,19 @@ class Component extends DCLogic {
         }
       });
     }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
-    document.querySelectorAll("[data-reveal]").forEach((el) => this.io.observe(el));
+    const revealAll = () => document.querySelectorAll("[data-reveal]").forEach((el) => {
+      el.style.opacity = "1";
+      el.style.transform = "translateY(0)";
+    });
+    const observeAll = () => document.querySelectorAll("[data-reveal]").forEach((el) => this.io.observe(el));
+    observeAll();
+    requestAnimationFrame(observeAll);
+    this.failSafe = setTimeout(revealAll, 1600);
   }
 
   componentWillUnmount() {
     if (this.io) this.io.disconnect();
+    clearTimeout(this.failSafe);
   }
 
   renderVals() {
@@ -232,6 +325,8 @@ class Component extends DCLogic {
     const fallback = "Preis auf Anfrage";
     return {
       buchungsUrlAbo: p.buchungsUrlAbo ?? "https://app.acuityscheduling.com/schedule.php?owner=37613678",
+      buchungsUrlKomfort: p.buchungsUrlKomfort ?? "https://app.acuityscheduling.com/catalog.php?owner=37613678&action=addCart&clear=1&id=2097859",
+      buchungsUrlExklusiv: p.buchungsUrlExklusiv ?? "https://app.acuityscheduling.com/catalog.php?owner=37613678&action=addCart&clear=1&id=2097867",
       aboName2: p.aboName2 ?? "KOMFORT-ABO",
       aboIntervall2: p.aboIntervall2 ?? "Der Einstieg ins Abo – regelmäßige Innenpflege.",
       aboPreis2: p.aboPreis2 ?? "40 €",

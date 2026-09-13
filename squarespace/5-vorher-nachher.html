@@ -1,0 +1,93 @@
+<!-- CAR CARE VALU · Vorher/Nachher-Regler — Squarespace Codeblock -->
+<!-- WICHTIG: Bilder zuerst in Squarespace hochladen, dann die 6 URLs unten ersetzen.
+     Bilder hochladen: Website -> Seiten -> beliebige Seite -> Bildblock -> Bild einfügen
+     -> Rechtsklick auf das Bild -> "Grafikadresse kopieren". -->
+<div id="ccv-ba">
+  <div class="ccv-tabs">
+    <button type="button" class="ccv-on" data-i="0">Kofferraum</button>
+    <button type="button" data-i="1">Fußraum</button>
+    <button type="button" data-i="2">Sitze</button>
+  </div>
+
+  <div id="ccv-slider">
+    <div id="ccv-after"></div>
+    <div id="ccv-before"><div id="ccv-before-img"></div></div>
+    <span class="ccv-tag ccv-tag-l">VORHER</span>
+    <span class="ccv-tag ccv-tag-r">NACHHER</span>
+    <div id="ccv-handle"><span>↔</span></div>
+  </div>
+
+  <p class="ccv-cap" id="ccv-cap">Kofferraum — Staub und Schmutz vorher, gereinigt nachher</p>
+</div>
+
+<style>
+#ccv-ba{--ink:#1b1712;--acc:#7d5d24;--gold:#cdb48a;max-width:760px;margin:0 auto;font-family:Manrope,"Helvetica Neue",Arial,sans-serif;color:var(--ink)}
+#ccv-ba *{box-sizing:border-box}
+#ccv-ba .ccv-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+#ccv-ba .ccv-tabs button{padding:10px 15px;border-radius:8px;border:1px solid rgba(27,23,18,.18);background:rgba(255,255,255,.6);color:#3a3226;font:400 13px/1 Manrope,Arial,sans-serif;cursor:pointer;transition:border-color .3s,background .3s}
+#ccv-ba .ccv-tabs button:hover{background:rgba(138,106,47,.16)}
+#ccv-ba .ccv-tabs button.ccv-on{border-color:rgba(138,106,47,.85);background:rgba(205,180,138,.34)}
+#ccv-slider{position:relative;aspect-ratio:4/3;min-height:320px;border-radius:16px;overflow:hidden;border:1px solid rgba(27,23,18,.14);cursor:ew-resize;touch-action:none;user-select:none;background:#ded4c1}
+#ccv-after,#ccv-before-img{position:absolute;inset:0;background-size:cover;background-position:50% 55%}
+#ccv-before{position:absolute;inset:0;width:46%;overflow:hidden}
+#ccv-before-img{width:100vw}
+#ccv-ba .ccv-tag{position:absolute;bottom:16px;padding:7px 13px;border-radius:6px;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.16em}
+#ccv-ba .ccv-tag-l{left:16px;background:rgba(255,255,255,.9);color:#241f18}
+#ccv-ba .ccv-tag-r{right:16px;background:rgba(205,180,138,.94);color:#14110d}
+#ccv-handle{position:absolute;top:0;bottom:0;left:46%;width:2px;background:rgba(27,23,18,.85)}
+#ccv-handle span{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:#1b1712;color:#f3efe7;display:grid;place-items:center;font-size:14px;font-weight:700;box-shadow:0 8px 22px rgba(27,23,18,.25)}
+#ccv-ba .ccv-cap{margin:14px 0 0;font-size:14px;color:#453e30}
+</style>
+
+<script>
+(function () {
+  /* ==== HIER DIE BILD-URLS EINTRAGEN ==== */
+  var SETS = [
+    { label: "Kofferraum — Staub und Schmutz vorher, gereinigt nachher",
+      vorher: "BILD-URL-KOFFERRAUM-VORHER",
+      nachher: "BILD-URL-KOFFERRAUM-NACHHER" },
+    { label: "Fußraum — eingetretener Schmutz vorher, gereinigt und aufgefrischt nachher",
+      vorher: "BILD-URL-FUSSRAUM-VORHER",
+      nachher: "BILD-URL-FUSSRAUM-NACHHER" },
+    { label: "Sitze & Polster — Staub und Abrieb im Gewebe vorher, gereinigt nachher",
+      vorher: "BILD-URL-SITZE-VORHER",
+      nachher: "BILD-URL-SITZE-NACHHER" }
+  ];
+  /* ====================================== */
+
+  var slider = document.getElementById("ccv-slider");
+  var after = document.getElementById("ccv-after");
+  var before = document.getElementById("ccv-before");
+  var beforeImg = document.getElementById("ccv-before-img");
+  var handle = document.getElementById("ccv-handle");
+  var cap = document.getElementById("ccv-cap");
+  var tabs = document.querySelectorAll("#ccv-ba .ccv-tabs button");
+  var dragging = false, split = 46, idx = 0;
+
+  function load(i) {
+    idx = i; split = 46; apply();
+    after.style.backgroundImage = "url('" + SETS[i].nachher + "')";
+    beforeImg.style.backgroundImage = "url('" + SETS[i].vorher + "')";
+    cap.textContent = SETS[i].label;
+    tabs.forEach(function (t, n) { t.classList.toggle("ccv-on", n === i); });
+  }
+  function apply() {
+    before.style.width = split.toFixed(1) + "%";
+    handle.style.left = split.toFixed(1) + "%";
+  }
+  function move(e) {
+    var r = slider.getBoundingClientRect();
+    split = Math.max(2, Math.min(98, ((e.clientX - r.left) / r.width) * 100));
+    apply();
+  }
+
+  tabs.forEach(function (t) {
+    t.addEventListener("click", function () { load(Number(t.dataset.i)); });
+  });
+  slider.addEventListener("pointerdown", function (e) { dragging = true; move(e); });
+  window.addEventListener("pointermove", function (e) { if (dragging) move(e); });
+  window.addEventListener("pointerup", function () { dragging = false; });
+
+  load(0);
+})();
+</script>

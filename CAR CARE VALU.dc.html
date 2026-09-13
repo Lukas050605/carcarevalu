@@ -30,7 +30,7 @@
   @media (min-width: 901px) { .ccv-burger { display: none !important } }
 </style>
 </helmet>
-
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#efeae0"/><text x="50" y="58" font-family="Archivo,Arial,sans-serif" font-size="26" font-weight="700" fill="#7d5d24" text-anchor="middle">CCV</text></svg></template>
 <header style="position: sticky; top: 0; z-index: 80; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(239,234,224,0.86); border-bottom: 1px solid rgba(138,106,47,0.26)">
   <div style="max-width: 1280px; margin: 0 auto; padding: 15px 24px; display: flex; align-items: center; gap: 30px">
     <a href="#top" style="display: flex; align-items: baseline; gap: 7px; font-family: Archivo, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0.16em; color: #1b1712; white-space: nowrap"><span>CAR CARE</span><span style="color: #7d5d24; font-weight: 800">VALU</span></a>
@@ -60,10 +60,9 @@
     </nav>
   </sc-if>
 </header>
-
 <section id="top" style="position: relative; min-height: 88vh; display: flex; align-items: center; overflow: hidden">
   <div ref="{{ heroBg }}" style="position: absolute; inset: -10% -2%; background: radial-gradient(120% 95% at 74% 45%, #f6f2ea 0%, #eae2d4 48%, #e2d9c9 100%); will-change: transform">
-    <div style="position: absolute; inset: 0; background-image: url('assets/hero-car.png'); background-size: cover; background-position: 78% 70%; filter: sepia(0.34) saturate(1) contrast(1.02) brightness(1.14); opacity: 0.92"></div>
+    <div style="position: absolute; inset: 0; background-image: url('assets/web/hero-car.jpg'); background-size: cover; background-position: 78% 70%; filter: sepia(0.34) saturate(1) contrast(1.02) brightness(1.14); opacity: 0.92"></div>
     <div style="position: absolute; inset: 0; background: linear-gradient(120deg, rgba(205,180,138,0.5) 0%, rgba(205,180,138,0.16) 45%, transparent 75%)"></div>
     <div style="position: absolute; inset: 0; background: repeating-linear-gradient(112deg, rgba(27,23,18,0.035) 0 2px, transparent 2px 17px)"></div>
   </div>
@@ -80,18 +79,17 @@
     </h1>
     <p style="font-size: clamp(16px, 1.7vw, 19px); line-height: 1.68; color: #453e30; max-width: 50ch; margin: 28px 0 0; text-wrap: pretty; animation: ccvUp 0.9s 0.3s cubic-bezier(0.16,1,0.3,1) both">Mobile Fahrzeugpflege und Innenraumaufbereitung für Fahrzeuge, die mehr verdienen als eine gewöhnliche Reinigung. Wir kommen zu dir – ohne Wartezeit in der Waschanlage.</p>
     <div style="display: flex; flex-wrap: wrap; gap: 13px; margin-top: 38px; animation: ccvUp 0.9s 0.4s cubic-bezier(0.16,1,0.3,1) both">
-      <a href="#premium" style="display: inline-flex; align-items: center; gap: 11px; padding: 18px 28px; border-radius: 10px; background: #cdb48a; color: #14110d; font-family: Archivo, sans-serif; font-weight: 700; font-size: 14.5px; letter-spacing: 0.05em; transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s" style-hover="transform: translateY(-3px); box-shadow: 0 18px 38px -16px rgba(90,70,35,0.4)">Premium-Aufbereitung entdecken <span>→</span></a>
-      <a href="#bedarf" style="display: inline-flex; align-items: center; gap: 11px; padding: 18px 28px; border-radius: 10px; border: 1px solid rgba(27,23,18,0.22); background: rgba(255,255,255,0.6); color: #1b1712; font-family: Archivo, sans-serif; font-weight: 600; font-size: 14.5px; letter-spacing: 0.05em; backdrop-filter: blur(8px); transition: background 0.35s, transform 0.35s cubic-bezier(0.16,1,0.3,1)" style-hover="background: rgba(27,23,18,0.09); transform: translateY(-3px)">Normale Reinigung</a>
+      <a href="{{ buchungsUrlIntensiv }}" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 11px; padding: 18px 28px; border-radius: 10px; background: #cdb48a; color: #14110d; font-family: Archivo, sans-serif; font-weight: 700; font-size: 14.5px; letter-spacing: 0.05em; transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s" style-hover="transform: translateY(-3px); box-shadow: 0 18px 38px -16px rgba(90,70,35,0.4)">Premium-Aufbereitung entdecken <span>→</span></a>
+      <a href="Normale Reinigung.dc.html" style="display: inline-flex; align-items: center; gap: 11px; padding: 18px 28px; border-radius: 10px; border: 1px solid rgba(27,23,18,0.22); background: rgba(255,255,255,0.6); color: #1b1712; font-family: Archivo, sans-serif; font-weight: 600; font-size: 14.5px; letter-spacing: 0.05em; backdrop-filter: blur(8px); transition: background 0.35s, transform 0.35s cubic-bezier(0.16,1,0.3,1)" style-hover="background: rgba(27,23,18,0.09); transform: translateY(-3px)">Normale Reinigung</a>
     </div>
     <div style="display: flex; flex-wrap: wrap; gap: 14px 36px; margin-top: 52px; animation: ccvUp 0.9s 0.5s cubic-bezier(0.16,1,0.3,1) both">
       <span style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #3b3427"><span style="color: #7d5d24">✓</span>Wir kommen zu dir</span>
       <span style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #3b3427"><span style="color: #7d5d24">✓</span>Transparente Festpreise</span>
-      <span style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #3b3427"><span style="color: #7d5d24">✓</span>Termine auch am Wochenende</span>
+      <span style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #3b3427"><span style="color: #7d5d24">✓</span>Termine auch samstags</span>
       <span style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #3b3427"><span style="color: #7d5d24">✓</span>PKW, Kombi, SUV &amp; Flotten</span>
     </div>
   </div>
 </section>
-
 <section id="bedarf" style="padding: clamp(70px, 9vw, 120px) 24px; background: linear-gradient(180deg, #efeae0, #e7e0d3 55%, #efeae0)">
   <div style="max-width: 1280px; margin: 0 auto">
     <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1)">
@@ -100,23 +98,23 @@
       <p style="font-size: 16.5px; line-height: 1.65; color: #4e4636; max-width: 52ch; margin: 16px 0 0">Drei Wege. Wähle den Bereich, der zu deinem Fahrzeug passt.</p>
     </div>
     <div style="margin-top: 46px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 18px">
-      <a href="{{ buchungsUrl }}" target="_blank" rel="noopener" data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1), border-color 0.4s, background 0.4s; position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 300px; border: 1px solid rgba(138,106,47,0.3); border-radius: 16px; padding: 24px; overflow: hidden; background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.42)); color: inherit" style-hover="border-color: rgba(138,106,47,0.65); background: linear-gradient(180deg, rgba(205,180,138,0.4), rgba(255,255,255,0.72))">
+      <a href="{{ buchungsUrl }}" target="_blank" rel="noopener" data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1), border-color 0.4s, background 0.4s; position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 380px; border: 1px solid rgba(138,106,47,0.3); border-radius: 16px; padding: 46px 24px 24px; overflow: hidden; background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.42)); color: inherit" style-hover="border-color: rgba(138,106,47,0.65); background: linear-gradient(180deg, rgba(205,180,138,0.4), rgba(255,255,255,0.72))">
         <span style="position: absolute; top: 22px; left: 24px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.18em; color: rgba(138,106,47,0.8)">A</span>
-        <span style="position: absolute; inset: 60px 24px auto; height: 96px; border: 1px dashed rgba(27,23,18,0.16); border-radius: 10px; display: grid; place-items: center; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.16em; color: rgba(27,23,18,0.55); text-align: center; padding: 8px">BILD INNENRAUM</span>
+        <span style="display: block; margin: 14px 0 20px; height: 210px; border-radius: 10px; background-image: url('assets/web/sitze-sauber.jpg'); background-size: cover; background-position: 50% 60%"></span>
         <h3 style="font-family: Archivo, sans-serif; font-weight: 700; font-size: 21px; margin: 0 0 8px">Einfach sauber</h3>
         <p style="margin: 0 0 16px; font-size: 14.5px; line-height: 1.6; color: #4e4636">Mobile Innenreinigung für den Alltag – Frische zurück, ohne großen Aufwand.</p>
         <span style="display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #7d5d24">Termin buchen <span style="font-size: 17px">→</span></span>
       </a>
-      <a href="{{ buchungsUrlAufbereitung }}" target="_blank" rel="noopener" data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s 0.07s cubic-bezier(0.16,1,0.3,1), transform 0.8s 0.07s cubic-bezier(0.16,1,0.3,1), border-color 0.4s, background 0.4s; position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 300px; border: 1px solid rgba(138,106,47,0.3); border-radius: 16px; padding: 24px; overflow: hidden; background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.42)); color: inherit" style-hover="border-color: rgba(138,106,47,0.65); background: linear-gradient(180deg, rgba(205,180,138,0.4), rgba(255,255,255,0.72))">
+      <a href="{{ buchungsUrlAufbereitung }}" target="_blank" rel="noopener" data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s 0.07s cubic-bezier(0.16,1,0.3,1), transform 0.8s 0.07s cubic-bezier(0.16,1,0.3,1), border-color 0.4s, background 0.4s; position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 380px; border: 1px solid rgba(138,106,47,0.3); border-radius: 16px; padding: 46px 24px 24px; overflow: hidden; background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.42)); color: inherit" style-hover="border-color: rgba(138,106,47,0.65); background: linear-gradient(180deg, rgba(205,180,138,0.4), rgba(255,255,255,0.72))">
         <span style="position: absolute; top: 22px; left: 24px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.18em; color: rgba(138,106,47,0.8)">B</span>
-        <span style="position: absolute; inset: 60px 24px auto; height: 96px; border: 1px dashed rgba(27,23,18,0.16); border-radius: 10px; display: grid; place-items: center; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.16em; color: rgba(27,23,18,0.55); text-align: center; padding: 8px">BILD FAHRZEUG AUSSEN</span>
+        
         <h3 style="font-family: Archivo, sans-serif; font-weight: 700; font-size: 21px; margin: 0 0 8px">Intensiv aufbereiten</h3>
         <p style="margin: 0 0 16px; font-size: 14.5px; line-height: 1.6; color: #4e4636">Komplettaufbereitung innen und außen, wenn eine normale Reinigung nicht reicht.</p>
         <span style="display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #7d5d24">Termin buchen <span style="font-size: 17px">→</span></span>
       </a>
-      <a href="Abo.dc.html" data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s 0.14s cubic-bezier(0.16,1,0.3,1), transform 0.8s 0.14s cubic-bezier(0.16,1,0.3,1), border-color 0.4s, background 0.4s; position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 300px; border: 1px solid rgba(138,106,47,0.3); border-radius: 16px; padding: 24px; overflow: hidden; background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.42)); color: inherit" style-hover="border-color: rgba(138,106,47,0.65); background: linear-gradient(180deg, rgba(205,180,138,0.4), rgba(255,255,255,0.72))">
+      <a href="Abo.dc.html" data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s 0.14s cubic-bezier(0.16,1,0.3,1), transform 0.8s 0.14s cubic-bezier(0.16,1,0.3,1), border-color 0.4s, background 0.4s; position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 380px; border: 1px solid rgba(138,106,47,0.3); border-radius: 16px; padding: 46px 24px 24px; overflow: hidden; background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.42)); color: inherit" style-hover="border-color: rgba(138,106,47,0.65); background: linear-gradient(180deg, rgba(205,180,138,0.4), rgba(255,255,255,0.72))">
         <span style="position: absolute; top: 22px; left: 24px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.18em; color: rgba(138,106,47,0.8)">C</span>
-        <span style="position: absolute; inset: 60px 24px auto; height: 96px; border: 1px dashed rgba(27,23,18,0.16); border-radius: 10px; display: grid; place-items: center; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.16em; color: rgba(27,23,18,0.55); text-align: center; padding: 8px">BILD GEPFLEGTES FAHRZEUG</span>
+        <span style="display: block; margin: 14px 0 20px; height: 210px; border-radius: 10px; background-image: url('assets/web/teppich-sauber.jpg'); background-size: cover; background-position: 50% 55%"></span>
         <h3 style="font-family: Archivo, sans-serif; font-weight: 700; font-size: 21px; margin: 0 0 8px">Dauerhaft gepflegt</h3>
         <p style="margin: 0 0 16px; font-size: 14.5px; line-height: 1.6; color: #4e4636">Pflege-Abo mit festen Intervallen zum Vorteilspreis – du musst an nichts denken.</p>
         <span style="display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #7d5d24">Abo ansehen <span style="font-size: 17px">→</span></span>
@@ -124,7 +122,6 @@
     </div>
   </div>
 </section>
-
 <section id="premium" style="padding: clamp(70px, 9vw, 120px) 24px; border-top: 1px solid rgba(138,106,47,0.26); background: #f3efe7">
   <div style="max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: clamp(30px, 4vw, 56px); align-items: center">
     <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1)">
@@ -136,21 +133,15 @@
           <span></span><span>NORMAL</span><span style="color: #7d5d24">PREMIUM</span>
         </div>
         <div style="display: grid; grid-template-columns: 1.1fr 1fr 1fr; background: #f3efe7; padding: 14px 16px; gap: 10px; font-size: 14.5px; color: #c4c1ba"><span>Innenreinigung</span><span style="color: #7d5d24">✓</span><span style="color: #7d5d24">✓</span></div>
-        <div style="display: grid; grid-template-columns: 1.1fr 1fr 1fr; background: #f3efe7; padding: 14px 16px; gap: 10px; font-size: 14.5px; color: #c4c1ba"><span>Außenwäsche &amp; Felgen</span><span style="color: #58503f">—</span><span style="color: #7d5d24">✓</span></div>
         <div style="display: grid; grid-template-columns: 1.1fr 1fr 1fr; background: #f3efe7; padding: 14px 16px; gap: 10px; font-size: 14.5px; color: #c4c1ba"><span>Zusatzleistungen</span><span style="color: #58503f">zubuchbar</span><span style="color: #7d5d24">inklusive</span></div>
         <div style="display: grid; grid-template-columns: 1.1fr 1fr 1fr; background: #f3efe7; padding: 14px 16px; gap: 10px; font-size: 14.5px; color: #c4c1ba"><span>Zeit pro Fahrzeug</span><span style="color: #58503f">kompakt</span><span style="color: #7d5d24">ausführlich</span></div>
       </div>
       <a href="#pakete" style="display: inline-flex; align-items: center; gap: 11px; margin-top: 28px; padding: 16px 26px; border-radius: 10px; background: #cdb48a; color: #14110d; font-family: Archivo, sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.05em; transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s" style-hover="transform: translateY(-3px); box-shadow: 0 16px 34px -16px rgba(90,70,35,0.38)">Premium-Pakete ansehen <span>→</span></a>
     </div>
     <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s 0.1s cubic-bezier(0.16,1,0.3,1), transform 0.8s 0.1s cubic-bezier(0.16,1,0.3,1); display: flex; flex-direction: column; gap: 14px">
-      <div ref="{{ sliderRef }}" onPointerDown="{{ onDragStart }}" style="position: relative; aspect-ratio: 4/3; min-height: 260px; border-radius: 16px; overflow: hidden; border: 1px solid rgba(27,23,18,0.14); cursor: ew-resize; touch-action: none; user-select: none; background: repeating-linear-gradient(122deg, #dbd0ba 0 12px, #e6ddcc 12px 24px)">
-        <div style="position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 22px">
-          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: rgba(27,23,18,0.5); line-height: 2.1">NACHHER-BILD EINSETZEN<br /><span style="font-size: 10px; color: rgba(138,106,47,0.85)">{{ shotLabel }}</span></span>
-        </div>
-        <div style="position: absolute; inset: 0; width: {{ splitPct }}; overflow: hidden; background: repeating-linear-gradient(122deg, #cec2a9 0 12px, #d9cfba 12px 24px)">
-          <div style="position: absolute; top: 0; left: 0; width: 100vw; height: 100%; display: grid; place-items: center; text-align: center; padding: 22px">
-            <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: rgba(27,23,18,0.6)">VORHER-BILD EINSETZEN</span>
-          </div>
+      <div ref="{{ sliderRef }}" onPointerDown="{{ onDragStart }}" style="position: relative; aspect-ratio: 4/3; min-height: 420px; border-radius: 16px; overflow: hidden; border: 1px solid rgba(27,23,18,0.14); cursor: ew-resize; touch-action: none; user-select: none; background-image: {{ shotNachher }}; background-size: cover; background-position: 50% 50%">
+        <div style="position: absolute; inset: 0; width: {{ splitPct }}; overflow: hidden; ">
+          <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: {{ shotVorher }}; background-size: cover; background-position: 50% 50%"></div>
         </div>
         <span style="position: absolute; bottom: 16px; left: 16px; padding: 7px 13px; border-radius: 6px; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #241f18">VORHER</span>
         <span style="position: absolute; bottom: 16px; right: 16px; padding: 7px 13px; border-radius: 6px; background: rgba(205,180,138,0.94); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #14110d">NACHHER</span>
@@ -159,29 +150,25 @@
         </div>
       </div>
       <div style="display: flex; flex-wrap: wrap; gap: 8px">
-        <button onClick="{{ pickShot0 }}" style="padding: 10px 15px; border-radius: 8px; border: 1px solid {{ shotBorder0 }}; background: rgba(255,255,255,0.6); color: #3a3226; font-size: 13px; cursor: pointer; transition: border-color 0.3s, background 0.3s" style-hover="background: rgba(138,106,47,0.16)">Fußraum</button>
-        <button onClick="{{ pickShot1 }}" style="padding: 10px 15px; border-radius: 8px; border: 1px solid {{ shotBorder1 }}; background: rgba(255,255,255,0.6); color: #3a3226; font-size: 13px; cursor: pointer; transition: border-color 0.3s, background 0.3s" style-hover="background: rgba(138,106,47,0.16)">Sitze</button>
-        <button onClick="{{ pickShot2 }}" style="padding: 10px 15px; border-radius: 8px; border: 1px solid {{ shotBorder2 }}; background: rgba(255,255,255,0.6); color: #3a3226; font-size: 13px; cursor: pointer; transition: border-color 0.3s, background 0.3s" style-hover="background: rgba(138,106,47,0.16)">Armaturen</button>
-        <button onClick="{{ pickShot3 }}" style="padding: 10px 15px; border-radius: 8px; border: 1px solid {{ shotBorder3 }}; background: rgba(255,255,255,0.6); color: #3a3226; font-size: 13px; cursor: pointer; transition: border-color 0.3s, background 0.3s" style-hover="background: rgba(138,106,47,0.16)">Außen &amp; Felgen</button>
+        <button onClick="{{ pickShot0 }}" style="padding: 10px 15px; border-radius: 8px; border: 1px solid {{ shotBorder0 }}; background: rgba(255,255,255,0.6); color: #3a3226; font-size: 13px; cursor: pointer; transition: border-color 0.3s, background 0.3s" style-hover="background: rgba(138,106,47,0.16)">Kofferraum</button>
+        <button onClick="{{ pickShot1 }}" style="padding: 10px 15px; border-radius: 8px; border: 1px solid {{ shotBorder1 }}; background: rgba(255,255,255,0.6); color: #3a3226; font-size: 13px; cursor: pointer; transition: border-color 0.3s, background 0.3s" style-hover="background: rgba(138,106,47,0.16)">Fußraum</button>
+        <button onClick="{{ pickShot2 }}" style="padding: 10px 15px; border-radius: 8px; border: 1px solid {{ shotBorder2 }}; background: rgba(255,255,255,0.6); color: #3a3226; font-size: 13px; cursor: pointer; transition: border-color 0.3s, background 0.3s" style-hover="background: rgba(138,106,47,0.16)">Sitze</button>
       </div>
     </div>
   </div>
 </section>
-
 <section id="leistungen" style="max-width: 1280px; margin: 0 auto; padding: clamp(70px, 9vw, 120px) 24px 0">
   <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1)">
     <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.22em; color: #7d5d24">03 — LEISTUNGEN</span>
     <h2 style="font-family: Archivo, sans-serif; font-weight: 700; font-size: clamp(30px, 4.4vw, 54px); line-height: 1.04; letter-spacing: -0.025em; margin: 18px 0 0; max-width: 22ch">Zwei Ebenen. Ein Anspruch.</h2>
   </div>
-
   <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); margin-top: 50px; display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; border-bottom: 1px solid rgba(138,106,47,0.28); padding-bottom: 16px">
     <h3 style="font-family: Archivo, sans-serif; font-weight: 600; font-size: clamp(20px, 2.6vw, 28px); margin: 0">Normale Fahrzeugreinigung</h3>
     <span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.16em; color: #5f5648">REINIGUNG — KEINE AUFBEREITUNG</span>
   </div>
-
   <div style="margin-top: 22px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr)); gap: 18px">
     <article data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1), border-color 0.4s, transform 0.4s; border: 1px solid rgba(138,106,47,0.3); border-radius: 16px; background: rgba(255,255,255,0.66); overflow: hidden; display: flex; flex-direction: column" style-hover="border-color: rgba(138,106,47,0.55)">
-      <div style="aspect-ratio: 16/9; background: repeating-linear-gradient(122deg, #ded4c1 0 12px, #e8e0d1 12px 24px); display: grid; place-items: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: rgba(27,23,18,0.58); text-align: center; padding: 14px">BILD: INNENRAUM NACH REINIGUNG</div>
+      <div style="aspect-ratio: 4/3; background-image: url('assets/web/fussraum-sauber.jpg'); background-size: cover; background-position: 50% 60%"></div>
       <div style="padding: 24px; display: flex; flex-direction: column; gap: 13px; flex: 1">
         <h4 style="font-family: Archivo, sans-serif; font-weight: 700; font-size: 22px; margin: 0">Mobile Innenreinigung</h4>
         <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4e4636">Sitze, Fußraum, Armaturenbrett, Türverkleidungen und Kofferraum – gründlich gereinigt und aufgefrischt.</p>
@@ -199,7 +186,7 @@
       </div>
     </article>
     <article data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s 0.08s cubic-bezier(0.16,1,0.3,1), transform 0.8s 0.08s cubic-bezier(0.16,1,0.3,1), border-color 0.4s; border: 1px solid rgba(138,106,47,0.3); border-radius: 16px; background: rgba(255,255,255,0.66); overflow: hidden; display: flex; flex-direction: column" style-hover="border-color: rgba(138,106,47,0.55)">
-      <div style="aspect-ratio: 16/9; background: repeating-linear-gradient(122deg, #ded4c1 0 12px, #e8e0d1 12px 24px); display: grid; place-items: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: rgba(27,23,18,0.58); text-align: center; padding: 14px">BILD: FAHRZEUG IN DER EINFAHRT</div>
+      <div style="aspect-ratio: 4/3; background-image: url('assets/web/cockpit-sauber.jpg'); background-size: cover; background-position: 50% 55%"></div>
       <div style="padding: 24px; display: flex; flex-direction: column; gap: 13px; flex: 1">
         <h4 style="font-family: Archivo, sans-serif; font-weight: 700; font-size: 22px; margin: 0">Pflege-Abo</h4>
         <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4e4636">Regelmäßige Reinigung im Abo – bequem, planbar, zum Vorteilspreis. Dein Fahrzeug bleibt dauerhaft gepflegt.</p>
@@ -216,15 +203,13 @@
       </div>
     </article>
   </div>
-
   <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); margin-top: 62px; display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; border-bottom: 1px solid rgba(138,106,47,0.4); padding-bottom: 16px">
     <h3 style="font-family: Archivo, sans-serif; font-weight: 600; font-size: clamp(20px, 2.6vw, 28px); margin: 0; color: #7d5d24">Premium-Fahrzeugaufbereitung</h3>
     <span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.16em; color: #5f5648">DIE TIEFENSTUFE</span>
   </div>
-
   <div style="margin-top: 22px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 18px">
     <article data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1), border-color 0.4s; border: 1px solid rgba(138,106,47,0.38); border-radius: 18px; background: linear-gradient(165deg, rgba(205,180,138,0.32), rgba(255,255,255,0.7) 60%); overflow: hidden; display: flex; flex-direction: column" style-hover="border-color: rgba(138,106,47,0.7)">
-      <div style="aspect-ratio: 16/9; background: repeating-linear-gradient(122deg, #dbd0ba 0 12px, #e6ddcc 12px 24px); display: grid; place-items: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: rgba(27,23,18,0.58); text-align: center; padding: 14px">BILD: KOMPLETTAUFBEREITUNG AUSSEN</div>
+      <div style="aspect-ratio: 4/3; background-image: url('assets/web/kofferraum-sauber.jpg'); background-size: cover; background-position: 50% 55%"></div>
       <div style="padding: 28px; display: flex; flex-direction: column; gap: 13px; flex: 1">
         <h4 style="font-family: Archivo, sans-serif; font-weight: 700; font-size: clamp(22px, 2.6vw, 27px); margin: 0">Komplettaufbereitung</h4>
         <p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: #453e30">Innenreinigung plus Außenwäsche, Felgenreinigung und Trocknung von Hand. Innen und außen aus einer Hand.</p>
@@ -242,14 +227,13 @@
       </div>
     </article>
     <article data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s 0.08s cubic-bezier(0.16,1,0.3,1), transform 0.8s 0.08s cubic-bezier(0.16,1,0.3,1), border-color 0.4s; border: 1px solid rgba(138,106,47,0.38); border-radius: 18px; background: linear-gradient(165deg, rgba(205,180,138,0.32), rgba(255,255,255,0.7) 60%); overflow: hidden; display: flex; flex-direction: column" style-hover="border-color: rgba(138,106,47,0.7)">
-      <div style="aspect-ratio: 16/9; background: repeating-linear-gradient(122deg, #dbd0ba 0 12px, #e6ddcc 12px 24px); display: grid; place-items: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: rgba(27,23,18,0.58); text-align: center; padding: 14px">BILD: FIRMENWAGEN VOR RÜCKGABE</div>
+      <div style="aspect-ratio: 4/3; background-image: url('assets/web/transporter-innen.jpg'); background-size: cover; background-position: 50% 55%"></div>
       <div style="padding: 28px; display: flex; flex-direction: column; gap: 13px; flex: 1">
         <h4 style="font-family: Archivo, sans-serif; font-weight: 700; font-size: clamp(22px, 2.6vw, 27px); margin: 0">Leasingrückgabe-Aufbereitung</h4>
         <p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: #453e30">Abgestimmt auf die Rückgabekriterien der Leasinggesellschaften – reduziert das Risiko von Nachzahlungen wegen Verschmutzung oder Gebrauchsspuren.</p>
         <ul style="margin: 2px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 7px 16px; font-size: 14px; color: #3b3427">
           <li style="display: flex; gap: 9px"><span style="color: #7d5d24">—</span>Nach Rückgabekriterien</li>
           <li style="display: flex; gap: 9px"><span style="color: #7d5d24">—</span>Fokus auf Gebrauchsspuren</li>
-          <li style="display: flex; gap: 9px"><span style="color: #7d5d24">—</span>Mit Beratungspaket kombinierbar</li>
           <li style="display: flex; gap: 9px"><span style="color: #7d5d24">—</span>Auch für ganze Flotten</li>
         </ul>
         <p style="margin: 4px 0 0; font-size: 13px; color: #5f5648; line-height: 1.55"><strong style="color: #3a3226; font-weight: 600">Ideal für:</strong> Firmenwagen und Leasingfahrzeuge vor der Rückgabe</p>
@@ -260,7 +244,6 @@
       </div>
     </article>
   </div>
-
   <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); margin-top: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 18px">
     <div style="border: 1px solid rgba(138,106,47,0.3); border-radius: 16px; padding: 24px; background: rgba(255,255,255,0.66); display: flex; flex-direction: column; gap: 12px">
       <span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.16em; color: #7d5d24">ZUSATZLEISTUNGEN</span>
@@ -273,14 +256,6 @@
       </div>
     </div>
     <div style="border: 1px solid rgba(138,106,47,0.3); border-radius: 16px; padding: 24px; background: rgba(255,255,255,0.66); display: flex; flex-direction: column; gap: 10px">
-      <span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.16em; color: #7d5d24">BERATUNGSPAKET LEASING</span>
-      <p style="margin: 0; font-size: 14.5px; line-height: 1.6; color: #4e4636">Wir analysieren den Zustand deines Fahrzeugs und zeigen dir passende Lösungen für Rückgabe oder Weiterverkauf.</p>
-      <div style="margin-top: auto; padding-top: 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid rgba(138,106,47,0.28)">
-        <span style="font-family: Archivo, sans-serif; font-weight: 700; font-size: 21px">20,00 €</span>
-        <a href="https://www.carcarevalu.de/shop/p/beratungspaket-fr-leasing" style="font-size: 12.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase">Buchen →</a>
-      </div>
-    </div>
-    <div style="border: 1px solid rgba(138,106,47,0.3); border-radius: 16px; padding: 24px; background: rgba(255,255,255,0.66); display: flex; flex-direction: column; gap: 10px">
       <span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.16em; color: #7d5d24">GESCHENKGUTSCHEIN</span>
       <p style="margin: 0; font-size: 14.5px; line-height: 1.6; color: #4e4636">Frei wählbarer Wert, einlösbar auf unsere Leistungen. Für alle, die schon alles haben.</p>
       <div style="margin-top: auto; padding-top: 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid rgba(138,106,47,0.28)">
@@ -290,13 +265,12 @@
     </div>
   </div>
 </section>
-
 <section id="pakete" style="padding: clamp(70px, 9vw, 120px) 24px; margin-top: clamp(56px, 7vw, 100px); background: linear-gradient(180deg, #e7e0d3, #efeae0); border-top: 1px solid rgba(138,106,47,0.26)">
   <div style="max-width: 1280px; margin: 0 auto">
     <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1)">
       <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.22em; color: #7d5d24">04 — PAKETE</span>
       <h2 style="font-family: Archivo, sans-serif; font-weight: 700; font-size: clamp(30px, 4.4vw, 54px); line-height: 1.04; letter-spacing: -0.025em; margin: 18px 0 0; max-width: 22ch">Die passende Innenreinigung mobil für dein Fahrzeug.</h2>
-      <p style="font-size: 16.5px; line-height: 1.65; color: #4e4636; max-width: 56ch; margin: 18px 0 0">BASIS ist eine reine Innenreinigung, keine Aufbereitung – es geht um die Alltagspflege für dein Fahrzeug. PREMIUM und COMPLETE sind Aufbereitungen: mehr Zeit, mehr Tiefe, Außenbereich inklusive. Der Festpreis steht vor dem Termin.</p>
+      <p style="font-size: 16.5px; line-height: 1.65; color: #4e4636; max-width: 56ch; margin: 18px 0 0">BASIS ist eine reine Innenreinigung, keine Aufbereitung – es geht um die Alltagspflege für dein Fahrzeug. PREMIUM ist die Aufbereitung: mehr Zeit, mehr Tiefe, Außenbereich inklusive. Beide Termine buchst du direkt im Kalender.</p>
     </div>
     <div style="margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px; align-items: start">
       <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1), border-color 0.4s; border: 1px solid rgba(138,106,47,0.3); border-radius: 18px; padding: 30px 26px; background: rgba(255,255,255,0.66); display: flex; flex-direction: column; gap: 16px" style-hover="border-color: rgba(27,23,18,0.26)">
@@ -329,38 +303,16 @@
         </div>
         <ul style="margin: 0; padding: 20px 0 0; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; color: #3a3226; border-top: 1px solid rgba(138,106,47,0.42)">
           <li style="display: flex; gap: 10px"><span style="color: #7d5d24">✓</span>Alles aus BASIS</li>
-          <li style="display: flex; gap: 10px"><span style="color: #7d5d24">✓</span>Außenwäsche von Hand</li>
-          <li style="display: flex; gap: 10px"><span style="color: #7d5d24">✓</span>Felgenreinigung</li>
           <li style="display: flex; gap: 10px"><span style="color: #7d5d24">✓</span>Handtrocknung</li>
           <li style="display: flex; gap: 10px"><span style="color: #7d5d24">✓</span>Geruchsneutralisation</li>
           <li style="display: flex; gap: 10px"><span style="color: #7d5d24">✓</span>Eine Zusatzleistung nach Wahl</li>
         </ul>
         <a href="{{ buchungsUrlAufbereitung }}" target="_blank" rel="noopener" style="margin-top: auto; text-align: center; padding: 16px 20px; border-radius: 9px; background: #cdb48a; color: #14110d; font-weight: 700; font-size: 13px; letter-spacing: 0.07em; text-transform: uppercase; transition: transform 0.3s, background 0.3s" style-hover="transform: translateY(-2px); background: #1b1712; color: #f3efe7">Termin buchen</a>
       </div>
-      <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s 0.14s cubic-bezier(0.16,1,0.3,1), transform 0.8s 0.14s cubic-bezier(0.16,1,0.3,1), border-color 0.4s; border: 1px solid rgba(138,106,47,0.3); border-radius: 18px; padding: 30px 26px; background: rgba(255,255,255,0.66); display: flex; flex-direction: column; gap: 16px" style-hover="border-color: rgba(27,23,18,0.26)">
-        <div>
-          <h3 style="font-family: Archivo, sans-serif; font-weight: 700; font-size: 22px; margin: 0; letter-spacing: 0.06em">COMPLETE</h3>
-          <p style="margin: 8px 0 0; font-size: 14px; color: #58503f">Die komplette Aufbereitung – auch für Rückgabe und Verkauf.</p>
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 5px">
-          <div style="font-family: Archivo, sans-serif; font-weight: 700; font-size: clamp(24px, 3vw, 32px); letter-spacing: -0.02em; color: #241f18">{{ preisComplete }}</div>
-          <span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; color: #5f5648">JE NACH FAHRZEUGGRÖSSE &amp; ZUSTAND</span>
-        </div>
-        <ul style="margin: 0; padding: 20px 0 0; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; color: #3b3427; border-top: 1px solid rgba(138,106,47,0.28)">
-          <li style="display: flex; gap: 10px"><span style="color: #7d5d24">✓</span>Alles aus PREMIUM</li>
-          <li style="display: flex; gap: 10px"><span style="color: #7d5d24">✓</span>Aufbereitung nach Rückgabekriterien</li>
-          <li style="display: flex; gap: 10px"><span style="color: #7d5d24">✓</span>Lederpflege</li>
-          <li style="display: flex; gap: 10px"><span style="color: #7d5d24">✓</span>Motorraumreinigung</li>
-          <li style="display: flex; gap: 10px"><span style="color: #7d5d24">✓</span>Geruchsentfernung</li>
-          <li style="display: flex; gap: 10px"><span style="color: #7d5d24">✓</span>Beratungspaket Leasing inklusive</li>
-        </ul>
-        <a href="{{ buchungsUrl }}" target="_blank" rel="noopener" style="margin-top: auto; text-align: center; padding: 15px 20px; border-radius: 9px; border: 1px solid rgba(27,23,18,0.22); color: #1b1712; font-weight: 700; font-size: 13px; letter-spacing: 0.07em; text-transform: uppercase; transition: background 0.3s" style-hover="background: rgba(27,23,18,0.08)">Termin buchen</a>
-      </div>
     </div>
-    <p data-reveal="" style="opacity: 0; transform: translateY(20px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); margin: 26px 0 0; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #5f5648; line-height: 1.8">Termine buchst du direkt im Online-Kalender. Zusätzlich buchbar: Beratungspaket Leasing 20,00 € · Geschenkgutschein ab 25,00 €.</p>
+    <p data-reveal="" style="opacity: 0; transform: translateY(20px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); margin: 26px 0 0; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #5f5648; line-height: 1.8">Termine buchst du direkt im Online-Kalender. Zusätzlich buchbar: Geschenkgutschein ab 25,00 €.</p>
   </div>
 </section>
-
 <section id="ergebnisse" style="max-width: 1280px; margin: 0 auto; padding: clamp(70px, 9vw, 120px) 24px">
   <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-end; justify-content: space-between">
     <div>
@@ -371,21 +323,34 @@
   </div>
   <div style="margin-top: 36px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px">
     <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1), border-color 0.4s; border: 1px solid rgba(138,106,47,0.3); border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.66)" style-hover="border-color: rgba(138,106,47,0.55)">
-      <div style="aspect-ratio: 4/3; background: repeating-linear-gradient(122deg, #ded4c1 0 12px, #e8e0d1 12px 24px); display: grid; place-items: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: rgba(27,23,18,0.58); text-align: center; padding: 14px">BILDPAAR: FUSSRAUM</div>
-      <p style="margin: 0; padding: 16px 18px; font-size: 14px; color: #453e30">Fußraum &amp; Teppiche — eingetretener Schmutz, Tiefenreinigung</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px">
+        <div style="position: relative; aspect-ratio: 2/3; background-image: url('assets/web/fussraum-vorher.jpg'); background-size: cover; background-position: 50% 62%">
+          <span style="position: absolute; bottom: 8px; left: 8px; padding: 5px 9px; border-radius: 5px; background: rgba(255,255,255,0.9); font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.14em; color: #241f18">VORHER</span>
+        </div>
+        <div style="position: relative; aspect-ratio: 2/3; background-image: url('assets/web/fussraum-nachher.jpg'); background-size: cover; background-position: 50% 62%">
+          <span style="position: absolute; bottom: 8px; right: 8px; padding: 5px 9px; border-radius: 5px; background: rgba(205,180,138,0.94); font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.14em; color: #14110d">NACHHER</span>
+        </div>
+      </div>
+      <p style="margin: 0; padding: 16px 18px; font-size: 14px; color: #453e30">Fußraum — eingetretener Schmutz vorher, gereinigt und aufgefrischt nachher</p>
     </div>
     <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s 0.07s cubic-bezier(0.16,1,0.3,1), transform 0.8s 0.07s cubic-bezier(0.16,1,0.3,1), border-color 0.4s; border: 1px solid rgba(138,106,47,0.3); border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.66)" style-hover="border-color: rgba(138,106,47,0.55)">
-      <div style="aspect-ratio: 4/3; background: repeating-linear-gradient(122deg, #ded4c1 0 12px, #e8e0d1 12px 24px); display: grid; place-items: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: rgba(27,23,18,0.58); text-align: center; padding: 14px">BILDPAAR: SITZE</div>
-      <p style="margin: 0; padding: 16px 18px; font-size: 14px; color: #453e30">Sitze &amp; Polster — Flecken, Abrieb, Lederpflege</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px">
+        <div style="position: relative; aspect-ratio: 2/3; background-image: url('assets/web/sitze-vorher.jpg'); background-size: cover; background-position: 50% 70%">
+          <span style="position: absolute; bottom: 8px; left: 8px; padding: 5px 9px; border-radius: 5px; background: rgba(255,255,255,0.9); font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.14em; color: #241f18">VORHER</span>
+        </div>
+        <div style="position: relative; aspect-ratio: 2/3; background-image: url('assets/web/sitze-nachher.jpg'); background-size: cover; background-position: 50% 60%">
+          <span style="position: absolute; bottom: 8px; right: 8px; padding: 5px 9px; border-radius: 5px; background: rgba(205,180,138,0.94); font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.14em; color: #14110d">NACHHER</span>
+        </div>
+      </div>
+      <p style="margin: 0; padding: 16px 18px; font-size: 14px; color: #453e30">Sitze &amp; Polster — Staub und Abrieb im Gewebe vorher, gereinigt nachher</p>
     </div>
     <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s 0.14s cubic-bezier(0.16,1,0.3,1), transform 0.8s 0.14s cubic-bezier(0.16,1,0.3,1), border-color 0.4s; border: 1px solid rgba(138,106,47,0.3); border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.66)" style-hover="border-color: rgba(138,106,47,0.55)">
-      <div style="aspect-ratio: 4/3; background: repeating-linear-gradient(122deg, #ded4c1 0 12px, #e8e0d1 12px 24px); display: grid; place-items: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: rgba(27,23,18,0.58); text-align: center; padding: 14px">BILDPAAR: FELGEN</div>
-      <p style="margin: 0; padding: 16px 18px; font-size: 14px; color: #453e30">Felgen &amp; Außen — Bremsstaub, Handwäsche, Trocknung</p>
+      <div style="aspect-ratio: 4/3; background-image: url('assets/web/teppich-sauber.jpg'); background-size: cover; background-position: 50% 55%"></div>
+      <p style="margin: 0; padding: 16px 18px; font-size: 14px; color: #453e30">Teppich nach der Reinigung — abgesaugt und aufgefrischt</p>
     </div>
   </div>
-  <p data-reveal="" style="opacity: 0; transform: translateY(20px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); margin: 22px 0 0; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #5f5648">PLATZ FÜR EIGENE FOTOS — BILDPAARE VORHER/NACHHER HIER EINSETZEN</p>
+  <p data-reveal="" style="opacity: 0; transform: translateY(20px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); margin: 22px 0 0; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #5f5648">ALLE AUFNAHMEN AUS EIGENEN AUFTRÄGEN</p>
 </section>
-
 <section id="ueber-uns" style="padding: clamp(70px, 9vw, 120px) 24px; background: linear-gradient(180deg, #e7e0d3, #efeae0); border-top: 1px solid rgba(138,106,47,0.26)">
   <div style="max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr)); gap: clamp(30px, 4.5vw, 64px); align-items: start">
     <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1)">
@@ -394,10 +359,10 @@
       <p style="font-size: 16.5px; line-height: 1.72; color: #4e4636; margin: 20px 0 0; max-width: 50ch; text-wrap: pretty">CAR CARE VALU verbindet professionelle Fahrzeugpflege mit persönlichem Service – direkt vor Ort. Bei jeder Reinigung stehen Sorgfalt, Zuverlässigkeit und Liebe zum Detail im Mittelpunkt.</p>
       <div style="margin-top: 30px; display: flex; flex-wrap: wrap; gap: 28px 44px">
         <div><div ref="{{ counterA }}" style="font-family: Archivo, sans-serif; font-weight: 700; font-size: 38px; color: #7d5d24; letter-spacing: -0.02em">0</div><span style="font-size: 13px; color: #58503f">Einsatzgebiet: Kreise</span></div>
-        <div><div ref="{{ counterB }}" style="font-family: Archivo, sans-serif; font-weight: 700; font-size: 38px; color: #7d5d24; letter-spacing: -0.02em">0</div><span style="font-size: 13px; color: #58503f">Tage in der Woche buchbar</span></div>
+        <div><div ref="{{ counterB }}" style="font-family: Archivo, sans-serif; font-weight: 700; font-size: 38px; color: #7d5d24; letter-spacing: -0.02em">0</div><span style="font-size: 13px; color: #58503f">Termine samstags</span></div>
         <div><div ref="{{ counterC }}" style="font-family: Archivo, sans-serif; font-weight: 700; font-size: 38px; color: #7d5d24; letter-spacing: -0.02em">0</div><span style="font-size: 13px; color: #58503f">Fahrzeugklassen im Service</span></div>
       </div>
-      <div style="margin-top: 30px; border: 1px solid rgba(138,106,47,0.3); border-radius: 16px; overflow: hidden; aspect-ratio: 16/10; background: repeating-linear-gradient(122deg, #ded4c1 0 12px, #e8e0d1 12px 24px); display: grid; place-items: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: rgba(27,23,18,0.58); text-align: center; padding: 18px">BILD: ARBEIT AM FAHRZEUG</div>
+      <div style="margin-top: 30px; border: 1px solid rgba(138,106,47,0.3); border-radius: 16px; overflow: hidden; aspect-ratio: 16/10; background-image: url('assets/web/transporter-innen.jpg'); background-size: cover; background-position: 50% 60%"></div>
     </div>
     <div style="display: grid; gap: 14px">
       <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1), border-color 0.4s; border: 1px solid rgba(138,106,47,0.3); border-radius: 16px; padding: 24px; background: rgba(255,255,255,0.66)" style-hover="border-color: rgba(138,106,47,0.55)">
@@ -413,7 +378,7 @@
       <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s 0.12s cubic-bezier(0.16,1,0.3,1), transform 0.8s 0.12s cubic-bezier(0.16,1,0.3,1), border-color 0.4s; border: 1px solid rgba(138,106,47,0.3); border-radius: 16px; padding: 24px; background: rgba(255,255,255,0.66)" style-hover="border-color: rgba(138,106,47,0.55)">
         <span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #7d5d24">03</span>
         <h3 style="font-family: Archivo, sans-serif; font-weight: 700; font-size: 19px; margin: 10px 0 8px">Flexible Termine</h3>
-        <p style="margin: 0; font-size: 14.5px; line-height: 1.62; color: #4e4636">Auch am Wochenende – abgestimmt auf deinen Alltag, nicht auf unsere Öffnungszeiten.</p>
+        <p style="margin: 0; font-size: 14.5px; line-height: 1.62; color: #4e4636">Auch samstags – abgestimmt auf deinen Alltag, nicht auf unsere Öffnungszeiten.</p>
       </div>
       <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s 0.18s cubic-bezier(0.16,1,0.3,1), transform 0.8s 0.18s cubic-bezier(0.16,1,0.3,1), border-color 0.4s; border: 1px solid rgba(138,106,47,0.3); border-radius: 16px; padding: 24px; background: rgba(255,255,255,0.66)" style-hover="border-color: rgba(138,106,47,0.55)">
         <span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #7d5d24">04</span>
@@ -423,7 +388,6 @@
     </div>
   </div>
 </section>
-
 <section style="max-width: 1280px; margin: 0 auto; padding: clamp(70px, 9vw, 110px) 24px">
   <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1)">
     <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.22em; color: #7d5d24">07 — ABLAUF</span>
@@ -457,7 +421,6 @@
     </li>
   </ol>
 </section>
-
 <section id="faq" style="padding: clamp(70px, 9vw, 110px) 24px; background: linear-gradient(180deg, #e7e0d3, #efeae0); border-top: 1px solid rgba(138,106,47,0.26)">
   <div style="max-width: 920px; margin: 0 auto">
     <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1)">
@@ -470,7 +433,7 @@
     </details>
     <details style="border-bottom: 1px solid rgba(138,106,47,0.28)">
       <summary style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 21px 0; font-family: Archivo, sans-serif; font-weight: 600; font-size: clamp(16.5px, 1.9vw, 19px); color: #241f18">Wie vereinbare ich einen Termin?<span style="color: #7d5d24; font-size: 20px">+</span></summary>
-      <p style="margin: 0 0 22px; font-size: 15px; line-height: 1.72; color: #4e4636; max-width: 68ch">Über das Anfrageformular auf dieser Seite, telefonisch unter +49 151 26718415, per E-Mail an info@carcarevalu.de oder direkt über die Online-Buchung im Shop. Termine sind auch am Wochenende möglich.</p>
+      <p style="margin: 0 0 22px; font-size: 15px; line-height: 1.72; color: #4e4636; max-width: 68ch">Über das Anfrageformular auf dieser Seite, telefonisch unter +49 151 26718415, per E-Mail an info@carcarevalu.de oder direkt über die Online-Buchung im Shop. Termine sind auch samstags möglich.</p>
     </details>
     <details style="border-bottom: 1px solid rgba(138,106,47,0.28)">
       <summary style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 21px 0; font-family: Archivo, sans-serif; font-weight: 600; font-size: clamp(16.5px, 1.9vw, 19px); color: #241f18">Was kostet die Aufbereitung?<span style="color: #7d5d24; font-size: 20px">+</span></summary>
@@ -494,7 +457,6 @@
     </details>
   </div>
 </section>
-
 <section id="anfrage" style="padding: clamp(70px, 9vw, 120px) 24px; border-top: 1px solid rgba(138,106,47,0.26)">
   <div style="max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: clamp(30px, 4.5vw, 60px); align-items: start">
     <div data-reveal="" style="opacity: 0; transform: translateY(26px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1)">
@@ -537,8 +499,6 @@
               <option>Pflege-Abo</option>
               <option>Paket BASIS</option>
               <option>Paket PREMIUM</option>
-              <option>Paket COMPLETE</option>
-              <option>Beratungspaket Leasing</option>
               <option>Noch unklar – bitte beraten</option>
             </select>
           </label>
@@ -563,7 +523,6 @@
     </form>
   </div>
 </section>
-
 <footer style="border-top: 1px solid rgba(138,106,47,0.26); background: #f3efe7; padding: clamp(48px, 6vw, 76px) 24px 34px">
   <div style="max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 34px">
     <div>
@@ -604,20 +563,21 @@
   <div style="max-width: 1280px; margin: 34px auto 0; padding-top: 22px; border-top: 1px solid rgba(27,23,18,0.11); display: flex; flex-wrap: wrap; gap: 12px 26px; align-items: center; justify-content: space-between; font-size: 13px; color: #5f5648">
     <span>© 2026 CAR CARE VALU</span>
     <div style="display: flex; gap: 22px">
-      <a href="https://www.carcarevalu.de/impressum" style="color: #5f5648">Impressum</a>
-      <a href="https://www.carcarevalu.de/impressum" style="color: #5f5648">Datenschutz</a>
+      <a href="Impressum.dc.html" style="color: #5f5648">Impressum</a>
+      <a href="Impressum.dc.html" style="color: #5f5648">Datenschutz</a>
       <a href="https://www.carcarevalu.de/b2b-kunden" style="color: #5f5648">B2B</a>
     </div>
   </div>
 </footer>
-
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;buchungsUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://app.acuityscheduling.com/schedule.php?owner=37613678&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Buchung&quot;},&quot;buchungsUrlAufbereitung&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://app.acuityscheduling.com/schedule.php?owner=37613678&amp;appointmentType=90515354&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Buchung&quot;},&quot;preisInnen&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Preis auf Anfrage&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Preise&quot;},&quot;preisAbo&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Preis auf Anfrage&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Preise&quot;},&quot;preisKomplett&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Preis auf Anfrage&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Preise&quot;},&quot;preisLeasing&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Preis auf Anfrage&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Preise&quot;},&quot;preisBasis&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Preis auf Anfrage&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Paketpreise&quot;},&quot;preisPremium&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Preis auf Anfrage&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Paketpreise&quot;},&quot;preisComplete&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Preis auf Anfrage&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Paketpreise&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;buchungsUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://app.acuityscheduling.com/schedule.php?owner=37613678&amp;appointmentType=87583879&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Buchung&quot;},&quot;buchungsUrlAufbereitung&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://app.acuityscheduling.com/schedule.php?owner=37613678&amp;appointmentType=87583912&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Buchung&quot;},&quot;buchungsUrlBasisDirekt&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://app.acuityscheduling.com/catalog.php?owner=37613678&amp;action=addCart&amp;clear=1&amp;id=2097859&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Buchung&quot;},&quot;buchungsUrlPremiumDirekt&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://app.acuityscheduling.com/catalog.php?owner=37613678&amp;action=addCart&amp;clear=1&amp;id=2097867&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Buchung&quot;},&quot;preisInnen&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Preis auf Anfrage&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Preise&quot;},&quot;preisAbo&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Preis auf Anfrage&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Preise&quot;},&quot;preisKomplett&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Preis auf Anfrage&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Preise&quot;},&quot;preisLeasing&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Preis auf Anfrage&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Preise&quot;},&quot;preisBasis&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Preis auf Anfrage&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Paketpreise&quot;},&quot;preisPremium&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Preis auf Anfrage&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Paketpreise&quot;}}">
 class Component extends DCLogic {
   state = { navOpen: false, split: 46, shot: 0, showMore: false, sent: false, sentName: "" };
-
-  shots = ["FUSSRAUM & TEPPICHE", "SITZE & POLSTER", "ARMATUREN & VERKLEIDUNG", "AUSSEN & FELGEN"];
-
+  shots = [
+    { label: "KOFFERRAUM", vorher: "kofferraum-vorher.jpg", nachher: "kofferraum-nachher.jpg" },
+    { label: "FUSSRAUM & TEPPICHE", vorher: "fussraum-vorher.jpg", nachher: "fussraum-nachher.jpg" },
+    { label: "SITZE & POLSTER", vorher: "sitze-vorher.jpg", nachher: "sitze-nachher.jpg" },
+  ];
   componentDidMount() {
     this.io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
@@ -628,8 +588,14 @@ class Component extends DCLogic {
         }
       });
     }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
-    document.querySelectorAll("[data-reveal]").forEach((el) => this.io.observe(el));
-
+    const revealAll = () => document.querySelectorAll("[data-reveal]").forEach((el) => {
+      el.style.opacity = "1";
+      el.style.transform = "translateY(0)";
+    });
+    const observeAll = () => document.querySelectorAll("[data-reveal]").forEach((el) => this.io.observe(el));
+    observeAll();
+    requestAnimationFrame(observeAll);
+    this.failSafe = setTimeout(revealAll, 1600);
     this.onScroll = () => {
       if (this._raf) return;
       this._raf = requestAnimationFrame(() => {
@@ -639,24 +605,21 @@ class Component extends DCLogic {
       });
     };
     window.addEventListener("scroll", this.onScroll, { passive: true });
-
     this.onMove = (ev) => { if (this.dragging) this.applyPointer(ev); };
     this.onUp = () => { this.dragging = false; };
     window.addEventListener("pointermove", this.onMove);
     window.addEventListener("pointerup", this.onUp);
-
     this.startCounters();
   }
-
   componentWillUnmount() {
     if (this.io) this.io.disconnect();
+    clearTimeout(this.failSafe);
     window.removeEventListener("scroll", this.onScroll);
     window.removeEventListener("pointermove", this.onMove);
     window.removeEventListener("pointerup", this.onUp);
   }
-
   startCounters() {
-    const pairs = [[this.cA, 2], [this.cB, 7], [this.cC, 4]];
+    const pairs = [[this.cA, 2], [this.cB, 1], [this.cC, 4]];
     const run = (el, target) => {
       if (!el) return;
       let started = false;
@@ -680,21 +643,22 @@ class Component extends DCLogic {
     };
     pairs.forEach(([el, n]) => run(el, n));
   }
-
   applyPointer(ev) {
     if (!this.slider) return;
     const r = this.slider.getBoundingClientRect();
     const pct = Math.max(2, Math.min(98, ((ev.clientX - r.left) / r.width) * 100));
     this.setState({ split: pct });
   }
-
   renderVals() {
     const border = (i) => (this.state.shot === i ? "rgba(138,106,47,0.85)" : "rgba(27,23,18,0.18)");
     const p = this.props;
     const fallback = "Preis auf Anfrage";
     return {
-      buchungsUrl: p.buchungsUrl ?? "https://app.acuityscheduling.com/schedule.php?owner=37613678",
-      buchungsUrlAufbereitung: p.buchungsUrlAufbereitung ?? "https://app.acuityscheduling.com/schedule.php?owner=37613678&appointmentType=90515354",
+      buchungsUrl: p.buchungsUrl ?? "https://app.acuityscheduling.com/schedule.php?owner=37613678&appointmentType=87583879",
+      buchungsUrlIntensiv: p.buchungsUrlIntensiv ?? "https://app.acuityscheduling.com/schedule.php?owner=37613678&appointmentType=90515354",
+      buchungsUrlAufbereitung: p.buchungsUrlAufbereitung ?? "https://app.acuityscheduling.com/schedule.php?owner=37613678&appointmentType=87583912",
+      buchungsUrlBasisDirekt: p.buchungsUrlBasisDirekt ?? "https://app.acuityscheduling.com/catalog.php?owner=37613678&action=addCart&clear=1&id=2097859",
+      buchungsUrlPremiumDirekt: p.buchungsUrlPremiumDirekt ?? "https://app.acuityscheduling.com/catalog.php?owner=37613678&action=addCart&clear=1&id=2097867",
       preisInnen: p.preisInnen ?? fallback,
       preisAbo: p.preisAbo ?? fallback,
       preisKomplett: p.preisKomplett ?? fallback,
@@ -712,7 +676,9 @@ class Component extends DCLogic {
       counterC: (el) => { this.cC = el; },
       sliderRef: (el) => { this.slider = el; },
       splitPct: this.state.split.toFixed(1) + "%",
-      shotLabel: this.shots[this.state.shot],
+      shotLabel: this.shots[this.state.shot].label,
+      shotVorher: "url('assets/web/" + this.shots[this.state.shot].vorher + "')",
+      shotNachher: "url('assets/web/" + this.shots[this.state.shot].nachher + "')",
       shotBorder0: border(0),
       shotBorder1: border(1),
       shotBorder2: border(2),
@@ -720,7 +686,7 @@ class Component extends DCLogic {
       pickShot0: () => this.setState({ shot: 0, split: 46 }),
       pickShot1: () => this.setState({ shot: 1, split: 46 }),
       pickShot2: () => this.setState({ shot: 2, split: 46 }),
-      pickShot3: () => this.setState({ shot: 3, split: 46 }),
+
       onDragStart: (ev) => { this.dragging = true; this.applyPointer(ev); },
       showMore: this.state.showMore,
       moreLabel: this.state.showMore ? "− Weniger Details" : "+ Nachricht und Bilder hinzufügen",

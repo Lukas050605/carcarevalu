@@ -1,0 +1,979 @@
+<!-- ============================================================
+     CAR CARE VALU — komplette Webseite in EINEM Squarespace-Codeblock
+     Einfügen: Seite bearbeiten -> Block hinzufügen -> Code -> Modus HTML
+     Alles hier markieren und einfügen. Kopf-/Fußzeile liefert Squarespace.
+     Bild-URLs im Abschnitt "Vorher / Nachher" ersetzen (siehe Kommentar dort).
+     ============================================================ -->
+<div id="ccvx">
+  <nav class="ccvx-nav">
+    <button type="button" class="ccvx-tab ccvx-on" data-tab="0">Anfahrt & Kosten</button>
+    <button type="button" class="ccvx-tab" data-tab="1">Innenreinigung</button>
+    <button type="button" class="ccvx-tab" data-tab="2">Pflege-Abo</button>
+    <button type="button" class="ccvx-tab" data-tab="3">Abo-Termin</button>
+    <button type="button" class="ccvx-tab" data-tab="4">Vorher / Nachher</button>
+    <button type="button" class="ccvx-tab" data-tab="5">Minispiel</button>
+  </nav>
+
+<section class="ccvx-panel ccvx-on" data-panel="0">
+<div id="ccv-anfahrt">
+  <div class="ccv-head">
+    <h2>Anfahrt &amp; Spritkosten</h2>
+    <span class="ccv-mono">AB 63694 LIMESHAIN</span>
+  </div>
+
+  <label class="ccv-lbl">Ort suchen
+    <div class="ccv-search">
+      <input type="text" id="ccv-q" placeholder="Ort oder PLZ eingeben, z.B. Hanau" autocomplete="off">
+      <div id="ccv-list" hidden></div>
+    </div>
+    <span id="ccv-picked" class="ccv-picked" hidden></span>
+  </label>
+
+  <label class="ccv-lbl">Entfernung (einfache Strecke)
+    <div class="ccv-row">
+      <input type="number" id="ccv-num" min="0" max="400" value="12">
+      <span class="ccv-mono">KM</span>
+      <input type="range" id="ccv-range" min="0" max="120" step="1" value="12">
+    </div>
+  </label>
+
+  <div id="ccv-out" class="ccv-out">
+    <span class="ccv-mono ccv-acc" id="ccv-out-label">IM KOSTENLOSEN ANFAHRTSBEREICH</span>
+    <div class="ccv-big" id="ccv-out-sum">0,00 €</div>
+    <p id="ccv-out-text">Bei 12 km liegst du innerhalb der 50 km. Keine Anfahrtskosten.</p>
+  </div>
+
+  <div class="ccv-table">
+    <div><span>Kostenlose Anfahrt</span><b>bis 50 km</b></div>
+    <div><span>Aufschlag je km darüber</span><b id="ccv-rate">0,89 € / km</b></div>
+    <div><span>Zusatz-km einfach</span><b id="ccv-extra">keine</b></div>
+    <div><span>Berechnet (Hin- und Rückfahrt)</span><b id="ccv-calc">keine</b></div>
+  </div>
+
+  <p class="ccv-hint"><strong>Zahlung nach der Buchung:</strong> Die Spritkosten werden nicht online abgerechnet. Wir tragen sie nach deiner Buchung als Hinweis in den Termin ein — bezahlt wird vor Ort beim Termin.</p>
+  <p class="ccv-mono ccv-fine">Entfernungsangaben sind Näherungswerte für die einfache Strecke ab 63694 Limeshain. Berechnet werden Hin- und Rückfahrt der Zusatz-km. Maßgeblich ist die tatsächliche Fahrstrecke.</p>
+
+  <a class="ccv-cta" href="https://app.acuityscheduling.com/schedule.php?owner=37613678&amp;appointmentType=87583879" target="_blank" rel="noopener">Termin buchen →</a>
+</div>
+
+<style>
+#ccv-anfahrt{--ink:#1b1712;--acc:#7d5d24;--gold:#cdb48a;max-width:520px;margin:0 auto;padding:clamp(22px,3vw,32px);border:1px solid rgba(138,106,47,.4);border-radius:20px;background:rgba(255,255,255,.72);box-shadow:0 30px 60px -40px rgba(90,70,35,.3);font-family:Manrope,"Helvetica Neue",Arial,sans-serif;color:var(--ink)}
+#ccv-anfahrt *{box-sizing:border-box}
+#ccv-anfahrt .ccv-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap}
+#ccv-anfahrt h2{margin:0;font:700 clamp(20px,2.4vw,26px)/1.1 Archivo,Manrope,Arial,sans-serif;letter-spacing:-.015em}
+#ccv-anfahrt .ccv-mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.14em;color:#5f5648}
+#ccv-anfahrt .ccv-acc{color:var(--acc)}
+#ccv-anfahrt .ccv-lbl{display:flex;flex-direction:column;gap:8px;margin-top:20px;font-size:13px;color:#58503f}
+#ccv-anfahrt .ccv-search{position:relative;z-index:30}
+#ccv-anfahrt input[type=text],#ccv-anfahrt input[type=number]{padding:14px 15px;border-radius:10px;border:1px solid rgba(27,23,18,.2);background:#fff;color:var(--ink);font:600 16px/1 Manrope,Arial,sans-serif;outline:none;transition:border-color .25s}
+#ccv-anfahrt input[type=text]{width:100%;font-weight:400;font-size:15px}
+#ccv-anfahrt input:focus{border-color:rgba(138,106,47,.7)}
+#ccv-anfahrt input[type=number]{width:110px}
+#ccv-anfahrt input[type=range]{flex:1;min-width:90px;accent-color:var(--acc)}
+#ccv-anfahrt .ccv-row{display:flex;align-items:center;gap:12px}
+#ccv-list{position:absolute;z-index:40;top:calc(100% + 6px);left:0;right:0;max-height:260px;overflow-y:auto;overscroll-behavior:contain;border:1px solid rgba(138,106,47,.45);border-radius:12px;background:#fffdf9;box-shadow:0 22px 44px -22px rgba(90,70,35,.42);padding:6px}
+#ccv-list button{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:11px 12px;border:none;border-radius:8px;background:transparent;color:var(--ink);font:400 14.5px/1.2 Manrope,Arial,sans-serif;text-align:left;cursor:pointer;transition:background .2s}
+#ccv-list button:hover{background:rgba(205,180,138,.34)}
+#ccv-list button span:last-child{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11.5px;color:#5f5648}
+#ccv-list p{margin:0;padding:12px;font-size:13.5px;line-height:1.6;color:#58503f}
+#ccv-anfahrt .ccv-picked{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11px;letter-spacing:.1em;color:var(--acc)}
+#ccv-anfahrt .ccv-out{margin-top:20px;border-radius:14px;border:1px solid rgba(138,106,47,.35);background:rgba(255,255,255,.8);padding:20px;display:flex;flex-direction:column;gap:10px;transition:border-color .3s,background .3s}
+#ccv-anfahrt .ccv-out.ccv-over{border-color:rgba(138,106,47,.7);background:linear-gradient(180deg,rgba(205,180,138,.42),rgba(255,255,255,.75))}
+#ccv-anfahrt .ccv-big{font:700 clamp(28px,4vw,40px)/1 Archivo,Manrope,Arial,sans-serif;letter-spacing:-.02em}
+#ccv-anfahrt .ccv-out p{margin:0;font-size:14.5px;line-height:1.6;color:#3b3427}
+#ccv-anfahrt .ccv-table{margin-top:14px;display:grid;gap:1px;background:rgba(138,106,47,.28);border:1px solid rgba(138,106,47,.28);border-radius:12px;overflow:hidden;font-size:13.5px}
+#ccv-anfahrt .ccv-table div{display:flex;justify-content:space-between;gap:12px;background:rgba(255,255,255,.85);padding:12px 15px;color:#3b3427}
+#ccv-anfahrt .ccv-table b{font-weight:600}
+#ccv-anfahrt .ccv-hint{margin:16px 0 0;font-size:13px;line-height:1.65;color:#453e30;border-left:2px solid var(--acc);padding-left:12px}
+#ccv-anfahrt .ccv-fine{margin:12px 0 0;font-size:11px;line-height:1.7;letter-spacing:normal}
+#ccv-anfahrt .ccv-cta{margin-top:20px;display:flex;align-items:center;justify-content:center;gap:10px;padding:17px 22px;border-radius:10px;background:var(--gold);color:#14110d!important;font:700 14px/1 Archivo,Manrope,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;text-decoration:none!important;transition:transform .3s,background .3s,color .3s}
+#ccv-anfahrt .ccv-cta:hover{transform:translateY(-2px);background:var(--ink);color:#f3efe7!important}
+</style>
+
+<script>
+(function () {
+  var FREI = 50, SATZ = 0.89;
+  var ORTE = [
+    ["Limeshain","63694",0],["Altenstadt","63674",8],["Hammersbach","63546",12],["Büdingen","63654",13],
+    ["Ortenberg","63683",14],["Nidderau","61130",18],["Nidda","63667",20],["Erlensee","63526",20],
+    ["Neuberg","63543",21],["Langenselbold","63505",22],["Bruchköbel","63486",22],["Friedberg","61169",24],
+    ["Gründau","63584",25],["Karben","61184",26],["Gelnhausen","63571",26],["Hanau","63450",28],
+    ["Bad Vilbel","61118",28],["Bad Nauheim","61231",30],["Linsengericht","63589",30],["Maintal","63477",32],
+    ["Großkrotzenburg","63538",32],["Freigericht","63579",32],["Wächtersbach","63607",34],["Mühlheim am Main","63165",36],
+    ["Hainburg","63512",36],["Butzbach","35510",36],["Kahl am Main","63796",38],["Offenbach am Main","63065",38],
+    ["Rodgau","63110",38],["Bad Orb","63619",40],["Seligenstadt","63500",40],["Alzenau","63755",40],
+    ["Bad Homburg","61348",40],["Frankfurt am Main","60311",42],["Steinau an der Straße","36396",42],["Oberursel","61440",44],
+    ["Gießen","35390",46],["Kronberg im Taunus","61476",46],["Dieburg","64807",50],["Schlüchtern","36381",50],
+    ["Hösbach","63768",50],["Königstein im Taunus","61462",50],["Aschaffenburg","63739",52],["Frankfurt Flughafen","60547",52],
+    ["Alsfeld","36304",55],["Lauterbach","36341",55],["Hofheim am Taunus","65719",55],["Wetzlar","35578",58],
+    ["Rüsselsheim","65428",60],["Darmstadt","64283",62],["Marburg","35037",70],["Wiesbaden","65183",70],
+    ["Mainz","55116",72],["Fulda","36037",78],["Limburg an der Lahn","65549",78],["Bad Hersfeld","36251",85],
+    ["Würzburg","97070",110]
+  ];
+  var q = document.getElementById("ccv-q"), list = document.getElementById("ccv-list");
+  var num = document.getElementById("ccv-num"), range = document.getElementById("ccv-range");
+  var picked = document.getElementById("ccv-picked"), out = document.getElementById("ccv-out");
+  var oLabel = document.getElementById("ccv-out-label"), oSum = document.getElementById("ccv-out-sum");
+  var oText = document.getElementById("ccv-out-text"), extra = document.getElementById("ccv-extra");
+  var calc = document.getElementById("ccv-calc"), search = q.closest(".ccv-search");
+  var km = 12;
+
+  document.getElementById("ccv-rate").textContent = eur(SATZ) + " / km";
+  document.querySelector("#ccv-anfahrt .ccv-table b").textContent = "bis " + FREI + " km";
+
+  function eur(n) { return n.toFixed(2).replace(".", ",") + " €"; }
+
+  function render() {
+    var zusatz = Math.max(0, km - FREI), ab = zusatz * 2, betrag = ab * SATZ;
+    num.value = km; range.value = Math.min(120, km);
+    extra.textContent = zusatz > 0 ? zusatz + " km" : "keine";
+    calc.textContent = ab > 0 ? ab + " km" : "keine";
+    if (zusatz <= 0) {
+      out.classList.remove("ccv-over");
+      oLabel.textContent = "IM KOSTENLOSEN ANFAHRTSBEREICH";
+      oSum.textContent = "0,00 €";
+      oText.textContent = "Bei " + km + " km liegst du innerhalb der " + FREI + " km. Keine Anfahrtskosten.";
+    } else {
+      out.classList.add("ccv-over");
+      oLabel.textContent = "SPRITKOSTEN-ANTEIL";
+      oSum.textContent = eur(betrag);
+      oText.textContent = "Bei " + km + " km einfacher Strecke liegen " + zusatz + " km über den freien " +
+        FREI + " km. Berechnet werden " + ab + " km für Hin- und Rückfahrt zu " + eur(SATZ) + " pro km.";
+    }
+  }
+
+  function showList() {
+    var term = q.value.trim().toLowerCase();
+    var hits = (term ? ORTE.filter(function (o) {
+      return o[0].toLowerCase().indexOf(term) > -1 || o[1].indexOf(term) === 0;
+    }) : ORTE).slice(0, 40);
+    list.innerHTML = "";
+    if (!hits.length) {
+      list.innerHTML = "<p>Kein Ort gefunden. Trag deine Entfernung einfach unten in km ein — wir fahren auch weiter raus.</p>";
+    } else {
+      hits.forEach(function (o) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.innerHTML = "<span>" + o[0] + " · " + o[1] + "</span><span>ca. " + o[2] + " km</span>";
+        b.addEventListener("click", function () {
+          km = o[2]; q.value = o[0];
+          picked.textContent = "GEWÄHLT: " + o[0]; picked.hidden = false;
+          list.hidden = true; render();
+        });
+        list.appendChild(b);
+      });
+    }
+    list.hidden = false;
+  }
+
+  q.addEventListener("input", function () { picked.hidden = true; showList(); });
+  q.addEventListener("focus", showList);
+  document.addEventListener("pointerdown", function (e) {
+    if (!list.hidden && !search.contains(e.target)) list.hidden = true;
+  });
+  function onKm(e) {
+    km = Math.max(0, Math.min(400, Number(e.target.value) || 0));
+    picked.hidden = true; render();
+  }
+  num.addEventListener("input", onKm);
+  range.addEventListener("input", onKm);
+  render();
+})();
+</script>
+</section>
+
+<section class="ccvx-panel" data-panel="1">
+<div id="ccv-pakete">
+  <div class="ccv-cards">
+
+    <div class="ccv-card">
+      <span class="ccv-mono ccv-acc">PAKET 01 · 90 MINUTEN</span>
+      <h3>BASIS</h3>
+      <div class="ccv-price"><b>59 €</b><span class="ccv-mono">PRO TERMIN</span></div>
+      <p>Die gründliche Innenreinigung für den Alltag — in 90 Minuten wieder frisch.</p>
+      <ul>
+        <li>Intensives Saugen</li>
+        <li>Cockpit und Kunstoffpflege</li>
+        <li>Scheiben innen reinigen</li>
+        <li>Kleine Ablagen auswischen</li>
+        <li>Saugen mit Bürstenaufsatz am Akkuschrauber</li>
+      </ul>
+      <a class="ccv-btn ccv-ghost" href="https://app.acuityscheduling.com/schedule.php?owner=37613678&amp;appointmentType=87583879" target="_blank" rel="noopener">BASIS buchen →</a>
+    </div>
+
+    <div class="ccv-card ccv-featured">
+      <span class="ccv-mono ccv-acc">PAKET 02 · 120 MINUTEN</span>
+      <h3>PREMIUM</h3>
+      <div class="ccv-price"><b>69 €</b><span class="ccv-mono">PRO TERMIN</span></div>
+      <p>Mehr Zeit fürs Detail: zusätzlich die Stellen, die bei der schnellen Reinigung untergehen.</p>
+      <ul>
+        <li>Alle Leistungen aus BASIS</li>
+        <li>Scheibenreinigung innen (streifenfrei)</li>
+        <li>Lüftungsschlitze abstauben</li>
+        <li>Sicherheitsgurte abwischen</li>
+      </ul>
+      <a class="ccv-btn" href="https://app.acuityscheduling.com/schedule.php?owner=37613678&amp;appointmentType=87583912" target="_blank" rel="noopener">PREMIUM buchen →</a>
+    </div>
+
+  </div>
+
+  <div class="ccv-extras">
+    <div class="ccv-box">
+      <span class="ccv-mono ccv-acc">ZUSATZLEISTUNGEN</span>
+      <p>Einzeln zubuchbar — sag beim Termin einfach, was dazu soll.</p>
+      <div class="ccv-chips">
+        <span>Lederpflege</span><span>Geruchsentfernung</span><span>Kindersitz-Reinigung</span><span>Motorraumreinigung</span>
+      </div>
+    </div>
+    <div class="ccv-box">
+      <span class="ccv-mono ccv-acc">REGELMÄSSIG GÜNSTIGER</span>
+      <h4>Im Abo ab 40 €</h4>
+      <p>Dieselbe Reinigung im festen Intervall — 40 € statt 59 € pro Termin.</p>
+    </div>
+  </div>
+
+  <p class="ccv-mono ccv-fine">Preise gelten pro Termin für PKW, Kombi und SUV. Kostenlose Anfahrt bis 50 km ab Limeshain — darüber kommen Spritkosten dazu, die nach der Buchung als Hinweis in den Termin eingetragen werden.</p>
+</div>
+
+<style>
+#ccv-pakete{--ink:#1b1712;--acc:#7d5d24;--gold:#cdb48a;max-width:1100px;margin:0 auto;font-family:Manrope,"Helvetica Neue",Arial,sans-serif;color:var(--ink)}
+#ccv-pakete *{box-sizing:border-box}
+#ccv-pakete .ccv-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:22px;align-items:stretch}
+#ccv-pakete .ccv-card{display:flex;flex-direction:column;gap:14px;border:1px solid rgba(138,106,47,.35);border-radius:20px;padding:clamp(26px,3vw,36px);background:rgba(255,255,255,.72);transition:border-color .4s,box-shadow .4s}
+#ccv-pakete .ccv-card:hover{border-color:rgba(138,106,47,.75);box-shadow:0 30px 60px -34px rgba(90,70,35,.34)}
+#ccv-pakete .ccv-featured{border-color:rgba(138,106,47,.6);background:linear-gradient(180deg,rgba(205,180,138,.42),rgba(255,255,255,.72));box-shadow:0 30px 60px -40px rgba(90,70,35,.3)}
+#ccv-pakete .ccv-featured:hover{border-color:rgba(138,106,47,.9);box-shadow:0 36px 70px -30px rgba(90,70,35,.4)}
+#ccv-pakete .ccv-mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:10.5px;letter-spacing:.18em;color:#5f5648}
+#ccv-pakete .ccv-acc{color:var(--acc)}
+#ccv-pakete h3{margin:0;font:700 clamp(24px,3vw,32px)/1.05 Archivo,Manrope,Arial,sans-serif;letter-spacing:.02em}
+#ccv-pakete h4{margin:2px 0 0;font:700 20px/1.2 Archivo,Manrope,Arial,sans-serif}
+#ccv-pakete .ccv-price{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+#ccv-pakete .ccv-price b{font:700 clamp(28px,3.4vw,36px)/1 Archivo,Manrope,Arial,sans-serif;letter-spacing:-.02em}
+#ccv-pakete .ccv-price .ccv-mono{letter-spacing:.12em}
+#ccv-pakete .ccv-card p{margin:0;font-size:15px;line-height:1.62;color:#453e30}
+#ccv-pakete ul{margin:0;padding:16px 0 0;list-style:none;display:flex;flex-direction:column;gap:9px;font-size:14.5px;color:#3b3427;border-top:1px solid rgba(138,106,47,.28)}
+#ccv-pakete .ccv-featured ul{border-top-color:rgba(138,106,47,.4);color:#241f18}
+#ccv-pakete li{display:flex;gap:10px}
+#ccv-pakete li:before{content:"✓";color:var(--acc)}
+#ccv-pakete .ccv-btn{margin-top:auto;display:flex;align-items:center;justify-content:center;gap:10px;padding:16px 20px;border-radius:10px;background:var(--gold);color:#14110d!important;font:700 13px/1 Archivo,Manrope,Arial,sans-serif;letter-spacing:.07em;text-transform:uppercase;text-decoration:none!important;transition:transform .3s,background .3s,color .3s}
+#ccv-pakete .ccv-btn:hover{transform:translateY(-2px);background:var(--ink);color:#f3efe7!important}
+#ccv-pakete .ccv-ghost{background:transparent;border:1px solid rgba(27,23,18,.22);color:var(--ink)!important;padding:15px 20px}
+#ccv-pakete .ccv-ghost:hover{background:rgba(138,106,47,.14);color:var(--ink)!important}
+#ccv-pakete .ccv-extras{margin-top:22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:18px}
+#ccv-pakete .ccv-box{border:1px solid rgba(138,106,47,.3);border-radius:16px;padding:24px;background:rgba(255,255,255,.6);display:flex;flex-direction:column;gap:12px}
+#ccv-pakete .ccv-box p{margin:0;font-size:14.5px;line-height:1.6;color:#4e4636}
+#ccv-pakete .ccv-chips{display:flex;flex-wrap:wrap;gap:8px}
+#ccv-pakete .ccv-chips span{padding:9px 14px;border-radius:7px;border:1px solid rgba(27,23,18,.18);font-size:13px;color:#3b3427}
+#ccv-pakete .ccv-fine{margin:24px 0 0;font-size:11.5px;line-height:1.8;letter-spacing:normal}
+</style>
+</section>
+
+<section class="ccvx-panel" data-panel="2">
+<div id="ccv-abo">
+  <div class="ccv-cards">
+
+    <div class="ccv-card ccv-featured">
+      <span class="ccv-badge">BELIEBTESTE WAHL</span>
+      <span class="ccv-mono ccv-acc">MODELL 01 · 90 MINUTEN</span>
+      <h3>KOMFORT-ABO</h3>
+      <div class="ccv-price"><b>40 €</b><s>59 €</s><span class="ccv-mono">PRO TERMIN</span></div>
+      <p>Regelmäßige Innenpflege mit festem Monatstermin, den du dir sicherst.</p>
+      <ul>
+        <li>Mobile Innenreinigung</li>
+        <li>Intensives Saugen</li>
+        <li>Cockpit und Kunstoffpflege</li>
+        <li>Scheiben innen kostenlos reinigen</li>
+        <li>Kleine Ablagen auswischen</li>
+        <li>Saugen mit Bürstenaufsatz am Akkuschrauber</li>
+      </ul>
+      <div class="ccv-perks">
+        <span class="ccv-mono ccv-acc">⭐ ABO-VORTEILE — KOMFORT-ABO</span>
+        <div><i>1</i><span><strong>Preisvorteil:</strong> 40 € statt 59 € pro Termin</span></div>
+        <div><i>2</i><span><strong>Fester Termin:</strong> 1 Termin im Monat, den du dir sicherst</span></div>
+      </div>
+      <a class="ccv-btn" href="https://app.acuityscheduling.com/catalog.php?owner=37613678&amp;action=addCart&amp;clear=1&amp;id=2097859" target="_blank" rel="noopener">Komfort-Abo buchen →</a>
+    </div>
+
+    <div class="ccv-card">
+      <span class="ccv-mono ccv-acc">MODELL 02 · 120 MINUTEN</span>
+      <h3>EXKLUSIV-PAKET</h3>
+      <div class="ccv-price"><b>50 €</b><s>69 €</s><span class="ccv-mono">PRO TERMIN</span></div>
+      <p>Zwei Reinigungen pro Monat zum Preis von einer, inklusive Polster-Auffrischung.</p>
+      <ul>
+        <li>Alle Leistungen aus Komfort Abo</li>
+        <li>Scheibenreinigung innen (streifenfrei)</li>
+        <li>Lüftungsschlitze abstauben</li>
+        <li>Sicherheitsgurte abwischen</li>
+      </ul>
+      <div class="ccv-perks">
+        <span class="ccv-mono ccv-acc">⭐ ABO-VORTEILE — EXKLUSIV-PAKET</span>
+        <div><i>1</i><span><strong>Preisvorteil:</strong> 50 € statt 69 € pro Termin</span></div>
+        <div><i>2</i><span>2 Reinigungen pro Monat zum Preis von 1</span></div>
+        <div class="ccv-inc"><i>✓</i><span><strong>Zusatzleistung inklusive:</strong> Polster-Auffrischung <em>(leicht feucht, kein Deep Cleaning)</em></span></div>
+      </div>
+      <a class="ccv-btn ccv-ghost" href="https://app.acuityscheduling.com/catalog.php?owner=37613678&amp;action=addCart&amp;clear=1&amp;id=2097867" target="_blank" rel="noopener">Exklusiv-Paket buchen →</a>
+    </div>
+
+  </div>
+
+  <p class="ccv-mono ccv-fine">Preise gelten pro Termin im laufenden Abo. Monatlich kündbar. Abo-Termine im Gebiet bis 50 km ab Limeshain.</p>
+</div>
+
+<style>
+#ccv-abo{--ink:#1b1712;--acc:#7d5d24;--gold:#cdb48a;max-width:1100px;margin:0 auto;font-family:Manrope,"Helvetica Neue",Arial,sans-serif;color:var(--ink)}
+#ccv-abo *{box-sizing:border-box}
+#ccv-abo .ccv-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:22px;align-items:stretch}
+#ccv-abo .ccv-card{position:relative;display:flex;flex-direction:column;gap:14px;border:1px solid rgba(138,106,47,.35);border-radius:20px;padding:clamp(26px,3vw,36px);background:rgba(255,255,255,.72);transition:border-color .4s,box-shadow .4s}
+#ccv-abo .ccv-card:hover{border-color:rgba(138,106,47,.75);box-shadow:0 30px 60px -34px rgba(90,70,35,.34)}
+#ccv-abo .ccv-featured{border-color:rgba(138,106,47,.6);background:linear-gradient(180deg,rgba(205,180,138,.42),rgba(255,255,255,.72));box-shadow:0 30px 60px -40px rgba(90,70,35,.3);padding-top:38px}
+#ccv-abo .ccv-badge{position:absolute;top:-12px;left:28px;padding:6px 14px;border-radius:6px;background:var(--gold);color:#14110d;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.14em}
+#ccv-abo .ccv-mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:10.5px;letter-spacing:.18em;color:#5f5648}
+#ccv-abo .ccv-acc{color:var(--acc)}
+#ccv-abo h3{margin:0;font:700 clamp(24px,3vw,32px)/1.05 Archivo,Manrope,Arial,sans-serif;letter-spacing:.02em}
+#ccv-abo .ccv-price{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+#ccv-abo .ccv-price b{font:700 clamp(28px,3.4vw,36px)/1 Archivo,Manrope,Arial,sans-serif;letter-spacing:-.02em}
+#ccv-abo .ccv-price s{font:600 18px/1 Archivo,Manrope,Arial,sans-serif;color:#6b6152}
+#ccv-abo .ccv-price .ccv-mono{letter-spacing:.12em}
+#ccv-abo .ccv-card>p{margin:0;font-size:15px;line-height:1.62;color:#453e30}
+#ccv-abo ul{margin:0;padding:16px 0 0;list-style:none;display:flex;flex-direction:column;gap:9px;font-size:14.5px;color:#3b3427;border-top:1px solid rgba(138,106,47,.28)}
+#ccv-abo .ccv-featured ul{border-top-color:rgba(138,106,47,.4);color:#241f18}
+#ccv-abo li{display:flex;gap:10px}
+#ccv-abo li:before{content:"✓";color:var(--acc)}
+#ccv-abo .ccv-perks{border:1px solid rgba(138,106,47,.4);border-radius:12px;padding:16px 18px;background:rgba(255,255,255,.55);display:flex;flex-direction:column;gap:10px}
+#ccv-abo .ccv-perks div{display:flex;gap:10px;font-size:14px;color:#241f18}
+#ccv-abo .ccv-perks i{font-family:"JetBrains Mono",ui-monospace,monospace;font-style:normal;color:var(--acc)}
+#ccv-abo .ccv-perks strong{font-weight:600}
+#ccv-abo .ccv-perks em{font-style:normal;color:#58503f}
+#ccv-abo .ccv-inc{padding-top:10px;border-top:1px solid rgba(138,106,47,.24)}
+#ccv-abo .ccv-btn{margin-top:auto;display:flex;align-items:center;justify-content:center;gap:10px;padding:16px 20px;border-radius:10px;background:var(--gold);color:#14110d!important;font:700 13px/1 Archivo,Manrope,Arial,sans-serif;letter-spacing:.07em;text-transform:uppercase;text-decoration:none!important;transition:transform .3s,background .3s,color .3s}
+#ccv-abo .ccv-btn:hover{transform:translateY(-2px);background:var(--ink);color:#f3efe7!important}
+#ccv-abo .ccv-ghost{background:transparent;border:1px solid rgba(27,23,18,.22);color:var(--ink)!important;padding:15px 20px}
+#ccv-abo .ccv-ghost:hover{background:rgba(138,106,47,.14);color:var(--ink)!important}
+#ccv-abo .ccv-fine{margin:24px 0 0;font-size:11.5px;line-height:1.8;letter-spacing:normal}
+</style>
+</section>
+
+<section class="ccvx-panel" data-panel="3">
+<div id="ccv-abotermin">
+  <div class="ccv-intro">
+    <span class="ccv-mono ccv-acc">FÜR BESTEHENDE ABO-KUNDEN</span>
+    <h2>Welches Abo hast du?</h2>
+    <p>Wähle dein Modell — du landest direkt im Buchungssystem, ohne Umweg über Pakete und Preise.</p>
+  </div>
+
+  <div class="ccv-cards">
+    <a class="ccv-card" href="https://app.acuityscheduling.com/catalog.php?owner=37613678&amp;action=addCart&amp;clear=1&amp;id=2097859" target="_blank" rel="noopener">
+      <span class="ccv-mono ccv-acc">MODELL 01</span>
+      <h3>KOMFORT-ABO</h3>
+      <div class="ccv-price"><b>40 €</b><s>59 €</s><span class="ccv-mono">90 MIN.</span></div>
+      <p>Regelmäßige Innenpflege mit festem Monatstermin, den du dir sicherst.</p>
+      <ul>
+        <li>Intensives Saugen</li>
+        <li>Cockpit und Kunstoffpflege</li>
+        <li>Scheiben innen, kleine Ablagen</li>
+      </ul>
+      <span class="ccv-btn ccv-ghost">Komfort-Termin buchen →</span>
+    </a>
+
+    <a class="ccv-card ccv-featured" href="https://app.acuityscheduling.com/catalog.php?owner=37613678&amp;action=addCart&amp;clear=1&amp;id=2097867" target="_blank" rel="noopener">
+      <span class="ccv-mono ccv-acc">MODELL 02</span>
+      <h3>EXKLUSIV-PAKET</h3>
+      <div class="ccv-price"><b>50 €</b><s>69 €</s><span class="ccv-mono">120 MIN.</span></div>
+      <p>Zwei Reinigungen pro Monat zum Preis von einer, inklusive Polster-Auffrischung.</p>
+      <ul>
+        <li>Alles aus dem Komfort-Abo</li>
+        <li>Scheiben streifenfrei, Lüftungsschlitze</li>
+        <li>Polster-Auffrischung inklusive</li>
+      </ul>
+      <span class="ccv-btn">Exklusiv-Termin buchen →</span>
+    </a>
+  </div>
+
+  <div class="ccv-foot">
+    <p>Noch kein Abo? Die beiden Modelle mit vollem Leistungsumfang findest du auf der Abo-Seite. Termine im Abo-Gebiet bis 50 km ab Limeshain.</p>
+    <a class="ccv-link" href="tel:+4915126718415">Anrufen</a>
+  </div>
+</div>
+
+<style>
+#ccv-abotermin{--ink:#1b1712;--acc:#7d5d24;--gold:#cdb48a;max-width:1100px;margin:0 auto;font-family:Manrope,"Helvetica Neue",Arial,sans-serif;color:var(--ink)}
+#ccv-abotermin *{box-sizing:border-box}
+#ccv-abotermin .ccv-intro{text-align:center;max-width:52ch;margin:0 auto 34px}
+#ccv-abotermin .ccv-mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:10.5px;letter-spacing:.18em;color:#5f5648}
+#ccv-abotermin .ccv-acc{color:var(--acc)}
+#ccv-abotermin h2{margin:16px 0 0;font:700 clamp(26px,4vw,44px)/1.04 Archivo,Manrope,Arial,sans-serif;letter-spacing:-.025em}
+#ccv-abotermin .ccv-intro p{margin:14px 0 0;font-size:16px;line-height:1.66;color:#453e30}
+#ccv-abotermin .ccv-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:22px;align-items:stretch}
+#ccv-abotermin .ccv-card{display:flex;flex-direction:column;gap:14px;border:1px solid rgba(138,106,47,.35);border-radius:20px;padding:clamp(26px,3vw,36px);background:rgba(255,255,255,.72);color:inherit!important;text-decoration:none!important;transition:border-color .4s,box-shadow .4s}
+#ccv-abotermin .ccv-card:hover{border-color:rgba(138,106,47,.75);box-shadow:0 30px 60px -34px rgba(90,70,35,.34)}
+#ccv-abotermin .ccv-featured{border-color:rgba(138,106,47,.6);background:linear-gradient(180deg,rgba(205,180,138,.42),rgba(255,255,255,.72));box-shadow:0 30px 60px -40px rgba(90,70,35,.3)}
+#ccv-abotermin .ccv-featured:hover{border-color:rgba(138,106,47,.9);box-shadow:0 36px 70px -30px rgba(90,70,35,.4)}
+#ccv-abotermin h3{margin:0;font:700 clamp(24px,3vw,32px)/1.05 Archivo,Manrope,Arial,sans-serif;letter-spacing:.02em}
+#ccv-abotermin .ccv-price{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+#ccv-abotermin .ccv-price b{font:700 28px/1 Archivo,Manrope,Arial,sans-serif;letter-spacing:-.02em}
+#ccv-abotermin .ccv-price s{font:600 17px/1 Archivo,Manrope,Arial,sans-serif;color:#6b6152}
+#ccv-abotermin .ccv-price .ccv-mono{letter-spacing:.12em}
+#ccv-abotermin .ccv-card>p{margin:0;font-size:15px;line-height:1.62;color:#453e30}
+#ccv-abotermin ul{margin:0;padding:16px 0 0;list-style:none;display:flex;flex-direction:column;gap:8px;font-size:14px;color:#3b3427;border-top:1px solid rgba(138,106,47,.28)}
+#ccv-abotermin .ccv-featured ul{border-top-color:rgba(138,106,47,.4);color:#241f18}
+#ccv-abotermin li{display:flex;gap:10px}
+#ccv-abotermin li:before{content:"✓";color:var(--acc)}
+#ccv-abotermin .ccv-btn{margin-top:auto;display:flex;align-items:center;justify-content:center;gap:10px;padding:16px 20px;border-radius:10px;background:var(--gold);color:#14110d;font:700 13px/1 Archivo,Manrope,Arial,sans-serif;letter-spacing:.07em;text-transform:uppercase}
+#ccv-abotermin .ccv-ghost{background:transparent;border:1px solid rgba(27,23,18,.22);color:var(--ink);padding:15px 20px}
+#ccv-abotermin .ccv-foot{margin-top:26px;display:flex;flex-wrap:wrap;gap:14px 26px;align-items:center;justify-content:space-between;border:1px solid rgba(138,106,47,.28);border-radius:16px;padding:20px 24px;background:rgba(255,255,255,.55)}
+#ccv-abotermin .ccv-foot p{margin:0;font-size:14.5px;line-height:1.62;color:#453e30;max-width:52ch}
+#ccv-abotermin .ccv-link{display:inline-flex;padding:14px 22px;border-radius:9px;border:1px solid rgba(27,23,18,.22);font:700 13px/1 Manrope,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)!important;text-decoration:none!important;transition:background .3s}
+#ccv-abotermin .ccv-link:hover{background:rgba(138,106,47,.14)}
+</style>
+</section>
+
+<section class="ccvx-panel" data-panel="4">
+<!-- WICHTIG: Bilder zuerst in Squarespace hochladen, dann die 6 URLs unten ersetzen.
+     Bilder hochladen: Website -> Seiten -> beliebige Seite -> Bildblock -> Bild einfügen
+     -> Rechtsklick auf das Bild -> "Grafikadresse kopieren". -->
+<div id="ccv-ba">
+  <div class="ccv-tabs">
+    <button type="button" class="ccv-on" data-i="0">Kofferraum</button>
+    <button type="button" data-i="1">Fußraum</button>
+    <button type="button" data-i="2">Sitze</button>
+  </div>
+
+  <div id="ccv-slider">
+    <div id="ccv-after"></div>
+    <div id="ccv-before"><div id="ccv-before-img"></div></div>
+    <span class="ccv-tag ccv-tag-l">VORHER</span>
+    <span class="ccv-tag ccv-tag-r">NACHHER</span>
+    <div id="ccv-handle"><span>↔</span></div>
+  </div>
+
+  <p class="ccv-cap" id="ccv-cap">Kofferraum — Staub und Schmutz vorher, gereinigt nachher</p>
+</div>
+
+<style>
+#ccv-ba{--ink:#1b1712;--acc:#7d5d24;--gold:#cdb48a;max-width:760px;margin:0 auto;font-family:Manrope,"Helvetica Neue",Arial,sans-serif;color:var(--ink)}
+#ccv-ba *{box-sizing:border-box}
+#ccv-ba .ccv-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+#ccv-ba .ccv-tabs button{padding:10px 15px;border-radius:8px;border:1px solid rgba(27,23,18,.18);background:rgba(255,255,255,.6);color:#3a3226;font:400 13px/1 Manrope,Arial,sans-serif;cursor:pointer;transition:border-color .3s,background .3s}
+#ccv-ba .ccv-tabs button:hover{background:rgba(138,106,47,.16)}
+#ccv-ba .ccv-tabs button.ccv-on{border-color:rgba(138,106,47,.85);background:rgba(205,180,138,.34)}
+#ccv-slider{position:relative;aspect-ratio:4/3;min-height:320px;border-radius:16px;overflow:hidden;border:1px solid rgba(27,23,18,.14);cursor:ew-resize;touch-action:none;user-select:none;background:#ded4c1}
+#ccv-after,#ccv-before-img{position:absolute;inset:0;background-size:cover;background-position:50% 55%}
+#ccv-before{position:absolute;inset:0;width:46%;overflow:hidden}
+#ccv-before-img{width:100vw}
+#ccv-ba .ccv-tag{position:absolute;bottom:16px;padding:7px 13px;border-radius:6px;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.16em}
+#ccv-ba .ccv-tag-l{left:16px;background:rgba(255,255,255,.9);color:#241f18}
+#ccv-ba .ccv-tag-r{right:16px;background:rgba(205,180,138,.94);color:#14110d}
+#ccv-handle{position:absolute;top:0;bottom:0;left:46%;width:2px;background:rgba(27,23,18,.85)}
+#ccv-handle span{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:#1b1712;color:#f3efe7;display:grid;place-items:center;font-size:14px;font-weight:700;box-shadow:0 8px 22px rgba(27,23,18,.25)}
+#ccv-ba .ccv-cap{margin:14px 0 0;font-size:14px;color:#453e30}
+</style>
+
+<script>
+(function () {
+  /* ==== HIER DIE BILD-URLS EINTRAGEN ==== */
+  var SETS = [
+    { label: "Kofferraum — Staub und Schmutz vorher, gereinigt nachher",
+      vorher: "BILD-URL-KOFFERRAUM-VORHER",
+      nachher: "BILD-URL-KOFFERRAUM-NACHHER" },
+    { label: "Fußraum — eingetretener Schmutz vorher, gereinigt und aufgefrischt nachher",
+      vorher: "BILD-URL-FUSSRAUM-VORHER",
+      nachher: "BILD-URL-FUSSRAUM-NACHHER" },
+    { label: "Sitze & Polster — Staub und Abrieb im Gewebe vorher, gereinigt nachher",
+      vorher: "BILD-URL-SITZE-VORHER",
+      nachher: "BILD-URL-SITZE-NACHHER" }
+  ];
+  /* ====================================== */
+
+  var slider = document.getElementById("ccv-slider");
+  var after = document.getElementById("ccv-after");
+  var before = document.getElementById("ccv-before");
+  var beforeImg = document.getElementById("ccv-before-img");
+  var handle = document.getElementById("ccv-handle");
+  var cap = document.getElementById("ccv-cap");
+  var tabs = document.querySelectorAll("#ccv-ba .ccv-tabs button");
+  var dragging = false, split = 46, idx = 0;
+
+  function load(i) {
+    idx = i; split = 46; apply();
+    after.style.backgroundImage = "url('" + SETS[i].nachher + "')";
+    beforeImg.style.backgroundImage = "url('" + SETS[i].vorher + "')";
+    cap.textContent = SETS[i].label;
+    tabs.forEach(function (t, n) { t.classList.toggle("ccv-on", n === i); });
+  }
+  function apply() {
+    before.style.width = split.toFixed(1) + "%";
+    handle.style.left = split.toFixed(1) + "%";
+  }
+  function move(e) {
+    var r = slider.getBoundingClientRect();
+    split = Math.max(2, Math.min(98, ((e.clientX - r.left) / r.width) * 100));
+    apply();
+  }
+
+  tabs.forEach(function (t) {
+    t.addEventListener("click", function () { load(Number(t.dataset.i)); });
+  });
+  slider.addEventListener("pointerdown", function (e) { dragging = true; move(e); });
+  window.addEventListener("pointermove", function (e) { if (dragging) move(e); });
+  window.addEventListener("pointerup", function () { dragging = false; });
+
+  load(0);
+})();
+</script>
+</section>
+
+<section class="ccvx-panel" data-panel="5">
+<div id="ccv-game">
+  <div class="ccv-bar">
+    <div class="ccv-stats">
+      <span>STRECKE <b id="ccv-km">0,0 km</b></span>
+      <span>ORT <b id="ccv-ort" class="ccv-acc">Limeshain</b></span>
+      <span>REKORD <b id="ccv-best">0,0 km</b></span>
+      <span>TEMPO <b id="ccv-spd">1,0×</b></span>
+      <span>SERIE <b id="ccv-combo">×1</b></span>
+      <span>RABATT <b id="ccv-rab" class="ccv-acc">0,0 %</b></span>
+    </div>
+    <button id="ccv-reset" type="button">Neu starten</button>
+  </div>
+
+  <div id="ccv-stage">
+    <canvas id="ccv-canvas"></canvas>
+    <div id="ccv-overlay">
+      <div class="ccv-card">
+        <p class="ccv-title" id="ccv-title">Bereit für die Tour?</p>
+        <p class="ccv-hint" id="ccv-hint">Leertaste oder Tippen startet den Transporter.</p>
+        <div id="ccv-result" hidden>
+          <span class="ccv-label">DEIN RABATT</span>
+          <span class="ccv-big" id="ccv-rab2">0,0 %</span>
+          <span class="ccv-sub" id="ccv-sub">0,0 km gefahren · bis Limeshain</span>
+          <span class="ccv-stamp" id="ccv-stamp"></span>
+          <div class="ccv-actions" id="ccv-actions">
+            <button type="button" id="ccv-keep">Rabatt sichern</button>
+            <button type="button" id="ccv-revive" class="ccv-ghost">Weiterfahren · 2× frei</button>
+          </div>
+          <span class="ccv-note" id="ccv-note">Weiterfahren ist noch 2× frei. Danach verfällt dein Rabatt.</span>
+          <div id="ccv-kept" hidden>
+            <span class="ccv-photo">Bitte fotografiere dein Ergebnis und zeige es beim Termin.</span>
+            <a id="ccv-book" href="https://app.acuityscheduling.com/schedule.php?owner=37613678&amp;appointmentType=87583879" target="_blank" rel="noopener">Termin buchen →</a>
+            <span class="ccv-note">Nur für BASIS und PREMIUM.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ccv-foot">
+    <span>SPRINGEN: LEERTASTE, PFEIL OBEN ODER TIPPEN · KANISTER GEBEN BONUS-KM</span>
+    <span id="ccv-next">NÄCHSTER ORT: Altenstadt in 8,0 km</span>
+  </div>
+</div>
+
+<style>
+#ccv-game{--ink:#1b1712;--acc:#7d5d24;--gold:#cdb48a;--paper:#f6f2ea;max-width:1040px;margin:0 auto;font-family:Manrope,"Helvetica Neue",Arial,sans-serif;color:var(--ink);border:1px solid rgba(138,106,47,.4);border-radius:18px;overflow:hidden;background:var(--paper);box-shadow:0 30px 60px -44px rgba(90,70,35,.34)}
+#ccv-game *{box-sizing:border-box}
+#ccv-game .ccv-bar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:14px 18px;border-bottom:1px solid rgba(138,106,47,.26);background:rgba(255,255,255,.6)}
+#ccv-game .ccv-stats{display:flex;gap:20px;flex-wrap:wrap;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11px;letter-spacing:.12em;color:#58503f}
+#ccv-game .ccv-stats b{font-weight:500;font-size:13px;color:var(--ink)}
+#ccv-game .ccv-acc{color:var(--acc)!important}
+#ccv-game .ccv-bar button{padding:9px 16px;border-radius:8px;border:1px solid rgba(27,23,18,.22);background:transparent;color:var(--ink);font:700 12px/1 Manrope,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:background .25s}
+#ccv-game .ccv-bar button:hover{background:rgba(138,106,47,.14)}
+#ccv-stage{position:relative;touch-action:manipulation;user-select:none;cursor:pointer}
+#ccv-canvas{display:block;width:100%;height:auto;min-height:300px}
+#ccv-overlay{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;pointer-events:none;padding:12px;transition:opacity .25s}
+#ccv-overlay.ccv-off{opacity:0}
+#ccv-game .ccv-card{pointer-events:auto;text-align:center;padding:14px 18px;border-radius:14px;background:rgba(246,242,234,.97);border:1px solid rgba(138,106,47,.4);box-shadow:0 18px 40px -26px rgba(90,70,35,.5);max-width:400px;width:100%}
+#ccv-game .ccv-title{margin:0;font:700 clamp(18px,2.4vw,24px)/1.15 Archivo,Manrope,Arial,sans-serif}
+#ccv-game .ccv-hint{margin:8px 0 0;font-size:14px;color:#453e30}
+#ccv-result{margin-top:10px;padding-top:10px;border-top:1px solid rgba(138,106,47,.34);display:flex;flex-direction:column;gap:5px}
+#ccv-game .ccv-label{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.16em;color:var(--acc)}
+#ccv-game .ccv-big{font:700 clamp(24px,3.2vw,32px)/1 Archivo,Manrope,Arial,sans-serif;letter-spacing:-.02em}
+#ccv-game .ccv-sub{font-size:13px;color:#453e30}
+#ccv-game .ccv-stamp{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12px}
+#ccv-game .ccv-actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+#ccv-game .ccv-actions button{flex:1;min-width:130px;padding:13px 14px;border-radius:9px;border:none;background:var(--gold);color:#14110d;font:700 12.5px/1 Archivo,Manrope,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:transform .25s,background .25s,color .25s}
+#ccv-game .ccv-actions button:hover{transform:translateY(-2px);background:var(--ink);color:#f3efe7}
+#ccv-game .ccv-actions .ccv-ghost{background:transparent;border:1px solid rgba(27,23,18,.28);color:var(--ink)}
+#ccv-game .ccv-actions .ccv-ghost:hover{background:rgba(138,106,47,.16);color:var(--ink)}
+#ccv-game .ccv-note{font-size:11.5px;line-height:1.45;color:#58503f}
+#ccv-game .ccv-photo{margin-top:4px;font:600 12.5px/1.45 Manrope,Arial,sans-serif;color:var(--acc)}
+#ccv-kept{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+#ccv-book{display:flex;align-items:center;justify-content:center;gap:9px;padding:13px 18px;border-radius:10px;background:var(--gold);color:#14110d!important;font:700 13px/1 Archivo,Manrope,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;text-decoration:none!important;transition:transform .3s,background .3s,color .3s}
+#ccv-book:hover{transform:translateY(-2px);background:var(--ink);color:#f3efe7!important}
+#ccv-game .ccv-foot{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:13px 18px;border-top:1px solid rgba(138,106,47,.26);background:rgba(255,255,255,.6);font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11px;letter-spacing:.1em;color:#5f5648}
+</style>
+
+<script>
+(function () {
+  var W = 900, H = 300, G = 246;
+  var cv = document.getElementById("ccv-canvas"), ctx = cv.getContext("2d"), dpr = 1;
+  var el = {
+    km: document.getElementById("ccv-km"), ort: document.getElementById("ccv-ort"),
+    best: document.getElementById("ccv-best"), spd: document.getElementById("ccv-spd"),
+    combo: document.getElementById("ccv-combo"), rab: document.getElementById("ccv-rab"),
+    rab2: document.getElementById("ccv-rab2"), sub: document.getElementById("ccv-sub"),
+    stamp: document.getElementById("ccv-stamp"), next: document.getElementById("ccv-next"),
+    title: document.getElementById("ccv-title"), hint: document.getElementById("ccv-hint"),
+    overlay: document.getElementById("ccv-overlay"), result: document.getElementById("ccv-result"),
+    actions: document.getElementById("ccv-actions"), kept: document.getElementById("ccv-kept"),
+    note: document.getElementById("ccv-note"), revive: document.getElementById("ccv-revive"),
+    keep: document.getElementById("ccv-keep"), reset: document.getElementById("ccv-reset"),
+    stage: document.getElementById("ccv-stage")
+  };
+
+  var ORTE = [
+    [0,"Limeshain"],[8,"Altenstadt"],[13,"Büdingen"],[18,"Nidderau"],[22,"Langenselbold"],
+    [24,"Friedberg"],[26,"Gelnhausen"],[28,"Hanau"],[30,"Bad Nauheim"],[32,"Maintal"],
+    [38,"Offenbach"],[42,"Frankfurt"],[46,"Gießen"],[52,"Aschaffenburg"],[62,"Darmstadt"],
+    [70,"Wiesbaden"],[78,"Fulda"],[110,"Würzburg"]
+  ];
+
+  var phase = "ready", best = 0, revives = 0, van, obs, items, parts, pops, clouds, dashes;
+  var dist, bonus, spd, nextGap, nextItem, combo, shake, lastOrt, bestFlag, jumpBuf;
+
+  try { best = Number(localStorage.getItem("ccv_valurun_best") || 0) || 0; } catch (e) {}
+
+  var lost = false, FREI_REVIVES = 2;
+  function de(n, d) { return n.toFixed(d).replace(".", ","); }
+  function rabatt(km) { return lost ? 0 : Math.min(8, Math.round((km / 30) * 10) / 10); }
+  function kmNow() { return Math.max(0, (dist + bonus) / 100); }
+
+  function fit() {
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function reset() {
+    van = { x: 110, y: G, vy: 0, w: 64, h: 44, onGround: true, wob: 0 };
+    obs = []; items = []; parts = []; pops = [];
+    clouds = [{x:300,y:60,s:1},{x:620,y:96,s:.7},{x:840,y:48,s:1.2}];
+    dashes = []; for (var i = 0; i < 14; i++) dashes.push({ x: i * 80 });
+    dist = 0; bonus = 0; spd = 6.4; nextGap = 240; nextItem = 420;
+    combo = 0; shake = 0; lastOrt = 0; bestFlag = false; jumpBuf = 0; revives = 0; lost = false;
+    phase = "ready"; sync();
+  }
+
+  function press() {
+    if (phase === "ready") { phase = "run"; sync(); return; }
+    if (phase === "over") return;
+    if (phase === "kept") { reset(); phase = "run"; sync(); return; }
+    if (van.onGround) { van.vy = -12.6; van.onGround = false; jumpBuf = 0; }
+    else jumpBuf = 10;
+  }
+
+  function pop(t, c) { pops.push({ t: t, c: c, life: 60, y: 0 }); }
+  function burst(x, y, c, n) {
+    for (var i = 0; i < n; i++) parts.push({
+      x: x, y: y, vx: (Math.random() - .5) * 4.4, vy: -Math.random() * 3.6 - .6,
+      life: 22 + Math.random() * 14, c: c
+    });
+  }
+
+  function spawnObs() {
+    var k = ["eimer","kegel","kanister","doppel"][Math.floor(Math.random() * 4)];
+    var w = 26, h = 34;
+    if (k === "kegel") { w = 28; h = 32; }
+    if (k === "kanister") { w = 30; h = 40; }
+    if (k === "doppel") { w = 58; h = 34; }
+    obs.push({ x: W + 40, w: w, h: h, k: k, passed: false });
+  }
+
+  function gameOver() {
+    shake = 12; burst(van.x + van.w / 2, van.y - 20, "#7d5d24", 24);
+    var sc = Math.floor(dist + bonus);
+    if (sc > best) { best = sc; try { localStorage.setItem("ccv_valurun_best", String(best)); } catch (e) {} }
+    phase = "over"; sync();
+  }
+
+  function revive() {
+    revives += 1;
+    if (revives > FREI_REVIVES) lost = true;
+    obs = obs.filter(function (o) { return o.x > W * .75; });
+    items = []; nextGap = 300; nextItem = 380; combo = 0;
+    van.y = G; van.vy = 0; van.onGround = true;
+    pop("WEITER SO", "#7d5d24"); phase = "run"; sync();
+  }
+
+  function keep() {
+    var d = new Date(), z = function (n) { return String(n).padStart(2, "0"); };
+    el.stamp.textContent = z(d.getDate()) + "." + z(d.getMonth() + 1) + "." + d.getFullYear() +
+      " · " + z(d.getHours()) + ":" + z(d.getMinutes()) + " Uhr";
+    phase = "kept"; sync();
+  }
+
+  function step(f) {
+    var running = phase === "run", drift = running ? spd * f : 1.6 * f;
+    clouds.forEach(function (c) {
+      c.x -= drift * .18 * c.s;
+      if (c.x < -70) { c.x = W + 60; c.y = 34 + Math.random() * 90; c.s = .6 + Math.random() * .7; }
+    });
+    dashes.forEach(function (d) { d.x -= drift; if (d.x < -60) d.x += 1120; });
+    if (!running) { van.wob += f * .18; return; }
+
+    van.wob += f * .4; van.vy += .72 * f; van.y += van.vy * f;
+    if (van.y >= G) {
+      van.y = G; van.vy = 0; van.onGround = true;
+      if (jumpBuf > 0) { jumpBuf = 0; van.vy = -12.6; van.onGround = false; }
+    }
+    if (jumpBuf > 0) jumpBuf -= f;
+
+    dist += spd * f * .42;
+    spd = Math.min(17, 6.4 + Math.floor(dist / 500) * .62);
+    if (shake > 0) shake -= f * .9;
+
+    for (var i = parts.length - 1; i >= 0; i--) {
+      var pt = parts[i];
+      pt.x += pt.vx * f - spd * f * .35; pt.y += pt.vy * f; pt.vy += .22 * f; pt.life -= f;
+      if (pt.life <= 0) parts.splice(i, 1);
+    }
+    for (var j = pops.length - 1; j >= 0; j--) {
+      pops[j].life -= f; pops[j].y += f * .5;
+      if (pops[j].life <= 0) pops.splice(j, 1);
+    }
+
+    var km = kmNow();
+    for (var o2 = lastOrt + 1; o2 < ORTE.length; o2++) {
+      if (km >= ORTE[o2][0]) {
+        lastOrt = o2; pop(ORTE[o2][1].toUpperCase() + " ERREICHT", "#7d5d24");
+        burst(van.x + 40, G - 40, "#cdb48a", 14);
+      } else break;
+    }
+    if (!bestFlag && best > 0 && dist + bonus > best) {
+      bestFlag = true; pop("REKORD GEBROCHEN", "#1b1712");
+      burst(van.x + 40, G - 50, "#7d5d24", 22); shake = 6;
+    }
+
+    nextGap -= spd * f;
+    if (nextGap <= 0) { spawnObs(); nextGap = Math.max(210, 330 - dist / 40) + Math.random() * 220; }
+    nextItem -= spd * f;
+    if (nextItem <= 0) {
+      items.push({ x: W + 60, y: Math.random() < .55 ? G - 92 : G - 44, t: 0 });
+      nextItem = 340 + Math.random() * 420;
+    }
+
+    var cx = van.x + van.w / 2, cy = van.y - van.h / 2;
+    for (var k2 = items.length - 1; k2 >= 0; k2--) {
+      var it = items[k2];
+      it.x -= spd * f; it.t += f * .14;
+      if (it.x < -30) { items.splice(k2, 1); continue; }
+      var dx = it.x - cx, dy = it.y - cy;
+      if (dx * dx + dy * dy < 1369) {
+        items.splice(k2, 1); combo += 1;
+        var gain = 25 * Math.min(5, 1 + Math.floor(combo / 4));
+        bonus += gain; burst(it.x, it.y, "#cdb48a", 16);
+        pop("+" + de(gain / 100, 1) + " km", "#7d5d24"); shake = 4;
+      }
+    }
+
+    var vl = van.x + 8, vr = van.x + van.w - 6, vt = van.y - van.h + 6, vb = van.y - 2;
+    for (var m = obs.length - 1; m >= 0; m--) {
+      var ob = obs[m];
+      ob.x -= spd * f;
+      if (ob.x + ob.w < -20) { obs.splice(m, 1); continue; }
+      var ol = ob.x + 3, or_ = ob.x + ob.w - 3, ot = G - ob.h + 3;
+      if (vr > ol && vl < or_ && vb > ot && vt < G) { gameOver(); return; }
+      if (!ob.passed && or_ < vl) {
+        ob.passed = true; combo += 1;
+        if (vb - ot < 16) {
+          bonus += 20; pop("KNAPP! +0,2 km", "#b4732a");
+          burst(ob.x + ob.w / 2, G - ob.h, "#b4732a", 10);
+        }
+      }
+    }
+    sync();
+  }
+
+  function rr(x, y, w, h, r) {
+    ctx.beginPath(); ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+  }
+
+  function draw() {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.fillStyle = "#f6f2ea"; ctx.fillRect(0, 0, W, H);
+    if (shake > 0) ctx.translate((Math.random() - .5) * shake, (Math.random() - .5) * shake);
+
+    ctx.fillStyle = "#e5dccb";
+    clouds.forEach(function (c) {
+      rr(c.x, c.y, 54 * c.s, 13 * c.s, 7 * c.s); ctx.fill();
+      rr(c.x + 14 * c.s, c.y - 9 * c.s, 30 * c.s, 13 * c.s, 7 * c.s); ctx.fill();
+    });
+
+    ctx.strokeStyle = "rgba(27,23,18,0.5)"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(0, G + 2); ctx.lineTo(W, G + 2); ctx.stroke();
+    ctx.fillStyle = "rgba(27,23,18,0.22)";
+    dashes.forEach(function (d) { ctx.fillRect(d.x, G + 12, 34, 3); });
+
+    items.forEach(function (it) {
+      var fl = Math.sin(it.t) * 3;
+      ctx.fillStyle = "#cdb48a"; rr(it.x - 7, it.y - 12 + fl, 14, 22, 4); ctx.fill();
+      ctx.fillStyle = "#7d5d24"; ctx.fillRect(it.x - 3, it.y - 17 + fl, 6, 6);
+      ctx.strokeStyle = "rgba(125,93,36,0.32)"; ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.arc(it.x, it.y + fl, 17, 0, 6.2832); ctx.stroke();
+    });
+
+    obs.forEach(function (o) {
+      if (o.k === "eimer" || o.k === "doppel") {
+        ctx.fillStyle = "#7d5d24";
+        var n = o.k === "doppel" ? 2 : 1;
+        for (var i = 0; i < n; i++) {
+          var bx = o.x + i * 32, bw = o.k === "doppel" ? 26 : o.w;
+          ctx.beginPath();
+          ctx.moveTo(bx + 3, G - o.h); ctx.lineTo(bx + bw - 3, G - o.h);
+          ctx.lineTo(bx + bw - 7, G); ctx.lineTo(bx + 7, G);
+          ctx.closePath(); ctx.fill();
+        }
+      } else if (o.k === "kegel") {
+        ctx.fillStyle = "#b4732a";
+        ctx.beginPath(); ctx.moveTo(o.x + o.w / 2, G - o.h);
+        ctx.lineTo(o.x + o.w, G); ctx.lineTo(o.x, G); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = "#f6f2ea"; ctx.fillRect(o.x + 5, G - o.h * .55, o.w - 10, 5);
+      } else {
+        ctx.fillStyle = "#5f5648"; rr(o.x, G - o.h, o.w, o.h, 5); ctx.fill();
+        ctx.fillStyle = "#cdb48a"; ctx.fillRect(o.x + 6, G - o.h + 7, o.w - 12, 7);
+      }
+    });
+
+    var x = van.x, y = van.y, w = van.w, h = van.h;
+    var bob = van.onGround ? Math.sin(van.wob) * .9 : 0;
+    ctx.fillStyle = "rgba(27,23,18,0.14)";
+    ctx.beginPath(); ctx.ellipse(x + w / 2, G + 8, w * .42, 5, 0, 0, 6.2832); ctx.fill();
+    ctx.fillStyle = "#1b1712"; rr(x, y - h + bob, w, h - 8, 7); ctx.fill();
+    ctx.fillStyle = "#cdb48a"; rr(x + 34, y - h + 7 + bob, 26, 14, 4); ctx.fill();
+    ctx.fillStyle = "#f6f2ea"; ctx.font = "700 8px monospace";
+    ctx.fillText("VALU", x + 7, y - h + 19 + bob);
+    ctx.fillStyle = "#453e30"; rr(x + 6, y - 20 + bob, 52, 7, 3); ctx.fill();
+
+    var spin = phase === "run" ? dist * .6 : van.wob;
+    [x + 16, x + w - 16].forEach(function (wx) {
+      ctx.fillStyle = "#1b1712"; ctx.beginPath(); ctx.arc(wx, y - 3, 8, 0, 6.2832); ctx.fill();
+      ctx.fillStyle = "#cdb48a"; ctx.beginPath(); ctx.arc(wx, y - 3, 3.4, 0, 6.2832); ctx.fill();
+      ctx.strokeStyle = "rgba(246,242,234,0.7)"; ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(wx + Math.cos(spin) * 3, y - 3 + Math.sin(spin) * 3);
+      ctx.lineTo(wx + Math.cos(spin) * 8, y - 3 + Math.sin(spin) * 8);
+      ctx.stroke();
+    });
+
+    parts.forEach(function (pt) {
+      ctx.globalAlpha = Math.max(0, Math.min(1, pt.life / 22));
+      ctx.fillStyle = pt.c; ctx.fillRect(pt.x, pt.y, 3.4, 3.4); ctx.globalAlpha = 1;
+    });
+
+    if (combo >= 4) {
+      ctx.fillStyle = "rgba(125,93,36,0.92)"; ctx.font = "700 20px Archivo,Arial,sans-serif";
+      ctx.fillText("×" + Math.min(5, 1 + Math.floor(combo / 4)), W - 74, 40);
+      ctx.fillStyle = "rgba(88,80,63,0.75)"; ctx.font = "500 10px monospace";
+      ctx.fillText("SERIE " + combo, W - 82, 56);
+    }
+
+    ctx.textAlign = "center";
+    pops.forEach(function (po, i) {
+      ctx.globalAlpha = Math.max(0, Math.min(1, po.life / 40));
+      ctx.fillStyle = po.c; ctx.font = "700 17px Archivo,Arial,sans-serif";
+      ctx.fillText(po.t, W / 2, 74 - po.y + i * 24);
+      ctx.globalAlpha = 1;
+    });
+    ctx.textAlign = "left";
+  }
+
+  function sync() {
+    var km = kmNow(), r = rabatt(km), ort = ORTE[0], nx = null;
+    for (var i = 0; i < ORTE.length; i++) {
+      if (km >= ORTE[i][0]) ort = ORTE[i]; else { nx = ORTE[i]; break; }
+    }
+    el.km.textContent = de(km, 1) + " km";
+    el.ort.textContent = ort[1];
+    el.best.textContent = de(best / 100, 1) + " km";
+    el.spd.textContent = de(spd / 6.4, 1) + "×";
+    el.combo.textContent = combo >= 4 ? "×" + Math.min(5, 1 + Math.floor(combo / 4)) : "×1";
+    el.rab.textContent = de(r, 1) + " %";
+    el.next.textContent = "NÄCHSTER ORT: " + (nx ? nx[1] + " in " + de(Math.ceil((nx[0] - km) * 10) / 10, 1) + " km" : "Endstation erreicht");
+
+    el.overlay.classList.toggle("ccv-off", phase === "run");
+    var done = phase === "over" || phase === "kept";
+    el.result.hidden = !done;
+    el.actions.hidden = phase !== "over";
+    el.keep.textContent = lost ? "Neue Tour" : "Rabatt sichern";
+    el.note.hidden = phase !== "over";
+    el.kept.hidden = phase !== "kept";
+    var frei = FREI_REVIVES - revives;
+    el.revive.hidden = !(phase === "over" && !lost);
+    el.revive.textContent = frei > 0 ? "Weiterfahren · " + frei + "× frei" : "Weiterfahren · Rabatt verfällt";
+    el.note.textContent = frei > 0
+      ? "Weiterfahren ist noch " + frei + "× frei. Danach verfällt dein Rabatt."
+      : "Achtung: Beim nächsten Weiterfahren verfällt dein Rabatt komplett.";
+
+    if (phase === "ready") {
+      el.title.textContent = "Bereit für die Tour?";
+      el.hint.textContent = "Leertaste oder Tippen startet den Transporter.";
+    } else if (phase === "over") {
+      el.title.textContent = lost ? "Rabatt verfallen" : "Ausgerollt";
+      el.hint.textContent = lost
+        ? "Du bist zu oft weitergefahren — der Rabatt ist weg. Neue Tour starten?"
+        : "Rabatt sichern — oder weiterfahren, zweimal ist das kostenlos.";
+    } else if (phase === "kept") {
+      el.title.textContent = "Rabatt gesichert";
+      el.hint.textContent = "Leertaste oder Tippen für eine neue Tour.";
+    }
+    if (done) {
+      el.rab2.textContent = de(r, 1) + " %";
+      el.sub.textContent = de(km, 1) + " km gefahren · bis " + ort[1];
+    }
+  }
+
+  el.stage.addEventListener("pointerdown", function (e) {
+    if (e.target.closest("button, a")) return;
+    e.preventDefault(); press();
+  });
+  el.keep.addEventListener("click", function (e) { e.stopPropagation(); if (lost) { reset(); phase = "run"; sync(); } else keep(); });
+  el.revive.addEventListener("click", function (e) { e.stopPropagation(); revive(); });
+  el.reset.addEventListener("click", function (e) { e.stopPropagation(); reset(); });
+  window.addEventListener("keydown", function (e) {
+    if (e.code !== "Space" && e.code !== "ArrowUp") return;
+    var vis = document.getElementById("ccv-game");
+    if (!vis || !vis.offsetParent) return;
+    e.preventDefault(); press();
+  }, { passive: false });
+  window.addEventListener("resize", fit);
+
+  fit(); reset();
+  var last = performance.now();
+  (function loop(t) {
+    var dt = Math.min(48, t - last); last = t;
+    step(dt / 16.666); draw();
+    requestAnimationFrame(loop);
+  })(last);
+})();
+</script>
+</section>
+</div>
+
+<style>
+#ccvx{--ink:#1b1712;--acc:#7d5d24;--gold:#cdb48a;max-width:1160px;margin:0 auto;font-family:Manrope,"Helvetica Neue",Arial,sans-serif;color:var(--ink)}
+#ccvx *{box-sizing:border-box}
+#ccvx .ccvx-nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:0 0 28px;border-bottom:1px solid rgba(138,106,47,.26);margin-bottom:34px}
+#ccvx .ccvx-tab{padding:12px 18px;border-radius:9px;border:1px solid rgba(27,23,18,.16);background:rgba(255,255,255,.6);color:#3a3226;font:600 13px/1 Manrope,Arial,sans-serif;letter-spacing:.03em;cursor:pointer;transition:border-color .3s,background .3s,transform .3s}
+#ccvx .ccvx-tab:hover{background:rgba(138,106,47,.14);transform:translateY(-1px)}
+#ccvx .ccvx-tab.ccvx-on{border-color:rgba(138,106,47,.85);background:rgba(205,180,138,.4);color:var(--ink)}
+#ccvx .ccvx-panel{display:none;animation:ccvxIn .4s cubic-bezier(.16,1,.3,1) both}
+#ccvx .ccvx-panel.ccvx-on{display:block}
+@keyframes ccvxIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+</style>
+
+<script>
+(function () {
+  var root = document.getElementById("ccvx");
+  var tabs = root.querySelectorAll(".ccvx-tab");
+  var panels = root.querySelectorAll(".ccvx-panel");
+  tabs.forEach(function (t) {
+    t.addEventListener("click", function () {
+      var i = t.dataset.tab;
+      tabs.forEach(function (x) { x.classList.toggle("ccvx-on", x === t); });
+      panels.forEach(function (p) { p.classList.toggle("ccvx-on", p.dataset.panel === i); });
+      window.dispatchEvent(new Event("resize"));
+    });
+  });
+})();
+</script>

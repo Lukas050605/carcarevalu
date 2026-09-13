@@ -1,0 +1,166 @@
+<!-- CAR CARE VALU · Anfahrt & Spritkosten — Squarespace Codeblock -->
+<div id="ccv-anfahrt">
+  <div class="ccv-head">
+    <h2>Anfahrt &amp; Spritkosten</h2>
+    <span class="ccv-mono">AB 63694 LIMESHAIN</span>
+  </div>
+
+  <label class="ccv-lbl">Ort suchen
+    <div class="ccv-search">
+      <input type="text" id="ccv-q" placeholder="Ort oder PLZ eingeben, z.B. Hanau" autocomplete="off">
+      <div id="ccv-list" hidden></div>
+    </div>
+    <span id="ccv-picked" class="ccv-picked" hidden></span>
+  </label>
+
+  <label class="ccv-lbl">Entfernung (einfache Strecke)
+    <div class="ccv-row">
+      <input type="number" id="ccv-num" min="0" max="400" value="12">
+      <span class="ccv-mono">KM</span>
+      <input type="range" id="ccv-range" min="0" max="120" step="1" value="12">
+    </div>
+  </label>
+
+  <div id="ccv-out" class="ccv-out">
+    <span class="ccv-mono ccv-acc" id="ccv-out-label">IM KOSTENLOSEN ANFAHRTSBEREICH</span>
+    <div class="ccv-big" id="ccv-out-sum">0,00 €</div>
+    <p id="ccv-out-text">Bei 12 km liegst du innerhalb der 50 km. Keine Anfahrtskosten.</p>
+  </div>
+
+  <div class="ccv-table">
+    <div><span>Kostenlose Anfahrt</span><b>bis 50 km</b></div>
+    <div><span>Aufschlag je km darüber</span><b id="ccv-rate">0,89 € / km</b></div>
+    <div><span>Zusatz-km einfach</span><b id="ccv-extra">keine</b></div>
+    <div><span>Berechnet (Hin- und Rückfahrt)</span><b id="ccv-calc">keine</b></div>
+  </div>
+
+  <p class="ccv-hint"><strong>Zahlung nach der Buchung:</strong> Die Spritkosten werden nicht online abgerechnet. Wir tragen sie nach deiner Buchung als Hinweis in den Termin ein — bezahlt wird vor Ort beim Termin.</p>
+  <p class="ccv-mono ccv-fine">Entfernungsangaben sind Näherungswerte für die einfache Strecke ab 63694 Limeshain. Berechnet werden Hin- und Rückfahrt der Zusatz-km. Maßgeblich ist die tatsächliche Fahrstrecke.</p>
+
+  <a class="ccv-cta" href="https://app.acuityscheduling.com/schedule.php?owner=37613678&amp;appointmentType=87583879" target="_blank" rel="noopener">Termin buchen →</a>
+</div>
+
+<style>
+#ccv-anfahrt{--ink:#1b1712;--acc:#7d5d24;--gold:#cdb48a;max-width:520px;margin:0 auto;padding:clamp(22px,3vw,32px);border:1px solid rgba(138,106,47,.4);border-radius:20px;background:rgba(255,255,255,.72);box-shadow:0 30px 60px -40px rgba(90,70,35,.3);font-family:Manrope,"Helvetica Neue",Arial,sans-serif;color:var(--ink)}
+#ccv-anfahrt *{box-sizing:border-box}
+#ccv-anfahrt .ccv-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap}
+#ccv-anfahrt h2{margin:0;font:700 clamp(20px,2.4vw,26px)/1.1 Archivo,Manrope,Arial,sans-serif;letter-spacing:-.015em}
+#ccv-anfahrt .ccv-mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.14em;color:#5f5648}
+#ccv-anfahrt .ccv-acc{color:var(--acc)}
+#ccv-anfahrt .ccv-lbl{display:flex;flex-direction:column;gap:8px;margin-top:20px;font-size:13px;color:#58503f}
+#ccv-anfahrt .ccv-search{position:relative;z-index:30}
+#ccv-anfahrt input[type=text],#ccv-anfahrt input[type=number]{padding:14px 15px;border-radius:10px;border:1px solid rgba(27,23,18,.2);background:#fff;color:var(--ink);font:600 16px/1 Manrope,Arial,sans-serif;outline:none;transition:border-color .25s}
+#ccv-anfahrt input[type=text]{width:100%;font-weight:400;font-size:15px}
+#ccv-anfahrt input:focus{border-color:rgba(138,106,47,.7)}
+#ccv-anfahrt input[type=number]{width:110px}
+#ccv-anfahrt input[type=range]{flex:1;min-width:90px;accent-color:var(--acc)}
+#ccv-anfahrt .ccv-row{display:flex;align-items:center;gap:12px}
+#ccv-list{position:absolute;z-index:40;top:calc(100% + 6px);left:0;right:0;max-height:260px;overflow-y:auto;overscroll-behavior:contain;border:1px solid rgba(138,106,47,.45);border-radius:12px;background:#fffdf9;box-shadow:0 22px 44px -22px rgba(90,70,35,.42);padding:6px}
+#ccv-list button{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:11px 12px;border:none;border-radius:8px;background:transparent;color:var(--ink);font:400 14.5px/1.2 Manrope,Arial,sans-serif;text-align:left;cursor:pointer;transition:background .2s}
+#ccv-list button:hover{background:rgba(205,180,138,.34)}
+#ccv-list button span:last-child{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11.5px;color:#5f5648}
+#ccv-list p{margin:0;padding:12px;font-size:13.5px;line-height:1.6;color:#58503f}
+#ccv-anfahrt .ccv-picked{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11px;letter-spacing:.1em;color:var(--acc)}
+#ccv-anfahrt .ccv-out{margin-top:20px;border-radius:14px;border:1px solid rgba(138,106,47,.35);background:rgba(255,255,255,.8);padding:20px;display:flex;flex-direction:column;gap:10px;transition:border-color .3s,background .3s}
+#ccv-anfahrt .ccv-out.ccv-over{border-color:rgba(138,106,47,.7);background:linear-gradient(180deg,rgba(205,180,138,.42),rgba(255,255,255,.75))}
+#ccv-anfahrt .ccv-big{font:700 clamp(28px,4vw,40px)/1 Archivo,Manrope,Arial,sans-serif;letter-spacing:-.02em}
+#ccv-anfahrt .ccv-out p{margin:0;font-size:14.5px;line-height:1.6;color:#3b3427}
+#ccv-anfahrt .ccv-table{margin-top:14px;display:grid;gap:1px;background:rgba(138,106,47,.28);border:1px solid rgba(138,106,47,.28);border-radius:12px;overflow:hidden;font-size:13.5px}
+#ccv-anfahrt .ccv-table div{display:flex;justify-content:space-between;gap:12px;background:rgba(255,255,255,.85);padding:12px 15px;color:#3b3427}
+#ccv-anfahrt .ccv-table b{font-weight:600}
+#ccv-anfahrt .ccv-hint{margin:16px 0 0;font-size:13px;line-height:1.65;color:#453e30;border-left:2px solid var(--acc);padding-left:12px}
+#ccv-anfahrt .ccv-fine{margin:12px 0 0;font-size:11px;line-height:1.7;letter-spacing:normal}
+#ccv-anfahrt .ccv-cta{margin-top:20px;display:flex;align-items:center;justify-content:center;gap:10px;padding:17px 22px;border-radius:10px;background:var(--gold);color:#14110d!important;font:700 14px/1 Archivo,Manrope,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;text-decoration:none!important;transition:transform .3s,background .3s,color .3s}
+#ccv-anfahrt .ccv-cta:hover{transform:translateY(-2px);background:var(--ink);color:#f3efe7!important}
+</style>
+
+<script>
+(function () {
+  var FREI = 50, SATZ = 0.89;
+  var ORTE = [
+    ["Limeshain","63694",0],["Altenstadt","63674",8],["Hammersbach","63546",12],["Büdingen","63654",13],
+    ["Ortenberg","63683",14],["Nidderau","61130",18],["Nidda","63667",20],["Erlensee","63526",20],
+    ["Neuberg","63543",21],["Langenselbold","63505",22],["Bruchköbel","63486",22],["Friedberg","61169",24],
+    ["Gründau","63584",25],["Karben","61184",26],["Gelnhausen","63571",26],["Hanau","63450",28],
+    ["Bad Vilbel","61118",28],["Bad Nauheim","61231",30],["Linsengericht","63589",30],["Maintal","63477",32],
+    ["Großkrotzenburg","63538",32],["Freigericht","63579",32],["Wächtersbach","63607",34],["Mühlheim am Main","63165",36],
+    ["Hainburg","63512",36],["Butzbach","35510",36],["Kahl am Main","63796",38],["Offenbach am Main","63065",38],
+    ["Rodgau","63110",38],["Bad Orb","63619",40],["Seligenstadt","63500",40],["Alzenau","63755",40],
+    ["Bad Homburg","61348",40],["Frankfurt am Main","60311",42],["Steinau an der Straße","36396",42],["Oberursel","61440",44],
+    ["Gießen","35390",46],["Kronberg im Taunus","61476",46],["Dieburg","64807",50],["Schlüchtern","36381",50],
+    ["Hösbach","63768",50],["Königstein im Taunus","61462",50],["Aschaffenburg","63739",52],["Frankfurt Flughafen","60547",52],
+    ["Alsfeld","36304",55],["Lauterbach","36341",55],["Hofheim am Taunus","65719",55],["Wetzlar","35578",58],
+    ["Rüsselsheim","65428",60],["Darmstadt","64283",62],["Marburg","35037",70],["Wiesbaden","65183",70],
+    ["Mainz","55116",72],["Fulda","36037",78],["Limburg an der Lahn","65549",78],["Bad Hersfeld","36251",85],
+    ["Würzburg","97070",110]
+  ];
+  var q = document.getElementById("ccv-q"), list = document.getElementById("ccv-list");
+  var num = document.getElementById("ccv-num"), range = document.getElementById("ccv-range");
+  var picked = document.getElementById("ccv-picked"), out = document.getElementById("ccv-out");
+  var oLabel = document.getElementById("ccv-out-label"), oSum = document.getElementById("ccv-out-sum");
+  var oText = document.getElementById("ccv-out-text"), extra = document.getElementById("ccv-extra");
+  var calc = document.getElementById("ccv-calc"), search = q.closest(".ccv-search");
+  var km = 12;
+
+  document.getElementById("ccv-rate").textContent = eur(SATZ) + " / km";
+  document.querySelector("#ccv-anfahrt .ccv-table b").textContent = "bis " + FREI + " km";
+
+  function eur(n) { return n.toFixed(2).replace(".", ",") + " €"; }
+
+  function render() {
+    var zusatz = Math.max(0, km - FREI), ab = zusatz * 2, betrag = ab * SATZ;
+    num.value = km; range.value = Math.min(120, km);
+    extra.textContent = zusatz > 0 ? zusatz + " km" : "keine";
+    calc.textContent = ab > 0 ? ab + " km" : "keine";
+    if (zusatz <= 0) {
+      out.classList.remove("ccv-over");
+      oLabel.textContent = "IM KOSTENLOSEN ANFAHRTSBEREICH";
+      oSum.textContent = "0,00 €";
+      oText.textContent = "Bei " + km + " km liegst du innerhalb der " + FREI + " km. Keine Anfahrtskosten.";
+    } else {
+      out.classList.add("ccv-over");
+      oLabel.textContent = "SPRITKOSTEN-ANTEIL";
+      oSum.textContent = eur(betrag);
+      oText.textContent = "Bei " + km + " km einfacher Strecke liegen " + zusatz + " km über den freien " +
+        FREI + " km. Berechnet werden " + ab + " km für Hin- und Rückfahrt zu " + eur(SATZ) + " pro km.";
+    }
+  }
+
+  function showList() {
+    var term = q.value.trim().toLowerCase();
+    var hits = (term ? ORTE.filter(function (o) {
+      return o[0].toLowerCase().indexOf(term) > -1 || o[1].indexOf(term) === 0;
+    }) : ORTE).slice(0, 40);
+    list.innerHTML = "";
+    if (!hits.length) {
+      list.innerHTML = "<p>Kein Ort gefunden. Trag deine Entfernung einfach unten in km ein — wir fahren auch weiter raus.</p>";
+    } else {
+      hits.forEach(function (o) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.innerHTML = "<span>" + o[0] + " · " + o[1] + "</span><span>ca. " + o[2] + " km</span>";
+        b.addEventListener("click", function () {
+          km = o[2]; q.value = o[0];
+          picked.textContent = "GEWÄHLT: " + o[0]; picked.hidden = false;
+          list.hidden = true; render();
+        });
+        list.appendChild(b);
+      });
+    }
+    list.hidden = false;
+  }
+
+  q.addEventListener("input", function () { picked.hidden = true; showList(); });
+  q.addEventListener("focus", showList);
+  document.addEventListener("pointerdown", function (e) {
+    if (!list.hidden && !search.contains(e.target)) list.hidden = true;
+  });
+  function onKm(e) {
+    km = Math.max(0, Math.min(400, Number(e.target.value) || 0));
+    picked.hidden = true; render();
+  }
+  num.addEventListener("input", onKm);
+  range.addEventListener("input", onKm);
+  render();
+})();
+</script>

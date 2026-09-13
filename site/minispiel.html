@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Valu Run — Minispiel mit Rabatt | CAR CARE VALU</title>
+<meta name="description" content="Fahr den Pflege-Transporter so weit du kommst und sichere dir Rabatt auf die normalen Innenreinigungs-Pakete.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Manrope:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="game.css">
+</head>
+<body>
+<header>
+  <div class="bar">
+    <a class="logo" href="index.html"><span>CAR CARE</span><b>VALU</b></a>
+    <nav class="desk">
+      <a href="index.html">Start</a>
+        <a href="innenreinigung.html">Innenreinigung</a>
+        <a href="aufbereitung.html">Aufbereitung</a>
+        <a href="abo.html">Pflege-Abo</a>
+        <a href="ergebnisse.html">Ergebnisse</a>
+        <a href="minispiel.html" aria-current="page">Minispiel</a>
+      <a class="btn" style="padding:11px 20px;font-size:13px" href="https://app.acuityscheduling.com/schedule.php?owner=37613678&appointmentType=87583879" target="_blank" rel="noopener">Termin buchen</a>
+    </nav>
+    <button class="burger" type="button" aria-label="Menü">☰</button>
+  </div>
+  <nav class="mob">
+      <a href="index.html">Start</a>
+      <a href="innenreinigung.html">Innenreinigung</a>
+      <a href="aufbereitung.html">Aufbereitung</a>
+      <a href="abo.html">Pflege-Abo</a>
+      <a href="ergebnisse.html">Ergebnisse</a>
+      <a href="minispiel.html">Minispiel</a>
+      <a href="impressum.html">Impressum</a>
+  </nav>
+</header>
+
+<section class="hero" style="padding-bottom:0">
+  <div class="wrap" style="padding-bottom:clamp(30px,4vw,48px)">
+    <div class="eyebrow"><i></i><span class="mono">MINISPIEL</span></div>
+    <h1>Valu Run</h1>
+    <p class="lead">Bring den Pflege-Transporter durch die Tour. Je weiter du kommst, desto höher dein Rabatt — 30 Kilometer ergeben 1 Prozent, gedeckelt bei 8 Prozent. Gilt für die normalen Innenreinigungs-Pakete BASIS und PREMIUM.</p>
+  </div>
+</section>
+
+<section style="padding-top:clamp(30px,4vw,48px)">
+  <div class="wrap">
+    <div id="ccv-game">
+  <div class="ccv-bar">
+    <div class="ccv-stats">
+      <span>STRECKE <b id="ccv-km">0,0 km</b></span>
+      <span>ORT <b id="ccv-ort" class="ccv-acc">Limeshain</b></span>
+      <span>REKORD <b id="ccv-best">0,0 km</b></span>
+      <span>TEMPO <b id="ccv-spd">1,0×</b></span>
+      <span>SERIE <b id="ccv-combo">×1</b></span>
+      <span>RABATT <b id="ccv-rab" class="ccv-acc">0,0 %</b></span>
+    </div>
+    <button id="ccv-reset" type="button">Neu starten</button>
+  </div>
+
+  <div id="ccv-stage">
+    <canvas id="ccv-canvas"></canvas>
+    <div id="ccv-overlay">
+      <div class="ccv-card">
+        <p class="ccv-title" id="ccv-title">Bereit für die Tour?</p>
+        <p class="ccv-hint" id="ccv-hint">Leertaste oder Tippen startet den Transporter.</p>
+        <div id="ccv-result" hidden>
+          <span class="ccv-label">DEIN RABATT</span>
+          <span class="ccv-big" id="ccv-rab2">0,0 %</span>
+          <span class="ccv-sub" id="ccv-sub">0,0 km gefahren · bis Limeshain</span>
+          <span class="ccv-stamp" id="ccv-stamp"></span>
+          <div class="ccv-actions" id="ccv-actions">
+            <button type="button" id="ccv-keep">Rabatt sichern</button>
+            <button type="button" id="ccv-revive" class="ccv-ghost">Weiterfahren · 2× frei</button>
+          </div>
+          <span class="ccv-note" id="ccv-note">Weiterfahren ist noch 2× frei. Danach verfällt dein Rabatt.</span>
+          <div id="ccv-kept" hidden>
+            <span class="ccv-photo">Bitte fotografiere dein Ergebnis und zeige es beim Termin.</span>
+            <a id="ccv-book" href="https://app.acuityscheduling.com/schedule.php?owner=37613678&amp;appointmentType=87583879" target="_blank" rel="noopener">Termin buchen →</a>
+            <span class="ccv-note">Nur für BASIS und PREMIUM.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ccv-foot">
+    <span>SPRINGEN: LEERTASTE, PFEIL OBEN ODER TIPPEN · KANISTER GEBEN BONUS-KM</span>
+    <span id="ccv-next">NÄCHSTER ORT: Altenstadt in 8,0 km</span>
+  </div>
+</div>
+    <div class="grid g2">
+      <div class="card" data-reveal>
+        <span class="mono" style="font-size:10.5px">WÄHREND DU SPIELST</span>
+        <h3 style="font-size:19px">Wir kommen zu dir</h3>
+        <p>Innenreinigung direkt vor deiner Tür. Kostenlose Anfahrt bis 50 km ab Limeshain.</p>
+        <a class="btn ghost" href="https://app.acuityscheduling.com/schedule.php?owner=37613678&appointmentType=87583879" target="_blank" rel="noopener">Termin buchen →</a>
+      </div>
+      <div class="card" data-reveal>
+        <span class="mono" style="font-size:10.5px">SO KOMMST DU WEITER</span>
+        <h3 style="font-size:19px">Dein Bestwert bleibt gespeichert</h3>
+        <ul class="ticked">
+          <li>Kanister sammeln: Bonus-Kilometer</li>
+          <li>Serie halten: bis ×5 Bonus je Kanister</li>
+          <li>Knapp drüber springen: Extra-Kilometer</li>
+          <li>Weiterfahren nach einem Crash: 2× frei, danach verfällt der Rabatt</li>
+          <li>Rabatt gedeckelt bei 8 %</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">Der Rabatt gilt für die Pakete BASIS und PREMIUM, nicht für Aufbereitung oder Abo. Screenshot beim Termin vorzeigen. Datum und Uhrzeit stammen vom Gerät des Spielers.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <a class="logo" href="index.html"><span>CAR CARE</span><b>VALU</b></a>
+        <p style="margin:14px 0 0;font-size:14px;line-height:1.7;color:#6b6152;max-width:30ch">Mobile Fahrzeugpflege und Innenraumaufbereitung. Wir kommen zu dir.</p>
+      </div>
+      <div>
+        <h4>LEISTUNGEN</h4>
+        <div class="col">
+          <a href="innenreinigung.html">Innenreinigung</a>
+          <a href="aufbereitung.html">Premium-Aufbereitung</a>
+          <a href="abo.html">Pflege-Abo</a>
+          <a href="abo-termin.html">Abo-Termin buchen</a>
+        </div>
+      </div>
+      <div>
+        <h4>MEHR</h4>
+        <div class="col">
+          <a href="ergebnisse.html">Vorher / Nachher</a>
+          <a href="minispiel.html">Minispiel</a>
+          <a href="index.html#anfahrt">Anfahrt prüfen</a>
+        </div>
+      </div>
+      <div>
+        <h4>KONTAKT</h4>
+        <div class="col">
+          <span>Car Care Valu<br>Himbacher Str. 10<br>63694 Limeshain</span>
+          <a href="mailto:info@carcarevalu.de">info@carcarevalu.de</a>
+          <a href="tel:+4915126718415">+49 151 26718415</a>
+        </div>
+      </div>
+    </div>
+    <div class="base">
+      <span>© 2026 CAR CARE VALU · Inhaber Lukas Scheuermann</span>
+      <div>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="agb.html">AGB</a>
+      </div>
+    </div>
+  </div>
+</footer>
+<script src="app.js"></script>
+<script src="game.js"></script>
+
+</body>
+</html>
