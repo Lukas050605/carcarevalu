@@ -151,8 +151,8 @@ footer .base div{display:flex;gap:22px;flex-wrap:wrap}
 
 /* ---- Bilder ---- */
 .heroimg{margin-top:32px;height:clamp(200px,26vw,300px);border-radius:16px;background-size:cover;background-position:50% 60%;border:1px solid rgba(27,23,18,.12)}
-.thumb{height:190px;border-radius:12px;background-size:cover;background-position:50% 58%}
-.shot{aspect-ratio:4/3;border-radius:16px;background-size:cover;background-position:50% 58%;border:1px solid rgba(27,23,18,.12)}
+.thumb{height:230px;border-radius:12px;background:#ded4c1;background-size:contain;background-repeat:no-repeat;background-position:50% 50%}
+.shot{aspect-ratio:3/4;border-radius:16px;background:#ded4c1;background-size:contain;background-repeat:no-repeat;background-position:50% 50%;border:1px solid rgba(27,23,18,.12)}
 .more{margin-top:auto;display:flex;align-items:center;gap:9px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
 
 /* ---- Vorher/Nachher ---- */
@@ -160,18 +160,18 @@ footer .base div{display:flex;gap:22px;flex-wrap:wrap}
 #ba-tabs button{padding:10px 15px;border-radius:8px;border:1px solid rgba(27,23,18,.18);background:rgba(255,255,255,.6);color:#3a3226;font-size:13px;cursor:pointer;transition:border-color .3s,background .3s}
 #ba-tabs button:hover{background:rgba(138,106,47,.16)}
 #ba-tabs button.on{border-color:rgba(138,106,47,.85);background:rgba(205,180,138,.4)}
-#ba-slider{position:relative;aspect-ratio:4/3;min-height:320px;max-width:760px;border-radius:16px;overflow:hidden;border:1px solid rgba(27,23,18,.14);cursor:ew-resize;touch-action:none;user-select:none;background:#ded4c1}
-#ba-after,#ba-before-img{position:absolute;inset:0;background-size:cover;background-position:50% 55%}
-#ba-before{position:absolute;inset:0;width:46%;overflow:hidden}
-#ba-before-img{width:100vw}
+#ba-slider{position:relative;aspect-ratio:3/4;max-height:70vh;min-height:360px;max-width:560px;border-radius:16px;overflow:hidden;border:1px solid rgba(27,23,18,.14);background:#ded4c1;cursor:ew-resize;touch-action:none;user-select:none;background:#ded4c1}
+#ba-after,#ba-before-img{position:absolute;inset:0;background-size:cover;background-position:50% 50%}
+#ba-before{position:absolute;inset:0;clip-path:inset(0 54% 0 0)}
+#ba-before-img{width:100%}
 .ba-tag{position:absolute;bottom:16px;padding:7px 13px;border-radius:6px;font-family:var(--mono);font-size:10px;letter-spacing:.16em}
 .ba-l{left:16px;background:rgba(255,255,255,.9);color:#241f18}
 .ba-r{right:16px;background:rgba(205,180,138,.94);color:#14110d}
 #ba-handle{position:absolute;top:0;bottom:0;left:46%;width:2px;background:rgba(27,23,18,.85)}
 #ba-handle span{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:var(--ink);color:var(--paper2);display:grid;place-items:center;font-size:14px;font-weight:700;box-shadow:0 8px 22px rgba(27,23,18,.25)}
 .ba-cap{margin:14px 0 0;font-size:14px;color:var(--muted)}
-.pair{display:grid;grid-template-columns:1fr 1fr;gap:2px;border-radius:12px;overflow:hidden}
-.pair div{position:relative;aspect-ratio:2/3;background-size:cover;background-position:50% 62%}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.pair div{position:relative;aspect-ratio:3/4;border-radius:10px;overflow:hidden;background:#ded4c1;background-size:cover;background-position:50% 50%}
 .pair span{position:absolute;bottom:8px;padding:5px 9px;border-radius:5px;font-family:var(--mono);font-size:9px;letter-spacing:.14em}
 .pair .l{left:8px;background:rgba(255,255,255,.9);color:#241f18}
 .pair .r{right:8px;background:rgba(205,180,138,.94);color:#14110d}

@@ -143,7 +143,7 @@
     var dragging = false, split = 46;
 
     function apply() {
-      before.style.width = split.toFixed(1) + "%";
+      before.style.clipPath = "inset(0 " + (100 - split).toFixed(1) + "% 0 0)";
       handle.style.left = split.toFixed(1) + "%";
     }
     function load(i) {
