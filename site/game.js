@@ -67,11 +67,17 @@
   }
 
   function spawnObs() {
-    var k = ["eimer","kegel","kanister","doppel"][Math.floor(Math.random() * 4)];
+    var pool = dist > 2200 ? ["kegel","kanister","doppel","doppel","dreier","gegen","gegen"]
+      : dist > 900 ? ["eimer","kegel","kanister","doppel","doppel","gegen"]
+      : dist > 350 ? ["eimer","kegel","kanister","doppel"]
+      : ["eimer","kegel","kanister"];
+    var k = pool[Math.floor(Math.random() * pool.length)];
     var w = 26, h = 34;
     if (k === "kegel") { w = 28; h = 32; }
     if (k === "kanister") { w = 30; h = 40; }
     if (k === "doppel") { w = 58; h = 34; }
+    if (k === "dreier") { w = 88; h = 34; }
+    if (k === "gegen") { w = 62; h = 40; }
     obs.push({ x: W + 40, w: w, h: h, k: k, passed: false });
   }
 
@@ -86,7 +92,7 @@
     revives += 1;
     if (revives > FREI_REVIVES) lost = true;
     obs = obs.filter(function (o) { return o.x > W * .75; });
-    items = []; nextGap = 300; nextItem = 380; combo = 0;
+    items = []; nextGap = Math.max(320, spd * 50); nextItem = 380; combo = 0;
     van.y = G; van.vy = 0; van.onGround = true;
     pop("WEITER SO", "#7d5d24"); phase = "run"; sync();
   }
@@ -115,7 +121,7 @@
     if (jumpBuf > 0) jumpBuf -= f;
 
     dist += spd * f * .42;
-    spd = Math.min(17, 6.4 + Math.floor(dist / 500) * .62);
+    spd = Math.min(24, 6.6 + Math.floor(dist / 320) * .78);
     if (shake > 0) shake -= f * .9;
 
     for (var i = parts.length - 1; i >= 0; i--) {
@@ -141,7 +147,13 @@
     }
 
     nextGap -= spd * f;
-    if (nextGap <= 0) { spawnObs(); nextGap = Math.max(210, 330 - dist / 40) + Math.random() * 220; }
+    if (nextGap <= 0) {
+      spawnObs();
+      var tight = Math.max(31, 44 - dist / 420);
+      var vary = Math.max(4, 22 - dist / 320);
+      nextGap = Math.max(210, spd * tight) + Math.random() * spd * vary;
+      if (obs.length && obs[obs.length - 1].k === "gegen") nextGap *= 1.5;
+    }
     nextItem -= spd * f;
     if (nextItem <= 0) {
       items.push({ x: W + 60, y: Math.random() < .55 ? G - 92 : G - 44, t: 0 });
@@ -165,7 +177,7 @@
     var vl = van.x + 8, vr = van.x + van.w - 6, vt = van.y - van.h + 6, vb = van.y - 2;
     for (var m = obs.length - 1; m >= 0; m--) {
       var ob = obs[m];
-      ob.x -= spd * f;
+      ob.x -= spd * f * (ob.k === "gegen" ? 1.75 : 1);
       if (ob.x + ob.w < -20) { obs.splice(m, 1); continue; }
       var ol = ob.x + 3, or_ = ob.x + ob.w - 3, ot = G - ob.h + 3;
       if (vr > ol && vl < or_ && vb > ot && vt < G) { gameOver(); return; }
@@ -211,16 +223,27 @@
     });
 
     obs.forEach(function (o) {
-      if (o.k === "eimer" || o.k === "doppel") {
+      if (o.k === "eimer" || o.k === "doppel" || o.k === "dreier") {
         ctx.fillStyle = "#7d5d24";
-        var n = o.k === "doppel" ? 2 : 1;
+        var n = o.k === "dreier" ? 3 : o.k === "doppel" ? 2 : 1;
         for (var i = 0; i < n; i++) {
-          var bx = o.x + i * 32, bw = o.k === "doppel" ? 26 : o.w;
+          var bx = o.x + i * 31, bw = o.k === "eimer" ? o.w : 26;
           ctx.beginPath();
           ctx.moveTo(bx + 3, G - o.h); ctx.lineTo(bx + bw - 3, G - o.h);
           ctx.lineTo(bx + bw - 7, G); ctx.lineTo(bx + 7, G);
           ctx.closePath(); ctx.fill();
         }
+      } else if (o.k === "gegen") {
+        var gy = G - o.h;
+        ctx.fillStyle = "#3a3227";
+        rr(o.x, gy, o.w, o.h - 8, 6); ctx.fill();
+        ctx.fillStyle = "#8d826d";
+        rr(o.x + 8, gy + 5, 20, 11, 3); ctx.fill();
+        ctx.fillStyle = "#e8d9a8";
+        rr(o.x - 3, gy + o.h - 20, 7, 7, 2); ctx.fill();
+        ctx.fillStyle = "#1b1712";
+        ctx.beginPath(); ctx.arc(o.x + 14, G - 4, 6, 0, 6.2832); ctx.fill();
+        ctx.beginPath(); ctx.arc(o.x + o.w - 14, G - 4, 6, 0, 6.2832); ctx.fill();
       } else if (o.k === "kegel") {
         ctx.fillStyle = "#b4732a";
         ctx.beginPath(); ctx.moveTo(o.x + o.w / 2, G - o.h);

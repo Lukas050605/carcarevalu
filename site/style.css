@@ -175,3 +175,17 @@ footer .base div{display:flex;gap:22px;flex-wrap:wrap}
 .pair span{position:absolute;bottom:8px;padding:5px 9px;border-radius:5px;font-family:var(--mono);font-size:9px;letter-spacing:.14em}
 .pair .l{left:8px;background:rgba(255,255,255,.9);color:#241f18}
 .pair .r{right:8px;background:rgba(205,180,138,.94);color:#14110d}
+
+/* ---- Bewertungen ---- */
+.revhead{margin-top:36px;display:flex;flex-wrap:wrap;align-items:center;gap:16px 26px;border:1px solid rgba(138,106,47,.35);border-radius:16px;padding:20px 24px;background:rgba(255,255,255,.72)}
+.revhead>div{display:flex;align-items:baseline;gap:10px}
+.revscore{font-family:var(--display);font-weight:700;font-size:34px;letter-spacing:-.02em}
+.revhead p{margin:0;font-size:14.5px;color:var(--muted);flex:1;min-width:180px}
+.stars{color:#c9971f;font-size:15px;letter-spacing:.08em}
+.revs{margin-top:18px;columns:3;column-gap:18px}
+.rev{break-inside:avoid;margin:0 0 18px;border:1px solid rgba(138,106,47,.3);border-radius:16px;padding:22px;background:rgba(255,255,255,.66)}
+.rev blockquote{margin:10px 0 0;font-size:14.5px;line-height:1.65;color:var(--ink)}
+.rev figcaption{margin-top:14px;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:#7a7060}
+@media(max-width:980px){.revs{columns:2}}
+@media(max-width:620px){.revs{columns:1}}
+.revbtns{display:flex;flex-wrap:wrap;gap:10px}
