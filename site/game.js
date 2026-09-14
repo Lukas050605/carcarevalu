@@ -8,6 +8,7 @@
     combo: document.getElementById("ccv-combo"), rab: document.getElementById("ccv-rab"),
     rab2: document.getElementById("ccv-rab2"), sub: document.getElementById("ccv-sub"),
     stamp: document.getElementById("ccv-stamp"), next: document.getElementById("ccv-next"),
+    save: document.getElementById("ccv-save"), push: document.getElementById("ccv-push"),
     title: document.getElementById("ccv-title"), hint: document.getElementById("ccv-hint"),
     overlay: document.getElementById("ccv-overlay"), result: document.getElementById("ccv-result"),
     actions: document.getElementById("ccv-actions"), kept: document.getElementById("ccv-kept"),
@@ -285,7 +286,8 @@
     el.spd.textContent = de(spd / 6.4, 1) + "×";
     el.combo.textContent = combo >= 4 ? "×" + Math.min(5, 1 + Math.floor(combo / 4)) : "×1";
     el.rab.textContent = de(r, 1) + " %";
-    el.next.textContent = "NÄCHSTER ORT: " + (nx ? nx[1] + " in " + de(Math.ceil((nx[0] - km) * 10) / 10, 1) + " km" : "Endstation erreicht");
+    var stufe = r >= 8 ? "MAXIMUM 8 %" : "NOCH " + de(Math.max(0.1, Math.min(8, Math.floor(r) + 1) * 30 - km), 1) + " KM BIS " + Math.min(8, Math.floor(r) + 1) + " %";
+    el.next.textContent = "NÄCHSTER ORT: " + (nx ? nx[1] + " in " + de(Math.ceil((nx[0] - km) * 10) / 10, 1) + " km" : "Endstation erreicht") + " · " + stufe;
 
     el.overlay.classList.toggle("ccv-off", phase === "run");
     var done = phase === "over" || phase === "kept";
@@ -316,6 +318,20 @@
     if (done) {
       el.rab2.textContent = de(r, 1) + " %";
       el.sub.textContent = de(km, 1) + " km gefahren · bis " + ort[1];
+      if (el.save) {
+        el.save.textContent = r > 0
+          ? "Das sind " + de(59 * r / 100, 2) + " € auf BASIS oder " + de(69 * r / 100, 2) + " € auf PREMIUM."
+          : "";
+      }
+      if (el.push) {
+        if (lost) el.push.textContent = "Rabatt verfallen — neue Tour starten.";
+        else if (r >= 8) el.push.textContent = "Maximum erreicht: 8 % Rabatt.";
+        else {
+          var next = Math.min(8, Math.floor(r) + 1);
+          el.push.textContent = "Nur noch " + de(Math.max(0.1, next * 30 - km), 1) + " km bis " + next + " % — das schaffst du.";
+        }
+        el.push.hidden = phase !== "over";
+      }
     }
   }
 

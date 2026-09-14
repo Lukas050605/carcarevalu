@@ -29,3 +29,6 @@
 #ccv-book{display:flex;align-items:center;justify-content:center;gap:9px;padding:13px 18px;border-radius:10px;background:var(--gold);color:#14110d!important;font:700 13px/1 Archivo,Manrope,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;text-decoration:none!important;transition:transform .3s,background .3s,color .3s}
 #ccv-book:hover{transform:translateY(-2px);background:var(--ink);color:#f3efe7!important}
 #ccv-game .ccv-foot{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:13px 18px;border-top:1px solid rgba(138,106,47,.26);background:rgba(255,255,255,.6);font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11px;letter-spacing:.1em;color:#5f5648}
+
+.ccv-save{font-size:12.5px;line-height:1.45;font-weight:600;color:#7d5d24}
+.ccv-push{display:block;margin-top:4px;padding:9px 11px;border-radius:8px;background:rgba(205,180,138,.34);font-size:12.5px;line-height:1.45;font-weight:600;color:#1b1712}
