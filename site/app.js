@@ -12,10 +12,22 @@
     });
   }
 
-  /* ---------- Scroll-Einblendungen ---------- */
+  var ruhig = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Scroll-Einblendungen mit Staffelung ---------- */
   var targets = document.querySelectorAll("[data-reveal]");
   if (targets.length) {
-    if ("IntersectionObserver" in window) {
+    // Geschwister innerhalb eines Rasters nacheinander einblenden
+    if (!ruhig) {
+      var gruppen = {};
+      targets.forEach(function (t) {
+        var p = t.parentNode, key = gruppen.__i || 0;
+        if (!p.__ccvKey) { p.__ccvKey = ++key; gruppen.__i = key; gruppen[key] = 0; }
+        var n = gruppen[p.__ccvKey]++;
+        if (n) t.style.setProperty("--d", (Math.min(n, 6) * 0.07).toFixed(2) + "s");
+      });
+    }
+    if ("IntersectionObserver" in window && !ruhig) {
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
           if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
@@ -26,6 +38,58 @@
     } else {
       targets.forEach(function (t) { t.classList.add("in"); });
     }
+  }
+
+  /* ---------- Überschriften-Linie ---------- */
+  var heads = document.querySelectorAll("section>.wrap>h2");
+  if (heads.length && "IntersectionObserver" in window && !ruhig) {
+    var ioH = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("drawn"); ioH.unobserve(e.target); }
+      });
+    }, { threshold: .5 });
+    heads.forEach(function (h) { ioH.observe(h); });
+  } else {
+    heads.forEach(function (h) { h.classList.add("drawn"); });
+  }
+
+  /* ---------- Kopfzeile und Lesefortschritt ---------- */
+  var kopf = document.querySelector("header");
+  var bar = document.createElement("div");
+  bar.id = "ccv-progress";
+  document.body.appendChild(bar);
+  var raf = 0;
+  function onScroll() {
+    if (raf) return;
+    raf = requestAnimationFrame(function () {
+      raf = 0;
+      var y = window.pageYOffset || document.documentElement.scrollTop;
+      if (kopf) kopf.classList.toggle("scrolled", y > 24);
+      var hoehe = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (hoehe > 40 ? Math.min(100, (y / hoehe) * 100) : 0) + "%";
+    });
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  /* ---------- Zahlen hochzählen ---------- */
+  var zahlen = document.querySelectorAll("[data-count]");
+  if (zahlen.length && "IntersectionObserver" in window && !ruhig) {
+    var ioZ = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        ioZ.unobserve(e.target);
+        var el = e.target, ziel = parseFloat(el.dataset.count) || 0;
+        var suf = el.dataset.suffix || "", dez = (el.dataset.dez | 0);
+        var t0 = performance.now();
+        (function tick(t) {
+          var p = Math.min(1, (t - t0) / 900), e3 = 1 - Math.pow(1 - p, 3);
+          el.textContent = (ziel * e3).toFixed(dez).replace(".", ",") + suf;
+          if (p < 1) requestAnimationFrame(tick);
+        })(t0);
+      });
+    }, { threshold: .6 });
+    zahlen.forEach(function (z) { ioZ.observe(z); });
   }
 
   /* ---------- Anfahrtsrechner ---------- */
@@ -57,6 +121,9 @@
     var oLabel = document.getElementById("ccv-out-label"), oSum = document.getElementById("ccv-out-sum");
     var oText = document.getElementById("ccv-out-text"), extra = document.getElementById("ccv-extra");
     var calcKm = document.getElementById("ccv-calc"), box = q.closest(".search");
+    var typ = document.getElementById("ccv-typ"), klasse = document.getElementById("ccv-klasse");
+    var sBasis = document.getElementById("ccv-sum-basis"), sPrem = document.getElementById("ccv-sum-premium");
+    var PREISE = { basis: 59, premium: 69 };
     var km = 12;
 
     document.getElementById("ccv-rate").textContent = eur(SATZ) + " / km";
@@ -66,6 +133,11 @@
 
     function render() {
       var zusatz = Math.max(0, km - FREI), ab = zusatz * 2, betrag = ab * SATZ;
+      var f = typ ? parseFloat(typ.value) || 1 : 1;
+      var gross = f > 1;
+      if (klasse) klasse.textContent = gross ? "+39 % (größer als PKW)" : "Normalpreis";
+      if (sBasis) sBasis.textContent = eur(Math.round(PREISE.basis * f) + betrag);
+      if (sPrem) sPrem.textContent = eur(Math.round(PREISE.premium * f) + betrag);
       num.value = km; range.value = Math.min(120, km);
       extra.textContent = zusatz > 0 ? zusatz + " km" : "keine";
       calcKm.textContent = ab > 0 ? ab + " km" : "keine";
@@ -107,6 +179,7 @@
       list.hidden = false;
     }
 
+    if (typ) typ.addEventListener("change", render);
     q.addEventListener("input", function () { picked.hidden = true; showList(); });
     q.addEventListener("focus", showList);
     document.addEventListener("pointerdown", function (e) {
@@ -161,9 +234,42 @@
     tabs.forEach(function (t) {
       t.addEventListener("click", function () { load(Number(t.dataset.i)); });
     });
-    slider.addEventListener("pointerdown", function (e) { dragging = true; move(e); });
+    slider.addEventListener("pointerdown", function (e) { dragging = true; slider.classList.add("touched"); move(e); });
     window.addEventListener("pointermove", function (e) { if (dragging) move(e); });
     window.addEventListener("pointerup", function () { dragging = false; });
     load(0);
   }
+})();
+
+/* ---- B2B-Anfrage über Formspree ---- */
+(function () {
+  var f = document.getElementById("b2b-form");
+  if (!f) return;
+  var btn = f.querySelector('button[type=submit]');
+  f.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!f.reportValidity()) return;
+    btn.disabled = true;
+    btn.textContent = "Wird gesendet …";
+    fetch(f.action, { method: "POST", body: new FormData(f), headers: { Accept: "application/json" } })
+      .then(function (r) {
+        if (!r.ok) throw new Error("http " + r.status);
+        f.innerHTML = '<span class="mono" style="font-size:10.5px">ANFRAGE EINGEGANGEN</span>' +
+          '<h3 style="font-size:20px;margin:6px 0 0">Danke — wir melden uns.</h3>' +
+          '<p style="margin:0">Ihre Anfrage ist bei uns. In der Regel antworten wir noch am selben Tag mit einem Terminvorschlag für die Besichtigung.</p>' +
+          '<a class="btn" style="margin-top:8px" href="tel:+4915126718415">Lieber gleich anrufen: +49 151 26718415</a>';
+      })
+      .catch(function () {
+        btn.disabled = false;
+        btn.textContent = "Anfrage absenden →";
+        var w = f.querySelector(".ferr");
+        if (!w) {
+          w = document.createElement("p");
+          w.className = "note ferr";
+          w.style.color = "#a33";
+          f.insertBefore(w, btn);
+        }
+        w.innerHTML = 'Das Senden hat nicht geklappt. Bitte per E-Mail an <a href="mailto:info@carcarevalu.de">info@carcarevalu.de</a> oder telefonisch unter <a href="tel:+4915126718415">+49 151 26718415</a>.';
+      });
+  });
 })();

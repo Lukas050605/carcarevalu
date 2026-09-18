@@ -9,8 +9,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Manrope:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="tweaks.css">
 </head>
 <body>
+<a class="skip" href="#inhalt">Zum Inhalt springen</a>
 <header>
   <div class="bar">
     <a class="logo" href="index.html"><span>CAR CARE</span><b>VALU</b></a>
@@ -21,6 +23,7 @@
         <a href="abo.html">Pflege-Abo</a>
         <a href="ergebnisse.html">Ergebnisse</a>
         <a href="minispiel.html">Minispiel</a>
+      <a class="b2b" href="b2b.html"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M3 21V9l6-4v3l5-3v4h7v12H3zm2-2h4v-2H5v2zm0-4h4v-2H5v2zm0-4h4V9H5v2zm6 8h8v-2h-8v2zm0-4h8v-2h-8v2zm0-4h8V9h-8v2z"/></svg><span>B2B · Studios &amp; Geräte</span></a>
       <a class="btn" style="padding:11px 20px;font-size:13px" href="innenreinigung.html">Termin buchen</a>
     </nav>
     <button class="burger" type="button" aria-label="Menü">☰</button>
@@ -32,10 +35,14 @@
       <a href="abo.html">Pflege-Abo</a>
       <a href="ergebnisse.html">Ergebnisse</a>
       <a href="minispiel.html">Minispiel</a>
+      <a href="gutschein.html">Gutschein</a>
+      <a href="b2b.html">B2B · Studios &amp; Autohäuser</a>
+      <a href="einsatzgebiet.html">Einsatzgebiet</a>
       <a href="impressum.html">Impressum</a>
   </nav>
 </header>
 
+<main id="inhalt">
 <section class="hero" id="anfahrt" style="padding:0">
   <div class="wrap" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(30px,4vw,56px);align-items:start">
     <div>
@@ -69,6 +76,17 @@
         <input type="range" id="ccv-range" min="0" max="120" step="1" value="12">
       </div>
     </label>
+    <label class="lbl">Fahrzeugtyp
+      <select id="ccv-typ">
+        <option value="1">Kleinwagen</option>
+        <option value="1" selected>Limousine</option>
+        <option value="1">Kombi</option>
+        <option value="1">SUV (kompakt)</option>
+        <option value="1.39">SUV (groß)</option>
+        <option value="1.39">Van / Siebensitzer</option>
+        <option value="1.39">Transporter / Kleinbus</option>
+      </select>
+    </label>
     <div id="ccv-out" class="out">
       <span class="mono" id="ccv-out-label" style="font-size:10px">IM KOSTENLOSEN ANFAHRTSBEREICH</span>
       <div class="big" id="ccv-out-sum">0,00 €</div>
@@ -79,6 +97,12 @@
       <div><span>Aufschlag je km darüber</span><b id="ccv-rate">0,89 € / km</b></div>
       <div><span>Zusatz-km einfach</span><b id="ccv-extra">keine</b></div>
       <div><span>Berechnet (Hin- und Rückfahrt)</span><b id="ccv-calc">keine</b></div>
+      <div><span>Fahrzeugklasse</span><b id="ccv-klasse">Normalpreis</b></div>
+    </div>
+    <div class="ksum">
+      <span class="mono" style="font-size:10px">GESAMT INKLUSIVE ANFAHRT</span>
+      <div><span>BASIS · 90 Min.</span><b id="ccv-sum-basis">59,00 €</b></div>
+      <div><span>PREMIUM · 120 Min.</span><b id="ccv-sum-premium">69,00 €</b></div>
     </div>
     <p class="khint"><strong>Zahlung nach der Buchung:</strong> Die Spritkosten werden nicht online abgerechnet. Wir tragen sie nach deiner Buchung als Hinweis in den Termin ein — bezahlt wird vor Ort beim Termin.</p>
     <p class="note" style="margin-top:12px">Entfernungsangaben sind Näherungswerte für die einfache Strecke ab 63694 Limeshain. Berechnet werden Hin- und Rückfahrt der Zusatz-km. Maßgeblich ist die tatsächliche Fahrstrecke.</p>
@@ -123,7 +147,7 @@
     <h2>Sorgfalt ist bei uns kein Extra.</h2>
     <p class="sub">CAR CARE VALU verbindet professionelle Fahrzeugpflege mit persönlichem Service — direkt vor Ort. Bei jeder Reinigung stehen Sorgfalt, Zuverlässigkeit und Liebe zum Detail im Mittelpunkt.</p>
     <div class="grid g2">
-      <div class="card" data-reveal><span class="mono" style="font-size:10.5px">01</span><h3 style="font-size:19px">Wir kommen zu dir</h3><p>Kein Warten, keine Anfahrt deinerseits. Zu Hause, am Arbeitsplatz oder wo es gerade passt.</p></div>
+      <div class="card" data-reveal><span class="mono" style="font-size:10.5px">01</span><h3 style="font-size:19px">Wir kommen zu dir</h3><p>Kein Warten, keine Anfahrt deinerseits. Zu Hause, am Arbeitsplatz oder auf dem Supermarktparkplatz, während du einkaufst.</p></div>
       <div class="card" data-reveal><span class="mono" style="font-size:10.5px">02</span><h3 style="font-size:19px">Transparente Festpreise</h3><p>Der Preis steht vor dem Termin. Keine versteckten Kosten, keine Überraschung auf der Rechnung.</p></div>
       <div class="card" data-reveal><span class="mono" style="font-size:10.5px">03</span><h3 style="font-size:19px">Termine samstags</h3><p>Abgestimmt auf deinen Alltag, nicht auf unsere Öffnungszeiten.</p></div>
       <div class="card" data-reveal><span class="mono" style="font-size:10.5px">04</span><h3 style="font-size:19px">Erfahrung mit jedem Fahrzeug</h3><p>PKW, Kombi, SUV und Firmenflotten — vom Familienauto bis zum Leasingrückläufer.</p></div>
@@ -153,7 +177,7 @@
 
     <div class="revhead" data-reveal>
       <div>
-        <span class="revscore">5,0</span>
+        <span class="revscore" data-count="5" data-dez="1">5,0</span>
         <span class="stars">★★★★★</span>
       </div>
       <p>Durchschnitt aller Google-Bewertungen</p>
@@ -210,12 +234,18 @@
       <details><summary>Wie lange dauert eine Reinigung?</summary><p>BASIS dauert 90 Minuten, PREMIUM 120 Minuten. Bei einer Aufbereitung nennen wir die Dauer mit dem Angebot.</p></details>
       <details><summary>Wie vereinbare ich einen Termin?</summary><p>Über den Online-Kalender auf dieser Seite, telefonisch unter +49 151 26718415 oder per E-Mail an info@carcarevalu.de. Termine sind auch samstags möglich.</p></details>
       <details><summary>Was kostet die Anfahrt?</summary><p>Bis 50 km ab Limeshain nichts. Darüber berechnen wir 0,89 € pro Kilometer für Hin- und Rückfahrt der Zusatzkilometer. Der Betrag wird nach der Buchung als Hinweis in den Termin eingetragen und vor Ort bezahlt.</p></details>
-      <details><summary>Wo findet die Reinigung statt?</summary><p>Wir arbeiten mobil und kommen zu dir — nach Hause, an den Arbeitsplatz oder an einen anderen passenden Ort. Einsatzgebiet: Wetteraukreis und Main-Kinzig-Kreis.</p></details>
+      <details><summary>Wo findet die Reinigung statt?</summary><p>Wir arbeiten mobil und kommen zu dir — nach Hause, an den Arbeitsplatz oder auf einen Supermarktparkplatz, während du einkaufst. Einsatzgebiet: Wetteraukreis und Main-Kinzig-Kreis.</p></details>
       <details><summary>Was muss ich vorbereiten?</summary><p>Nimm persönliche Gegenstände aus dem Fahrzeug und sorge für einen zugänglichen Stellplatz. Alles Weitere bringen wir mit.</p></details>
       <details><summary>Welche Fahrzeuge werden gereinigt?</summary><p>PKW, Kombi und SUV — ebenso Firmenwagen und ganze Flotten. Für Flotten gibt es eigene Konditionen.</p></details>
     </div>
   </div>
 </section>
+
+</main>
+<a class="wa" href="https://wa.me/4915126718415?text=Hallo%2C%20ich%20interessiere%20mich%20f%C3%BCr%20eine%20Fahrzeugreinigung." target="_blank" rel="noopener" aria-label="Per WhatsApp schreiben">
+  <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.15-.15.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.6-.92-2.19-.24-.57-.49-.5-.67-.5h-.57c-.2 0-.52.07-.79.37-.27.3-1.03 1.01-1.03 2.46 0 1.45 1.06 2.85 1.2 3.05.15.2 2.05 3.28 5.02 4.46 2.48.98 2.98.78 3.52.73.54-.05 1.75-.71 2-1.4.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35z"/><path fill="currentColor" d="M12.04 2C6.6 2 2.17 6.43 2.17 11.88c0 1.74.46 3.44 1.32 4.94L2 22l5.34-1.4a9.83 9.83 0 0 0 4.7 1.2c5.44 0 9.87-4.43 9.87-9.88C21.91 6.43 17.48 2 12.04 2zm0 17.96a8.1 8.1 0 0 1-4.13-1.13l-.3-.18-3.07.8.82-3-.19-.31a8.06 8.06 0 0 1-1.24-4.3c0-4.46 3.64-8.09 8.11-8.09 4.47 0 8.1 3.63 8.1 8.1 0 4.46-3.63 8.1-8.1 8.1z"/></svg>
+  <span>WhatsApp</span>
+</a>
 
 <footer>
   <div class="wrap">
@@ -239,6 +269,11 @@
           <a href="ergebnisse.html">Vorher / Nachher</a>
           <a href="minispiel.html">Minispiel</a>
           <a href="index.html#anfahrt">Anfahrt prüfen</a>
+          <a href="einsatzgebiet.html">Einsatzgebiet</a>
+          <a href="gutschein.html">Geschenkgutschein</a>
+          <a href="b2b.html">B2B · Geschäftskunden</a>
+          <a href="fitnessstudio.html">Fitnessgeräte &amp; Lackservice</a>
+          <a href="autohaus.html">Autohäuser &amp; Fuhrpark</a>
         </div>
       </div>
       <div>
@@ -261,6 +296,7 @@
   </div>
 </footer>
 <script src="app.js"></script>
+<script src="tweaks.js"></script>
 
 </body>
 </html>
