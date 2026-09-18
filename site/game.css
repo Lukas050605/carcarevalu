@@ -36,3 +36,36 @@
 #ccv-game [hidden]{display:none!important}
 #ccv-overlay{align-items:center}
 #ccv-game .ccv-card{max-height:calc(100% - 8px);overflow-y:auto;overscroll-behavior:contain}
+
+
+/* ---- Vollbild quer auf dem Handy ---- */
+#ccv-rotate{display:none}
+@media(max-width:860px) and (orientation:portrait){
+  #ccv-rotate{display:flex;align-items:center;gap:10px;margin:0 0 14px;padding:12px 14px;
+    border:1px solid var(--line);border-radius:12px;background:rgba(205,180,138,.24);
+    font-size:13.5px;line-height:1.45;color:var(--ink)}
+  #ccv-rotate svg{flex:0 0 auto;color:var(--acc);animation:ccvKipp 2.4s ease-in-out infinite}
+}
+@keyframes ccvKipp{0%,60%,100%{transform:rotate(0)}75%,90%{transform:rotate(-90deg)}}
+
+#ccv-full{display:none;align-items:center;gap:7px;padding:9px 15px;border-radius:8px;
+  border:1px solid rgba(27,23,18,.22);background:transparent;color:var(--ink);
+  font:700 12px/1 Manrope,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+#ccv-full:hover{background:rgba(138,106,47,.14)}
+@media(max-width:1000px){#ccv-full{display:inline-flex}}
+
+#ccv-game.voll{position:fixed;inset:0;z-index:300;max-width:none;margin:0;border:none;border-radius:0;
+  display:flex;flex-direction:column;background:var(--paper)}
+#ccv-game.voll #ccv-stage{flex:1;display:flex;align-items:center;justify-content:center;min-height:0}
+#ccv-game.voll #ccv-canvas{width:100%;height:100%;min-height:0;object-fit:contain}
+#ccv-game.voll .ccv-bar{padding:8px 14px}
+#ccv-game.voll .ccv-stats{gap:12px;font-size:10px}
+#ccv-game.voll .ccv-stats b{font-size:12px}
+#ccv-game.voll .ccv-foot{padding:8px 14px;font-size:10px}
+#ccv-game.voll #ccv-rotate{display:none}
+@media(max-height:480px){
+  #ccv-game.voll .ccv-foot{display:none}
+  #ccv-game.voll .ccv-card{padding:10px 14px;max-width:340px}
+  #ccv-game.voll .ccv-title{font-size:17px}
+  #ccv-game.voll .ccv-hint{font-size:12.5px;margin-top:5px}
+}

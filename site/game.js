@@ -37,6 +37,7 @@
   function fit() {
     dpr = Math.min(2, window.devicePixelRatio || 1);
     cv.width = W * dpr; cv.height = H * dpr;
+    cv.style.aspectRatio = W + " / " + H;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
@@ -365,6 +366,36 @@
   el.keep.addEventListener("click", function (e) { e.stopPropagation(); if (lost) { reset(); phase = "run"; sync(); } else keep(); });
   el.revive.addEventListener("click", function (e) { e.stopPropagation(); revive(); });
   el.reset.addEventListener("click", function (e) { e.stopPropagation(); reset(); });
+
+  var spiel = document.getElementById("ccv-game");
+  var voll = document.getElementById("ccv-full");
+  function vollAn(v) {
+    spiel.classList.toggle("voll", v);
+    voll.textContent = v ? "Schließen" : "Vollbild";
+    document.body.style.overflow = v ? "hidden" : "";
+    if (v && screen.orientation && screen.orientation.lock) {
+      screen.orientation.lock("landscape").catch(function () {});
+    } else if (!v && screen.orientation && screen.orientation.unlock) {
+      try { screen.orientation.unlock(); } catch (e) {}
+    }
+    setTimeout(fit, 60);
+  }
+  if (voll) {
+    voll.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var an = !spiel.classList.contains("voll");
+      if (an && spiel.requestFullscreen) spiel.requestFullscreen().catch(function () {});
+      else if (!an && document.fullscreenElement) document.exitFullscreen().catch(function () {});
+      vollAn(an);
+    });
+    document.addEventListener("fullscreenchange", function () {
+      if (!document.fullscreenElement && spiel.classList.contains("voll")) vollAn(false);
+    });
+  }
+  window.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && spiel.classList.contains("voll")) vollAn(false);
+  });
+  window.addEventListener("orientationchange", function () { setTimeout(fit, 250); });
   window.addEventListener("keydown", function (e) {
     if (e.code !== "Space" && e.code !== "ArrowUp") return;
     var vis = document.getElementById("ccv-game");
