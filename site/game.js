@@ -379,6 +379,7 @@
       try { screen.orientation.unlock(); } catch (e) {}
     }
     setTimeout(fit, 60);
+    setTimeout(fit, 400);
   }
   if (voll) {
     voll.addEventListener("click", function (e) {
