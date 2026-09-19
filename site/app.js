@@ -124,7 +124,53 @@
     var typ = document.getElementById("ccv-typ"), klasse = document.getElementById("ccv-klasse");
     var sBasis = document.getElementById("ccv-sum-basis"), sPrem = document.getElementById("ccv-sum-premium");
     var PREISE = { basis: 59, premium: 69 };
+    var OWNER = "37613678";
+    var TERMIN = {
+    "BASIS-GROSS-A": "98466813",
+    "BASIS-GROSS-B": "98466830",
+    "BASIS-GROSS-C": "98466867",
+    "BASIS-GROSS-D": "98466902",
+    "BASIS-GROSS-E": "98466923",
+    "BASIS-GROSS-F": "98466956",
+    "BASIS-PKW-A": "98466460",
+    "BASIS-PKW-B": "98466625",
+    "BASIS-PKW-C": "98466674",
+    "BASIS-PKW-D": "98466712",
+    "BASIS-PKW-E": "98466755",
+    "BASIS-PKW-F": "98466786",
+    "PREMIUM-GROSS-A": "98467130",
+    "PREMIUM-GROSS-B": "98467149",
+    "PREMIUM-GROSS-C": "98467183",
+    "PREMIUM-GROSS-D": "98467204",
+    "PREMIUM-GROSS-E": "98467247",
+    "PREMIUM-GROSS-F": "98467218",
+    "PREMIUM-PKW-A": "98466995",
+    "PREMIUM-PKW-B": "98467013",
+    "PREMIUM-PKW-C": "98467049",
+    "PREMIUM-PKW-D": "98467061",
+    "PREMIUM-PKW-E": "98467084",
+    "PREMIUM-PKW-F": "98467108"
+    };
+    var ZONEN = [
+      { code: "A", bis: 50, von: 0, mittel: 50 }, { code: "B", bis: 60, von: 51, mittel: 55 },
+      { code: "C", bis: 70, von: 61, mittel: 65 }, { code: "D", bis: 80, von: 71, mittel: 75 },
+      { code: "E", bis: 90, von: 81, mittel: 85 }, { code: "F", bis: 110, von: 91, mittel: 100 }
+    ];
+    ZONEN.forEach(function (z) { z.auf = Math.round(Math.max(0, z.mittel - FREI) * 2 * SATZ); });
+    var bBasis = document.getElementById("ccv-go-basis");
+    var bPrem = document.getElementById("ccv-go-premium");
+    var zoneOut = document.getElementById("ccv-zone");
     var km = 12;
+
+    function zoneVon(k) {
+      for (var i = 0; i < ZONEN.length; i++) if (k <= ZONEN[i].bis) return ZONEN[i];
+      return null;
+    }
+    function link(paket, gross, z) {
+      if (!z) return null;
+      var id = TERMIN[paket + "-" + (gross ? "GROSS" : "PKW") + "-" + z.code];
+      return id ? "https://app.acuityscheduling.com/schedule.php?owner=" + OWNER + "&appointmentType=" + id : null;
+    }
 
     document.getElementById("ccv-rate").textContent = eur(SATZ) + " / km";
     document.getElementById("ccv-frei").textContent = "bis " + FREI + " km";
@@ -132,26 +178,48 @@
     function eur(n) { return n.toFixed(2).replace(".", ",") + " €"; }
 
     function render() {
-      var zusatz = Math.max(0, km - FREI), ab = zusatz * 2, betrag = ab * SATZ;
+      var z = zoneVon(km);
+      var betrag = z ? z.auf : 0;
       var f = typ ? parseFloat(typ.value) || 1 : 1;
       var gross = f > 1;
       if (klasse) klasse.textContent = gross ? "+39 % (größer als PKW)" : "Normalpreis";
       if (sBasis) sBasis.textContent = eur(Math.round(PREISE.basis * f) + betrag);
       if (sPrem) sPrem.textContent = eur(Math.round(PREISE.premium * f) + betrag);
+
+      if (zoneOut) zoneOut.textContent = z ? "Zone " + z.code : "über 110 km";
+      [[bBasis, "BASIS"], [bPrem, "PREMIUM"]].forEach(function (p) {
+        var el = p[0]; if (!el) return;
+        var url = link(p[1], gross, z);
+        if (url) {
+          el.href = url;
+          el.removeAttribute("aria-disabled");
+          el.textContent = p[1] + " buchen · " + eur(Math.round(PREISE[p[1].toLowerCase()] * f) + betrag);
+        } else {
+          el.href = "mailto:info@carcarevalu.de?subject=Anfrage%20" + p[1] + "%20ab%20" + km + "%20km";
+          el.setAttribute("aria-disabled", "true");
+          el.textContent = p[1] + " anfragen · über 110 km";
+        }
+      });
       num.value = km; range.value = Math.min(120, km);
-      extra.textContent = zusatz > 0 ? zusatz + " km" : "keine";
-      calcKm.textContent = ab > 0 ? ab + " km" : "keine";
-      if (zusatz <= 0) {
+      extra.textContent = z ? (z.code === "A" ? "bis " + FREI + " km" : z.von + " – " + z.bis + " km") : "über 110 km";
+      calcKm.textContent = z ? (z.auf > 0 ? eur(z.auf) : "keine") : "nach Absprache";
+      if (!z) {
+        out.classList.add("over");
+        oLabel.textContent = "AUSSERHALB DER ZONEN";
+        oSum.textContent = "auf Anfrage";
+        oText.textContent = "Bei " + km + " km liegt die Fahrt außerhalb der festen Zonen. Schreib uns kurz — wir nennen dir einen Preis.";
+      } else if (betrag <= 0) {
         out.classList.remove("over");
         oLabel.textContent = "IM KOSTENLOSEN ANFAHRTSBEREICH";
         oSum.textContent = "0,00 €";
         oText.textContent = "Bei " + km + " km liegst du innerhalb der " + FREI + " km. Keine Anfahrtskosten.";
       } else {
         out.classList.add("over");
-        oLabel.textContent = "SPRITKOSTEN-ANTEIL";
+        oLabel.textContent = "ANFAHRTSPAUSCHALE · ZONE " + z.code;
         oSum.textContent = eur(betrag);
-        oText.textContent = "Bei " + km + " km einfacher Strecke liegen " + zusatz + " km über den freien " +
-          FREI + " km. Berechnet werden " + ab + " km für Hin- und Rückfahrt zu " + eur(SATZ) + " pro km.";
+        oText.textContent = "Bei " + km + " km gilt Zone " + z.code + " (" + z.von + " – " + z.bis +
+          " km). Die Pauschale deckt Hin- und Rückfahrt der Kilometer über " + FREI +
+          " km ab und ist im Buchungspreis bereits enthalten.";
       }
     }
 

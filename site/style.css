@@ -402,3 +402,8 @@ footer nav a:hover:after,footer .fcol a:hover:after{transform:scaleX(1);transfor
   .card{border:1px solid #999;box-shadow:none;break-inside:avoid}
   a{color:#000;text-decoration:underline}
 }
+
+.kgo{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.kgo .btn{justify-content:center;text-align:center;font-size:12.5px;padding:15px 12px}
+.kgo .btn[aria-disabled=true]{opacity:.72}
+@media(max-width:520px){.kgo{grid-template-columns:1fr}}
