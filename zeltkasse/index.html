@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Zeltkasse</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">🏪 Zeltkasse</div>
+  <nav class="tabs">
+    <button class="tab-btn active" data-view="kasse">Kasse</button>
+    <button class="tab-btn" data-view="bericht">Bericht</button>
+    <button class="tab-btn" data-view="einstellungen">Einstellungen</button>
+  </nav>
+</header>
+
+<!-- ================= KASSE VIEW ================= -->
+<main id="view-kasse" class="view active">
+  <section class="products-pane">
+    <div class="category-bar" id="categoryBar"></div>
+    <div class="product-grid" id="productGrid"></div>
+  </section>
+
+  <aside class="cart-pane">
+    <div class="cart-header">
+      <h2>Bon</h2>
+      <button id="btnClearCart" class="btn-ghost small">Leeren</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <p class="empty-hint">Noch keine Artikel im Bon.</p>
+    </div>
+    <div class="cart-footer">
+      <button id="btnManualItem" class="btn-secondary">+ Direkteingabe</button>
+      <div class="cart-total-row">
+        <span>Summe</span>
+        <span id="cartTotal">0,00&nbsp;€</span>
+      </div>
+      <button id="btnPay" class="btn-primary big" disabled>Bezahlen</button>
+    </div>
+  </aside>
+</main>
+
+<!-- ================= BERICHT VIEW ================= -->
+<main id="view-bericht" class="view">
+  <section class="report-pane">
+    <h2>Tagesbericht</h2>
+    <div class="report-cards">
+      <div class="report-card">
+        <div class="report-card-label">Umsatz gesamt</div>
+        <div class="report-card-value" id="repTotal">0,00 €</div>
+      </div>
+      <div class="report-card">
+        <div class="report-card-label">Anzahl Verkäufe</div>
+        <div class="report-card-value" id="repCount">0</div>
+      </div>
+      <div class="report-card">
+        <div class="report-card-label">Bar-Einnahmen</div>
+        <div class="report-card-value" id="repCash">0,00 €</div>
+      </div>
+      <div class="report-card">
+        <div class="report-card-label">Kartenzahlungen</div>
+        <div class="report-card-value" id="repCard">0,00 €</div>
+      </div>
+      <div class="report-card">
+        <div class="report-card-label">Erwarteter Kassenbestand</div>
+        <div class="report-card-value" id="repExpectedCash">0,00 €</div>
+      </div>
+    </div>
+
+    <h3>Verkaufte Artikel</h3>
+    <table class="report-table" id="repItemsTable">
+      <thead><tr><th>Artikel</th><th>Menge</th><th>Umsatz</th></tr></thead>
+      <tbody></tbody>
+    </table>
+
+    <h3>Verkaufsverlauf</h3>
+    <table class="report-table" id="repSalesTable">
+      <thead><tr><th>Zeit</th><th>Artikel</th><th>Zahlart</th><th>Summe</th><th></th></tr></thead>
+      <tbody></tbody>
+    </table>
+
+    <div class="report-actions">
+      <button id="btnExportCsv" class="btn-secondary">CSV exportieren</button>
+      <button id="btnResetDay" class="btn-danger">Tag abschließen &amp; zurücksetzen</button>
+    </div>
+  </section>
+</main>
+
+<!-- ================= EINSTELLUNGEN VIEW ================= -->
+<main id="view-einstellungen" class="view">
+  <section class="settings-pane">
+    <h2>Kasse einrichten</h2>
+
+    <div class="settings-block">
+      <label for="startFloat">Wechselgeld-Startbetrag (€)</label>
+      <input type="number" id="startFloat" step="0.01" min="0">
+    </div>
+
+    <h3>Produkte</h3>
+    <div class="product-list" id="productAdminList"></div>
+
+    <h3>Produkt hinzufügen / bearbeiten</h3>
+    <form id="productForm" class="product-form">
+      <input type="hidden" id="prodId">
+      <div class="form-row">
+        <label>Name</label>
+        <input type="text" id="prodName" required placeholder="z.B. Bratwurst">
+      </div>
+      <div class="form-row">
+        <label>Preis (€)</label>
+        <input type="number" id="prodPrice" step="0.01" min="0" required placeholder="2.50">
+      </div>
+      <div class="form-row">
+        <label>Kategorie</label>
+        <input type="text" id="prodCategory" list="categoryList" placeholder="z.B. Snacks">
+        <datalist id="categoryList"></datalist>
+      </div>
+      <div class="form-row">
+        <label>Farbe</label>
+        <input type="color" id="prodColor" value="#2e7d32">
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">Speichern</button>
+        <button type="button" id="btnCancelEdit" class="btn-ghost">Abbrechen</button>
+      </div>
+    </form>
+
+    <h3 class="danger-heading">Gefahrenzone</h3>
+    <button id="btnResetAll" class="btn-danger">Alle Daten zurücksetzen</button>
+  </section>
+</main>
+
+<!-- ================= PAY MODAL ================= -->
+<div id="payModal" class="modal-overlay hidden">
+  <div class="modal">
+    <h2>Bezahlen</h2>
+    <div class="pay-total">Gesamt: <span id="payTotalAmount">0,00 €</span></div>
+
+    <div class="pay-method-toggle">
+      <button class="method-btn active" data-method="bar">Bar</button>
+      <button class="method-btn" data-method="karte">Karte</button>
+    </div>
+
+    <div id="cashSection">
+      <div class="quick-amounts" id="quickAmounts"></div>
+      <div class="given-row">
+        <label>Gegeben (€)</label>
+        <input type="text" id="givenAmount" inputmode="decimal" placeholder="0,00">
+      </div>
+      <div class="numpad" id="numpad"></div>
+      <div class="change-row">
+        <span>Rückgeld</span>
+        <span id="changeAmount">0,00 €</span>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button id="btnCancelPay" class="btn-ghost">Abbrechen</button>
+      <button id="btnConfirmPay" class="btn-primary big">Bon abschließen</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MANUAL ITEM MODAL ================= -->
+<div id="manualModal" class="modal-overlay hidden">
+  <div class="modal">
+    <h2>Direkteingabe</h2>
+    <div class="form-row">
+      <label>Bezeichnung</label>
+      <input type="text" id="manualName" placeholder="z.B. Spende">
+    </div>
+    <div class="form-row">
+      <label>Preis (€)</label>
+      <input type="text" id="manualPrice" inputmode="decimal" placeholder="0,00">
+    </div>
+    <div class="modal-actions">
+      <button id="btnCancelManual" class="btn-ghost">Abbrechen</button>
+      <button id="btnAddManual" class="btn-primary">Hinzufügen</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= RECEIPT MODAL ================= -->
+<div id="receiptModal" class="modal-overlay hidden">
+  <div class="modal receipt">
+    <h2>✅ Verkauft</h2>
+    <div id="receiptContent"></div>
+    <div class="modal-actions">
+      <button id="btnCloseReceipt" class="btn-primary big">Neuer Bon</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
