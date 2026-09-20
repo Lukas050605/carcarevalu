@@ -91,6 +91,11 @@
       <span class="mono" id="ccv-out-label" style="font-size:10px">IM KOSTENLOSEN ANFAHRTSBEREICH</span>
       <div class="big" id="ccv-out-sum">0,00 €</div>
       <p id="ccv-out-text">Bei 12 km liegst du innerhalb der 50 km. Keine Anfahrtskosten.</p>
+      <div class="out-cta" id="ccv-out-cta" hidden>
+        <a class="btn" id="ccv-cta-wa" href="#" target="_blank" rel="noopener">Per WhatsApp anfragen</a>
+        <a class="btn ghost" id="ccv-cta-mail" href="#">E-Mail schreiben</a>
+        <a class="btn ghost" href="tel:+4915126718415">+49 151 26718415</a>
+      </div>
     </div>
     <div class="ktable">
       <div><span>Kostenlose Anfahrt</span><b id="ccv-frei">bis 50 km</b></div>
@@ -99,11 +104,13 @@
       <div><span>Anfahrtspauschale</span><b id="ccv-calc">keine</b></div>
       <div><span>Fahrzeugklasse</span><b id="ccv-klasse">Normalpreis</b></div>
       <div><span>Über 110 km</span><b>Preis nach Absprache</b></div>
+      <div id="ccv-frost-row" hidden><span id="ccv-frost-label">Frost-Pauschale</span><b id="ccv-frost">19,00 €</b></div>
     </div>
     <div class="ksum">
       <span class="mono" style="font-size:10px">GESAMT INKLUSIVE ANFAHRT · <b id="ccv-zone" style="font-weight:500">Zone A</b></span>
       <div><span>BASIS · 90 Min.</span><b id="ccv-sum-basis">59,00 €</b></div>
       <div><span>PREMIUM · 120 Min.</span><b id="ccv-sum-premium">69,00 €</b></div>
+      <div id="ccv-frost-sum" class="ksum-frost" hidden><span>bei Frost am Termintag</span><b id="ccv-frost-plus">+ 19,00 €</b></div>
     </div>
     <div class="kgo">
       <a class="btn" id="ccv-go-basis" href="innenreinigung.html" target="_blank" rel="noopener">BASIS buchen</a>
@@ -238,6 +245,7 @@
     <div style="margin-top:30px">
       <details><summary>Wie lange dauert eine Reinigung?</summary><p>BASIS dauert 90 Minuten, PREMIUM 120 Minuten. Bei einer Aufbereitung nennen wir die Dauer mit dem Angebot.</p></details>
       <details><summary>Wie vereinbare ich einen Termin?</summary><p>Über den Online-Kalender auf dieser Seite, telefonisch unter +49 151 26718415 oder per E-Mail an info@carcarevalu.de. Termine sind auch samstags möglich.</p></details>
+      <details><summary>Was ist die Frost-Pauschale?</summary><p>Bei Frost gefriert Wasser, bevor es abgezogen ist, Reinigungsmittel wirken schlechter und die Trocknung dauert deutlich länger. Liegt die Tiefsttemperatur am Samstag bei null Grad oder darunter, kommen 19 € dazu. Von November bis März weist der Rechner das aus, sobald die Vorhersage Frost zeigt.</p></details>
       <details><summary>Was kostet die Anfahrt?</summary><p>Bis 50 km ab Limeshain nichts. Darüber gilt eine feste Zonenpauschale, die im Buchungspreis bereits enthalten ist — von 9 € in Zone B bis 89 € in Zone F. Der Rechner oben zeigt dir deine Zone und den Gesamtpreis. Über 110 km nennen wir dir den Preis auf Anfrage.</p></details>
       <details><summary>Wo findet die Reinigung statt?</summary><p>Wir arbeiten mobil und kommen zu dir — nach Hause, an den Arbeitsplatz oder auf einen Supermarktparkplatz, während du einkaufst. Einsatzgebiet: Wetteraukreis und Main-Kinzig-Kreis.</p></details>
       <details><summary>Was muss ich vorbereiten?</summary><p>Nimm persönliche Gegenstände aus dem Fahrzeug und sorge für einen zugänglichen Stellplatz. Alles Weitere bringen wir mit.</p></details>
@@ -275,6 +283,8 @@
           <a href="minispiel.html">Minispiel</a>
           <a href="index.html#anfahrt">Anfahrt prüfen</a>
           <a href="einsatzgebiet.html">Einsatzgebiet</a>
+          <a href="wetter.html">Wetter &amp; Termine</a>
+          <a href="anfrage.html">Anfrage senden</a>
           <a href="gutschein.html">Geschenkgutschein</a>
           <a href="b2b.html">B2B · Geschäftskunden</a>
           <a href="fitnessstudio.html">Fitnessgeräte &amp; Lackservice</a>
@@ -300,7 +310,9 @@
     </div>
   </div>
 </footer>
+<script src="saison.js"></script>
 <script src="app.js"></script>
+<script src="wetter.js"></script>
 <script src="tweaks.js"></script>
 
 </body>

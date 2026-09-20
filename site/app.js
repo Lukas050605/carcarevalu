@@ -120,8 +120,15 @@
     var picked = document.getElementById("ccv-picked"), out = document.getElementById("ccv-out");
     var oLabel = document.getElementById("ccv-out-label"), oSum = document.getElementById("ccv-out-sum");
     var oText = document.getElementById("ccv-out-text"), extra = document.getElementById("ccv-extra");
+    var cta = document.getElementById("ccv-out-cta");
+    var ctaWa = document.getElementById("ccv-cta-wa"), ctaMail = document.getElementById("ccv-cta-mail");
     var calcKm = document.getElementById("ccv-calc"), box = q.closest(".search");
     var typ = document.getElementById("ccv-typ"), klasse = document.getElementById("ccv-klasse");
+    var fRow = document.getElementById("ccv-frost-row"), fVal = document.getElementById("ccv-frost");
+    var fLabel = document.getElementById("ccv-frost-label");
+    var fSum = document.getElementById("ccv-frost-sum"), fPlus = document.getElementById("ccv-frost-plus");
+    var FROST = window.CCV_FROST || { betrag: 0 };
+    var frostSaison = FROST.betrag > 0 && (FROST.monate || []).indexOf(new Date().getMonth() + 1) > -1;
     var sBasis = document.getElementById("ccv-sum-basis"), sPrem = document.getElementById("ccv-sum-premium");
     var PREISE = { basis: 59, premium: 69 };
     var OWNER = "37613678";
@@ -177,6 +184,37 @@
 
     function eur(n) { return n.toFixed(2).replace(".", ",") + " €"; }
 
+    function sperren(wx) {
+      [bBasis, bPrem].forEach(function (el) {
+        if (!el) return;
+        el.href = "wetter.html";
+        el.removeAttribute("target");
+        el.textContent = "Warum jetzt kein Termin geht";
+        el.classList.add("ghost");
+      });
+      if (oText && wx && wx.ort) {
+        oText.textContent = "In " + wx.ort + " zeigt die Vorhersage in den nächsten Tagen Dauerregen oder Gewitter. " +
+          "Wir nehmen die Buchung heraus, statt einen Termin zuzusagen, den wir absagen müssten. " +
+          "Mit Garage oder Carport geht es trotzdem — ruf kurz an.";
+      }
+    }
+    function frostZeigen() {
+      if (!fRow) return;
+      var wx = window.CCV_WX || {};
+      var tage = wx.frostTage || 0;
+      var an = frostSaison && (tage > 0 || !wx.geladen);
+      fRow.hidden = !an;
+      if (fSum) fSum.hidden = !an;
+      if (!an) return;
+      fVal.textContent = eur(FROST.betrag);
+      fPlus.textContent = "+ " + eur(FROST.betrag);
+      fLabel.textContent = tage > 0
+        ? "Frost-Pauschale · " + tage + (tage === 1 ? " Tag" : " Tage") + " unter " + FROST.abGrad + "°"
+        : "Frost-Pauschale · nur bei Frost";
+    }
+
+    window.CCV_WX_FERTIG = function (wx) { if (wx && wx.alleRot) sperren(wx); else render(); };
+
     function render() {
       var z = zoneVon(km);
       var betrag = z ? z.auf : 0;
@@ -189,17 +227,21 @@
       if (zoneOut) zoneOut.textContent = z ? "Zone " + z.code : "über 110 km";
       [[bBasis, "BASIS"], [bPrem, "PREMIUM"]].forEach(function (p) {
         var el = p[0]; if (!el) return;
-        var url = link(p[1], gross, z);
-        if (url) {
-          el.href = url;
-          el.removeAttribute("aria-disabled");
-          el.textContent = p[1] + " buchen · " + eur(Math.round(PREISE[p[1].toLowerCase()] * f) + betrag);
+        var u = link(p[1], gross, z);
+        if (u) {
+          el.href = u;
+          el.target = "_blank";
+          el.rel = "noopener";
+          el.textContent = p[1] + " buchen";
+          el.classList.remove("ghost");
         } else {
-          el.href = "mailto:info@carcarevalu.de?subject=Anfrage%20" + p[1] + "%20ab%20" + km + "%20km";
-          el.setAttribute("aria-disabled", "true");
-          el.textContent = p[1] + " anfragen · über 110 km";
+          el.href = "anfrage.html?km=" + km + "&paket=" + p[1];
+          el.removeAttribute("target");
+          el.textContent = p[1] + " anfragen";
         }
       });
+      if (window.CCV_WX && window.CCV_WX.alleRot) sperren(window.CCV_WX);
+      frostZeigen();
       num.value = km; range.value = Math.min(120, km);
       extra.textContent = z ? (z.code === "A" ? "bis " + FREI + " km" : z.von + " – " + z.bis + " km") : "über 110 km";
       calcKm.textContent = z ? (z.auf > 0 ? eur(z.auf) : "keine") : "nach Absprache";
@@ -208,13 +250,29 @@
         oLabel.textContent = "AUSSERHALB DER ZONEN";
         oSum.textContent = "auf Anfrage";
         oText.textContent = "Bei " + km + " km liegt die Fahrt außerhalb der festen Zonen. Schreib uns kurz — wir nennen dir einen Preis.";
+        if (cta) {
+          var ortTxt = picked && !picked.hidden
+            ? (picked.textContent || "").replace(/^GEWÄHLT:\s*/i, "").replace(/·.*$/, "").trim()
+            : "";
+          var wunsch = "Hallo, ich möchte eine Innenreinigung anfragen." +
+            (ortTxt ? " Ort: " + ortTxt + "." : "") + " Entfernung: rund " + km + " km ab Limeshain." +
+            " Fahrzeug: " + (typ && typ.options[typ.selectedIndex] ? typ.options[typ.selectedIndex].text : "PKW") + ".";
+          ctaWa.href = "https://wa.me/4915126718415?text=" + encodeURIComponent(wunsch);
+          ctaMail.href = "anfrage.html?km=" + km +
+            (ortTxt ? "&ort=" + encodeURIComponent(ortTxt) : "") +
+            "&typ=" + encodeURIComponent(typ && typ.options[typ.selectedIndex] ? typ.options[typ.selectedIndex].text : "");
+          ctaMail.textContent = "Anfrageformular öffnen";
+          cta.hidden = false;
+        }
       } else if (betrag <= 0) {
         out.classList.remove("over");
+        if (cta) cta.hidden = true;
         oLabel.textContent = "IM KOSTENLOSEN ANFAHRTSBEREICH";
         oSum.textContent = "0,00 €";
         oText.textContent = "Bei " + km + " km liegst du innerhalb der " + FREI + " km. Keine Anfahrtskosten.";
       } else {
         out.classList.add("over");
+        if (cta) cta.hidden = true;
         oLabel.textContent = "ANFAHRTSPAUSCHALE · ZONE " + z.code;
         oSum.textContent = eur(betrag);
         oText.textContent = "Bei " + km + " km gilt Zone " + z.code + " (" + z.von + " – " + z.bis +
@@ -253,9 +311,14 @@
     document.addEventListener("pointerdown", function (e) {
       if (!list.hidden && !box.contains(e.target)) list.hidden = true;
     });
+    var wxTimer;
     function onKm(e) {
       km = Math.max(0, Math.min(400, Number(e.target.value) || 0));
       picked.hidden = true; render();
+      clearTimeout(wxTimer);
+      wxTimer = setTimeout(function () {
+        if (picked.hidden && km > 0 && window.CCV_WETTER_UMKREIS) window.CCV_WETTER_UMKREIS(km);
+      }, 700);
     }
     num.addEventListener("input", onKm);
     range.addEventListener("input", onKm);
@@ -338,6 +401,45 @@
           f.insertBefore(w, btn);
         }
         w.innerHTML = 'Das Senden hat nicht geklappt. Bitte per E-Mail an <a href="mailto:info@carcarevalu.de">info@carcarevalu.de</a> oder telefonisch unter <a href="tel:+4915126718415">+49 151 26718415</a>.';
+      });
+  });
+})();
+
+
+/* ---- Anfrageseite: aus dem Rechner vorausfüllen ---- */
+(function () {
+  var f = document.getElementById("anfrage-form");
+  if (!f) return;
+  var p = new URLSearchParams(location.search);
+  var setz = function (id, wert) { var el = document.getElementById(id); if (el && wert) el.value = wert; };
+  setz("f-ort", p.get("ort"));
+  setz("f-km", p.get("km") ? "ca. " + p.get("km") + " km" : "");
+  setz("f-typ", p.get("typ"));
+  var paket = document.getElementById("f-paket");
+  if (paket && p.get("paket")) {
+    for (var i = 0; i < paket.options.length; i++) {
+      if (paket.options[i].text.indexOf(p.get("paket")) === 0) paket.selectedIndex = i;
+    }
+  }
+  var st = document.getElementById("anfrage-status");
+  f.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var b = f.querySelector("button[type=submit]");
+    b.disabled = true; b.textContent = "Wird gesendet …";
+    fetch(f.action, { method: "POST", body: new FormData(f), headers: { Accept: "application/json" } })
+      .then(function (r) {
+        if (!r.ok) throw new Error();
+        f.querySelectorAll("input, textarea, select").forEach(function (el) {
+          if (el.type !== "hidden" && el.tagName !== "SELECT") el.value = "";
+        });
+        st.hidden = false; st.className = "fstatus ok";
+        st.textContent = "Danke — deine Anfrage ist angekommen. Wir melden uns am selben Tag.";
+        b.textContent = "Gesendet";
+      })
+      .catch(function () {
+        st.hidden = false; st.className = "fstatus err";
+        st.innerHTML = 'Das Senden hat nicht geklappt. Ruf uns an unter <a href="tel:+4915126718415">+49 151 26718415</a> oder schreib an <a href="mailto:info@carcarevalu.de">info@carcarevalu.de</a>.';
+        b.disabled = false; b.textContent = "Erneut senden";
       });
   });
 })();
