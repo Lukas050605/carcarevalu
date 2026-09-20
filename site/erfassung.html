@@ -339,6 +339,7 @@ button.save:active{transform:scale(.98)}
       fotos[s] = { vorher: (fotoData[s] && fotoData[s].vorher) || null, nachher: (fotoData[s] && fotoData[s].nachher) || null };
     });
 
+    if (timerStart) { timerSeconds = Math.round((Date.now() - timerStart) / 1000); clearInterval(timerInterval); timerStart = null; }
     var dauer = timerSeconds > 0 ? timerSeconds : parseManuellDauer(document.getElementById("f-dauer-manuell").value);
 
     var job = {
