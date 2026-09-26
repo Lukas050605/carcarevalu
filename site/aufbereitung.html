@@ -48,7 +48,7 @@
     <h1>Wenn sauber nicht mehr reicht.</h1>
     <p class="lead">Die normale Reinigung nimmt oberflächlichen Schmutz. Die Aufbereitung geht tiefer: mehr Zeit pro Fahrzeug, Zusatzleistungen dort, wo sie wirken, und ein Ergebnis, das man auch nach Wochen noch sieht.</p>
     <div class="cta-row">
-      <a class="btn" href="https://app.acuityscheduling.com/schedule.php?owner=37613678&appointmentType=87583912" target="_blank" rel="noopener">Termin buchen →</a>
+      <a class="btn" href="#anfrage">Aufbereitung anfragen →</a>
       <a class="btn ghost" href="ergebnisse.html">Ergebnisse ansehen</a>
     </div>
   </div>
@@ -83,9 +83,73 @@
       <span>Lederpflege</span><span>Geruchsentfernung</span><span>Kindersitz-Reinigung</span><span>Motorraumreinigung</span>
     </div>
     <div class="cta-row">
-      <a class="btn" href="https://app.acuityscheduling.com/schedule.php?owner=37613678&appointmentType=87583912" target="_blank" rel="noopener">Termin buchen →</a>
+      <a class="btn" href="#anfrage">Aufbereitung anfragen →</a>
       <a class="btn ghost" href="tel:+4915126718415">+49 151 26718415</a>
     </div>
+  </div>
+</section>
+
+
+<section id="anfrage" class="alt">
+  <div class="wrap narrow">
+    <span class="mono">ANFRAGE</span>
+    <h2>Aufbereitung anfragen.</h2>
+    <p class="lead">Der Umfang einer Aufbereitung hängt vom Zustand ab — deshalb gibt es hier keinen festen Preis zum Buchen. Schick uns die Angaben, wir melden uns mit einem Festpreis-Angebot. Antwort in der Regel am selben Tag.</p>
+
+    <form class="card b2bform" action="https://formspree.io/f/xrpgbypy" method="POST" style="margin-top:28px">
+      <input type="hidden" name="_subject" value="Anfrage Premium-Aufbereitung">
+      <input type="hidden" name="herkunft" value="Seite Aufbereitung">
+
+      <label class="lbl">Name
+        <input type="text" name="name" required placeholder="Vor- und Nachname">
+      </label>
+
+      <div class="fgrid">
+        <label class="lbl">E-Mail
+          <input type="email" name="email" required placeholder="name@beispiel.de">
+        </label>
+        <label class="lbl">Telefon
+          <input type="tel" name="telefon" placeholder="Für Rückfragen">
+        </label>
+      </div>
+
+      <div class="fgrid">
+        <label class="lbl">Ort
+          <input type="text" name="ort" placeholder="Wo steht das Fahrzeug?">
+        </label>
+        <label class="lbl">Fahrzeug
+          <input type="text" name="fahrzeug" required placeholder="z.B. VW Passat Kombi, Baujahr 2019">
+        </label>
+      </div>
+
+      <div class="fgrid">
+        <label class="lbl">Anlass
+          <select name="anlass">
+            <option>Leasingrückgabe</option>
+            <option>Verkaufsvorbereitung</option>
+            <option>Starke Verschmutzung</option>
+            <option>Rundum-Aufbereitung ohne festen Anlass</option>
+            <option>Noch unklar — bitte beraten</option>
+          </select>
+        </label>
+        <label class="lbl">Zustand
+          <select name="zustand">
+            <option>Normal genutzt</option>
+            <option>Stark verschmutzt</option>
+            <option>Tierhaare</option>
+            <option>Rauchgeruch</option>
+            <option>Mehreres davon</option>
+          </select>
+        </label>
+      </div>
+
+      <label class="lbl">Was soll besonders beachtet werden?
+        <textarea name="nachricht" rows="4" placeholder="Flecken, Gerüche, empfindliche Materialien, Wunschsamstag"></textarea>
+      </label>
+
+      <p class="note">Fotos helfen uns bei der Einschätzung — schick sie gern an <a href="mailto:info@carcarevalu.de">info@carcarevalu.de</a> oder per WhatsApp. Aufbereitungen finden samstags nach Vereinbarung statt. Mit dem Absenden stimmst du zu, dass wir deine Angaben zur Bearbeitung der Anfrage verwenden — siehe <a href="datenschutz.html">Datenschutz</a>.</p>
+      <button class="btn full" type="submit">Anfrage senden</button>
+    </form>
   </div>
 </section>
 
@@ -148,5 +212,6 @@
 </footer>
 <script src="app.js"></script>
 
+<script src="promo.js"></script>
 </body>
 </html>
