@@ -228,6 +228,9 @@ function FireStore(){
     cleanup: function(){ // Telefonnummern nach 30 Tagen löschen (Datenschutz)
       db.collection("auftraege").where("createdAt", "<", Date.now() - 30*86400000).limit(100).get()
         .then(function(qs){ qs.forEach(function(d){ if (d.data().phone) d.ref.update({ phone: "" }); }); }).catch(function(){});
+      var alt = dayKey(Date.now() - 30*86400000); // Reservierungen nach 30 Tagen löschen
+      db.collection("reservierungen").where("day", "<", alt).limit(100).get()
+        .then(function(qs){ qs.forEach(function(d){ d.ref.delete(); db.doc("belegt/" + d.id).delete().catch(function(){}); }); }).catch(function(){});
     }
   };
 }
