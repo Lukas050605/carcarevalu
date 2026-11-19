@@ -24,7 +24,7 @@ var CFG = {
   imgBase: "images/",                          // Ordner mit deinen Website-Fotos
   firma: "CAR CARE VALU"
 };
-var DEFAULTS = { rateCents: 90, minCents: 2500, graceMin: 15, blockMin: 15, blockCents: 500 };
+var DEFAULTS = { rateCents: 90, minCents: 2500, graceMin: 15, blockMin: 15, blockCents: 500, plaetze: 1, pufferMin: 5, oeffnet: "10:00", schliesst: "21:00" };
 var ZONES = [
   { id: "cockpit",    label: "Cockpit & Armaturen", car: true },
   { id: "vorne",      label: "Vordersitze",         car: true },
@@ -83,6 +83,51 @@ function calc(j, s, now){
   return r;
 }
 
+/* ---------- Belegungsplan: wann wird der nächste Platz frei? ---------- */
+function todayAt(hm, now){ var p = String(hm || "0:00").split(":"), d = new Date(now || Date.now()); d.setHours(+p[0] || 0, +p[1] || 0, 0, 0); return d.getTime(); }
+function plan(jobs, s, now){
+  now = now || Date.now();
+  var cap = Math.max(1, Math.round(s.plaetze || 1)), buf = (s.pufferMin || 0) * 60000, abhol = Math.min(s.graceMin || 0, 10) * 60000;
+  var open = todayAt(s.oeffnet, now), free = [], bars = [], i;
+  for (i = 0; i < cap; i++) free.push(Math.max(now, open));
+  function minPlace(){ var m = 0; for (var k = 1; k < free.length; k++) if (free[k] < free[m]) m = k; return m; }
+  var akt = jobs.filter(function(j){ return j.status === "laeuft" || j.status === "gestoppt"; }).sort(function(a,b){ return a.startedAt - b.startedAt; });
+  akt.forEach(function(j){
+    var end = j.status === "laeuft" ? Math.max(j.startedAt + (j.estMin || 30) * 60000, now + 60000) + abhol + buf
+                                    : Math.max(j.stoppedAt + abhol, now + 60000) + buf;
+    var p = minPlace(); bars.push({ p: p, from: j.startedAt, to: end, k: j.status, id: j.id }); free[p] = Math.max(free[p], end);
+  });
+  jobs.filter(function(j){ return j.status === "angemeldet"; }).sort(function(a,b){ return a.createdAt - b.createdAt; }).forEach(function(j){
+    var p = minPlace(), from = free[p], end = from + (j.estMin || 30) * 60000 + abhol + buf;
+    bars.push({ p: p, from: from, to: end, k: "wartet", id: j.id }); free[p] = end;
+  });
+  return { bars: bars, next: Math.min.apply(null, free), plaetze: cap };
+}
+function timeline(pl, s, now, opt){
+  opt = opt || {};
+  var open = todayAt(s.oeffnet, now), close = todayAt(s.schliesst, now);
+  // Ausschnitt: ab kurz vor jetzt bis nach dem letzten Eintrag (mind. 3 Std.), damit die Balken gut lesbar sind
+  var from = now - 30 * 60000, to = now + 3 * 3600000;
+  pl.bars.forEach(function(b){ if (b.to + 20 * 60000 > to) to = b.to + 20 * 60000; if (b.from < from) from = Math.max(b.from, now - 90 * 60000); });
+  if (opt.own && opt.own.to + 20 * 60000 > to) to = opt.own.to + 20 * 60000;
+  from = Math.floor(from / 3600000) * 3600000; to = Math.ceil(to / 3600000) * 3600000;
+  var span = to - from, x = function(t){ return Math.max(0, Math.min(100, (t - from) / span * 100)); };
+  var h = '<div class="tl"><div class="tl-hours">';
+  for (var t = from; t <= to; t += 3600000) h += '<span style="left:' + x(t) + '%">' + new Date(t).getHours() + '</span>';
+  h += '</div>';
+  for (var p = 0; p < pl.plaetze; p++){
+    h += '<div class="tl-row"><span class="tl-lbl">' + (pl.plaetze > 1 ? "Platz " + (p + 1) : "Zelt") + '</span><div class="tl-track">';
+    h += '<i class="tl-off" style="left:0;width:' + x(open) + '%"></i><i class="tl-off" style="left:' + x(close) + '%;right:0"></i>';
+    pl.bars.filter(function(b){ return b.p === p; }).forEach(function(b){
+      var lab = opt.labels && opt.labels[b.id] ? esc(opt.labels[b.id]) : "";
+      h += '<i class="tl-bar ' + b.k + '" style="left:' + x(b.from) + '%;width:' + Math.max(1.2, x(b.to) - x(b.from)) + '%" title="' + hhmm(b.from) + '–' + hhmm(b.to) + '">' + lab + '</i>';
+    });
+    if (opt.own && opt.own.p === p) h += '<i class="tl-bar own" style="left:' + x(opt.own.from) + '%;width:' + Math.max(1.2, x(opt.own.to) - x(opt.own.from)) + '%">Du</i>';
+    h += '<i class="tl-now" style="left:' + x(now) + '%"></i></div></div>';
+  }
+  return h + '<div class="tl-leg">' + (opt.legend || '<span><i class="lg laeuft"></i>belegt</span><span><i class="lg wartet"></i>reserviert</span>' + (opt.own ? '<span><i class="lg own"></i>dein Auto (geschätzt)</span>' : '')) + '</div></div>';
+}
+
 /* ---------- Speicher: Demo (localStorage) ---------- */
 function DemoStore(){
   var K = "ccvShopCleanDemo.v1", mem = null, subs = [], last = "";
@@ -94,6 +139,8 @@ function DemoStore(){
   return {
     settings: function(cb){ return sub(function(d){ cb(Object.assign({}, DEFAULTS, d.settings)); }); },
     saveSettings: function(s){ var d = read(); d.settings = s; write(d); return Promise.resolve(); },
+    belegung: function(cb){ return sub(function(d){ cb(d.belegung || null); }); },
+    setBelegung: function(b){ var d = read(); d.belegung = b; write(d); return Promise.resolve(); },
     create: function(job, key){
       var d = read(), old = d.lookup[key];
       if (old && old.createdAt > Date.now() - 12*3600000 && d.jobs[old.id] && ["bezahlt","storniert"].indexOf(d.jobs[old.id].status) < 0)
@@ -122,6 +169,8 @@ function FireStore(){
   return {
     settings: function(cb){ return db.doc("einstellungen/preise").onSnapshot(function(s){ cb(Object.assign({}, DEFAULTS, s.exists ? s.data() : {})); }, function(){ cb(Object.assign({}, DEFAULTS)); }); },
     saveSettings: function(s){ return db.doc("einstellungen/preise").set(s); },
+    belegung: function(cb){ return db.doc("einstellungen/belegung").onSnapshot(function(s){ cb(s.exists ? s.data() : null); }, function(){ cb(null); }); },
+    setBelegung: function(b){ return db.doc("einstellungen/belegung").set(b); },
     create: function(job, key){
       var ref = db.collection("auftraege").doc(), b = db.batch();
       b.set(ref, job); b.set(db.doc("lookup/" + key), { id: ref.id, createdAt: job.createdAt });
@@ -157,7 +206,32 @@ function Kunde(){
   var mine = lsGet(MY);
   if (mine && mine.id && mine.until > Date.now()) { st.step = "status"; watch(mine.id); }
 
+  var B = null;
   store.settings(function(s){ S = s; if (["welcome","zeit"].indexOf(st.step) >= 0 || st.step === "status") render(); });
+  store.belegung(function(b){ B = b; if (["welcome","zeit"].indexOf(st.step) >= 0){ st._keepScroll = true; render(); } });
+
+  function belegungCard(withOwn){
+    var now = Date.now(), open = todayAt(S.oeffnet, now), close = todayAt(S.schliesst, now);
+    var fresh = B && B.updatedAt > now - 15 * 60000 && dayKey(B.updatedAt) === dayKey(now);
+    var head, own = null, warn = "";
+    if (now < open) head = 'Heute geöffnet von ' + esc(S.oeffnet) + ' bis ' + esc(S.schliesst) + ' Uhr.';
+    else if (now > close) head = 'Für heute ist das Zelt geschlossen.';
+    else if (!fresh) head = 'Die aktuelle Belegung ist gerade nicht verfügbar – frag einfach kurz am Zelt.';
+    else {
+      var next = Math.max(B.next, now);
+      if (next <= now + 2 * 60000) head = '<b class="free">Jetzt frei</b> – du kannst dein Auto direkt abgeben.';
+      else head = '<b class="busy">Gerade belegt.</b> Nächster freier Platz ca. <b>' + hhmm(next) + ' Uhr</b> (in ' + Math.round((next - now) / 60000) + ' Min.).';
+      if (withOwn){
+        var p = 0, bf = Infinity; for (var i = 0; i < (B.plaetze || 1); i++){ var f = Math.max(now, (B.frei && B.frei[i]) || now); if (f < bf){ bf = f; p = i; } }
+        own = { p: p, from: Math.max(next, now), to: Math.max(next, now) + st.est * 60000 };
+        if (own.from > now + 2 * 60000) warn += '<p class="small" style="margin-top:6px;">Wenn du jetzt abgibst, starten wir voraussichtlich um ' + hhmm(own.from) + ' Uhr. Die Zeit läuft erst ab Start.</p>';
+        if (own.to > close) warn += '<p class="small" style="margin-top:6px;color:var(--danger)">Achtung: Das wird knapp – wir schließen um ' + esc(S.schliesst) + ' Uhr.</p>';
+      }
+    }
+    var tl = fresh && now >= open && now <= close ? timeline({ bars: B.bars || [], plaetze: B.plaetze || 1 }, S, now, { own: own }) : "";
+    return '<div class="label">Heute im Zelt</div><div class="cz-card belegung"><p class="bel-head">' + head + '</p>' + tl + warn + '</div>';
+  }
+
 
   function watch(id){
     if (unsubJob) unsubJob();
@@ -187,6 +261,7 @@ function Kunde(){
     '<div class="price-row"><div class="price-box"><span>pro Minute</span><b>' + euro(S.rateCents) + '</b></div>' +
     '<div class="price-box"><span>Mindestbetrag</span><b>' + euroS(S.minCents) + '</b></div></div></div>' +
 
+    belegungCard(false) +
     '<div class="label">So funktioniert’s</div>' +
     '<div class="cz-card"><div class="cz-steps">' +
       '<div class="step"><div><b>Einkaufszeit schätzen</b><span>Du siehst sofort, was es ungefähr kostet.</span></div></div>' +
@@ -245,6 +320,7 @@ function Kunde(){
       '<input type="range" id="ccvRange" min="10" max="120" step="5" value="' + st.est + '" aria-label="Einkaufszeit in Minuten">' +
       '<div class="cz-chips">' + chipsHtml + '</div>' +
       '<div class="est"><div><div class="small">ca. Preis</div><div class="small">zurück ca. <b id="ccvBack" style="font-size:14px;color:var(--ink)">' + hhmm(back) + ' Uhr</b></div></div><b id="ccvEstPrice">' + euro(est) + '</b></div>' +
+      '<div id="ccvBel">' + belegungCard(true) + '</div>' +
       '<button class="cz-btn cz-btn-primary" data-act="next" type="button">Weiter</button>';
   }
 
@@ -394,6 +470,7 @@ function Kunde(){
       st.est = +r.value; $("#ccvEstMin").textContent = st.est;
       $("#ccvEstPrice").textContent = euro(Math.max(S.minCents, st.est * S.rateCents));
       $("#ccvBack").textContent = hhmm(Date.now() + st.est * 60000) + " Uhr";
+      var bel = $("#ccvBel"); if (bel) bel.innerHTML = belegungCard(true);
       Array.prototype.forEach.call(root.querySelectorAll("[data-min]"), function(c){ c.setAttribute("aria-pressed", +c.getAttribute("data-min") === st.est); });
     });
     on("[data-zone]", "click", function(e, el){
@@ -487,11 +564,35 @@ function Team(){
     if (u && !user){ err = "Dieses Konto hat keinen Zugriff."; store.logout(); }
     if (unsub){ unsub(); unsub = null; }
     if (user){
-      unsub = store.all(function(list){ jobs = list; render(); }, function(e){ err = "Fehler: " + e.message; render(); });
+      unsub = store.all(function(list){ jobs = list; publish(false); render(); }, function(e){ err = "Fehler: " + e.message; render(); });
       store.cleanup();
     }
     render();
   });
+
+  var lastPub = 0, lastSig = "";
+  function publish(force){ // anonyme Belegung für die Kunden-App veröffentlichen (ohne Kennzeichen)
+    if (!user) return;
+    var now = Date.now(), pl = plan(jobs, S, now);
+    var cap = pl.plaetze, frei = []; for (var i = 0; i < cap; i++) frei.push(now);
+    pl.bars.forEach(function(b){ frei[b.p] = Math.max(frei[b.p], b.to); });
+    var bars = pl.bars.map(function(b){ return { p: b.p, from: b.from, to: b.to, k: b.k }; });
+    var sig = JSON.stringify([bars.map(function(b){ return [b.p, Math.round(b.from/60000), Math.round(b.to/60000), b.k]; }), cap]);
+    if (!force && sig === lastSig && now - lastPub < 2 * 60000) return;
+    lastSig = sig; lastPub = now;
+    store.setBelegung({ updatedAt: now, next: pl.next, plaetze: cap, frei: frei, bars: bars }).catch(function(){});
+  }
+  setInterval(function(){ publish(false); }, 60000);
+
+  function vBelegung(){
+    var now = Date.now(), pl = plan(jobs, S, now), labels = {};
+    jobs.forEach(function(j){ labels[j.id] = j.plate; });
+    var next = Math.max(pl.next, now);
+    var head = next <= now + 2 * 60000 ? '<b class="free">Jetzt frei</b>' : 'Nächster freier Platz ca. <b>' + hhmm(next) + ' Uhr</b> (in ' + Math.round((next - now) / 60000) + ' Min.)';
+    return '<div class="label">Heute im Zelt</div><div class="cz-card belegung"><p class="bel-head">' + head + ' · ' + pl.plaetze + (pl.plaetze > 1 ? ' Plätze' : ' Platz') + '</p>' +
+      timeline(pl, S, now, { labels: labels, legend: '<span><i class="lg laeuft"></i>läuft</span><span><i class="lg gestoppt"></i>gestoppt</span><span><i class="lg wartet"></i>wartet auf Schlüssel</span>' }) +
+      '<p class="small" style="margin-top:6px;">Geschätzt aus der Einkaufszeit der Kunden + ' + Math.min(S.graceMin, 10) + ' Min. Abholung + ' + S.pufferMin + ' Min. Puffer. Kunden sehen das anonym.</p></div>';
+  }
 
   function vLogin(){
     return '<div class="top"><div class="cz-logo">CCV</div><div class="top-t"><b>CCV Shop &amp; Clean</b><span>Team-Login</span></div></div>' +
@@ -543,6 +644,7 @@ function Team(){
       '<button class="chip-btn" data-act="settings" type="button">⚙︎</button>' + (DEMO ? "" : '<button class="chip-btn" data-act="logout" type="button">Logout</button>') + '</div>' +
       (err ? '<div class="err">' + esc(err) + '</div>' : '') +
       '<div class="stats"><div class="cz-stat"><small>Umsatz heute</small><b>' + euro(sum) + '</b></div><div class="cz-stat"><small>Autos</small><b>' + paid.length + '</b></div><div class="cz-stat"><small>Ø €/Std</small><b>' + (mins ? euroS(Math.round(sum / mins * 60 / 100) * 100) : "–") + '</b></div></div>' +
+      vBelegung() +
       sec("Wartet auf Schlüssel", wait, cardWaiting, "Niemand wartet.") +
       sec("Läuft", run, cardRunning, "Gerade kein Auto in Pflege.") +
       sec("Gestoppt – wartet auf Zahlung", stop, cardStopped, "Nichts offen.") +
@@ -565,6 +667,10 @@ function Team(){
       f("ccvSGrace", "Abholzeit nach Stopp (Min)", S.graceMin, "1") +
       f("ccvSBlock", "Standgebühr pro angefangene … Min", S.blockMin, "1") +
       f("ccvSBlockC", "Standgebühr pro Block (€)", (S.blockCents/100).toFixed(2), "0.5") +
+      '<div class="h2" style="margin-top:18px;font-size:18px;">Belegung</div>' +
+      f("ccvSPl", "Plätze gleichzeitig (Autos in Pflege)", S.plaetze, "1", "1 = du allein. Mit Helfer z. B. 2.") +
+      f("ccvSPuf", "Puffer zwischen zwei Autos (Min)", S.pufferMin, "1") +
+      '<div class="field"><label for="ccvSOpen">Öffnungszeit heute</label><div class="cz-btn-row"><input id="ccvSOpen" type="time" value="' + esc(S.oeffnet) + '"><input id="ccvSClose" type="time" value="' + esc(S.schliesst) + '"></div></div>' +
       '<div class="cz-btn-row"><button class="cz-btn cz-btn-secondary" data-act="closeSettings2" type="button">Abbrechen</button><button class="cz-btn cz-btn-primary" data-act="saveSettings" type="button">Speichern</button></div></div></div>';
   }
 
@@ -595,8 +701,10 @@ function Team(){
     on('[data-act="saveSettings"]', "click", function(){
       var n = function(id, fb){ var v = parseFloat(String($("#" + id).value).replace(",", ".")); return isNaN(v) || v < 0 ? fb : v; };
       var s = { rateCents: Math.round(n("ccvSRate", S.rateCents/100)*100), minCents: Math.round(n("ccvSMin", S.minCents/100)*100),
-        graceMin: Math.round(n("ccvSGrace", S.graceMin)), blockMin: Math.max(1, Math.round(n("ccvSBlock", S.blockMin))), blockCents: Math.round(n("ccvSBlockC", S.blockCents/100)*100) };
-      settingsOpen = false; store.saveSettings(s);
+        graceMin: Math.round(n("ccvSGrace", S.graceMin)), blockMin: Math.max(1, Math.round(n("ccvSBlock", S.blockMin))), blockCents: Math.round(n("ccvSBlockC", S.blockCents/100)*100),
+        plaetze: Math.max(1, Math.round(n("ccvSPl", S.plaetze))), pufferMin: Math.round(n("ccvSPuf", S.pufferMin)),
+        oeffnet: $("#ccvSOpen").value || S.oeffnet, schliesst: $("#ccvSClose").value || S.schliesst };
+      settingsOpen = false; store.saveSettings(s).then(function(){ S = Object.assign({}, S, s); publish(true); });
     });
   }
   function csv(){
