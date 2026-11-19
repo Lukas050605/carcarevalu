@@ -21,10 +21,11 @@ var CFG = {
   standort: "Nidder Forum Nidderau",
   premiere: "2027-01-16T10:00:00+01:00",       // vor diesem Datum zeigt die App den Starttermin an
   premiereText: "Premiere: Sa, 16. Januar 2027 · 10–21 Uhr",
+  stripeLink: "https://book.stripe.com/dRm6oJa73fIh1TGdzmbjW00",  // 5-€-Reservierung
   imgBase: "images/",                          // Ordner mit deinen Website-Fotos
   firma: "CAR CARE VALU"
 };
-var DEFAULTS = { rateCents: 90, minCents: 2500, graceMin: 15, blockMin: 15, blockCents: 500, plaetze: 1, pufferMin: 5, oeffnet: "10:00", schliesst: "21:00" };
+var DEFAULTS = { rateCents: 90, minCents: 2500, graceMin: 15, blockMin: 15, blockCents: 500, plaetze: 1, pufferMin: 5, oeffnet: "10:00", schliesst: "21:00", tage: "2027-01-16", resCents: 500, kulanzMin: 15 };
 var ZONES = [
   { id: "cockpit",    label: "Cockpit & Armaturen", car: true },
   { id: "vorne",      label: "Vordersitze",         car: true },
@@ -78,18 +79,40 @@ function calc(j, s, now){
     r.graceLeft = s.graceMin * 60000 - since;
     if (r.graceLeft < 0){ r.blocks = Math.ceil(-r.graceLeft / (s.blockMin * 60000)); r.fee = r.blocks * s.blockCents; }
   }
-  r.total = r.work + r.fee;
+  r.deposit = j.depositCents || 0;
+  r.total = Math.max(0, r.work + r.fee - r.deposit);
   if (j.status === "bezahlt" && typeof j.paidCents === "number"){ r.total = j.paidCents; r.work = j.workCents; r.fee = j.feeCents; r.min = j.workMin; }
   return r;
 }
 
 /* ---------- Belegungsplan: wann wird der nächste Platz frei? ---------- */
 function todayAt(hm, now){ var p = String(hm || "0:00").split(":"), d = new Date(now || Date.now()); d.setHours(+p[0] || 0, +p[1] || 0, 0, 0); return d.getTime(); }
-function plan(jobs, s, now){
+/* Reservierungen: aktiv = nicht storniert/verfallen/erschienen, bezahlt oder max. 30 Min. alt (Zahlung läuft), Kulanz noch nicht vorbei */
+function activeRes(list, s, now){
+  return (list || []).filter(function(r){
+    if (r.aus) return false;
+    if (r.status && r.status !== "offen") return false;
+    if (!r.paid && r.createdAt < now - 30 * 60000) return false;
+    return now < r.from + (s.kulanzMin || 15) * 60000;
+  });
+}
+function overlapCount(list, a, b){ return list.filter(function(r){ return r.from < b && r.to > a; }).length; }
+function earliestFree(t, dur, blocks){
+  var moved = true;
+  while (moved){ moved = false; blocks.forEach(function(r){ if (t < r.to && t + dur > r.from){ t = r.to; moved = true; } }); }
+  return t;
+}
+function resDur(s, est){ return ((est || 30) + Math.min(s.graceMin || 0, 10) + (s.pufferMin || 0)) * 60000; }
+function plan(jobs, s, now, res){
   now = now || Date.now();
   var cap = Math.max(1, Math.round(s.plaetze || 1)), buf = (s.pufferMin || 0) * 60000, abhol = Math.min(s.graceMin || 0, 10) * 60000;
   var open = todayAt(s.oeffnet, now), free = [], bars = [], i;
   for (i = 0; i < cap; i++) free.push(Math.max(now, open));
+  var resv = []; for (i = 0; i < cap; i++) resv.push([]);
+  activeRes(res, s, now).filter(function(r){ return r.day === dayKey(now); }).sort(function(a,b){ return a.from - b.from; }).forEach(function(r){
+    var p = 0; for (var q = 0; q < cap; q++){ if (overlapCount(resv[q], r.from, r.to) === 0){ p = q; break; } }
+    resv[p].push(r); bars.push({ p: p, from: r.from, to: r.to, k: "res", id: "res:" + r.id });
+  });
   function minPlace(){ var m = 0; for (var k = 1; k < free.length; k++) if (free[k] < free[m]) m = k; return m; }
   var akt = jobs.filter(function(j){ return j.status === "laeuft" || j.status === "gestoppt"; }).sort(function(a,b){ return a.startedAt - b.startedAt; });
   akt.forEach(function(j){
@@ -97,11 +120,12 @@ function plan(jobs, s, now){
                                     : Math.max(j.stoppedAt + abhol, now + 60000) + buf;
     var p = minPlace(); bars.push({ p: p, from: j.startedAt, to: end, k: j.status, id: j.id }); free[p] = Math.max(free[p], end);
   });
+  function slot(dur){ var best = null; for (var q = 0; q < cap; q++){ var t = earliestFree(free[q], dur, resv[q]); if (!best || t < best.t) best = { p: q, t: t }; } return best; }
   jobs.filter(function(j){ return j.status === "angemeldet"; }).sort(function(a,b){ return a.createdAt - b.createdAt; }).forEach(function(j){
-    var p = minPlace(), from = free[p], end = from + (j.estMin || 30) * 60000 + abhol + buf;
-    bars.push({ p: p, from: from, to: end, k: "wartet", id: j.id }); free[p] = end;
+    var dur = (j.estMin || 30) * 60000 + abhol + buf, sl = slot(dur);
+    bars.push({ p: sl.p, from: sl.t, to: sl.t + dur, k: "wartet", id: j.id }); free[sl.p] = sl.t + dur;
   });
-  return { bars: bars, next: Math.min.apply(null, free), plaetze: cap };
+  return { bars: bars, next: slot(30 * 60000 + abhol + buf).t, plaetze: cap, free: free, slot: slot };
 }
 function timeline(pl, s, now, opt){
   opt = opt || {};
@@ -125,7 +149,7 @@ function timeline(pl, s, now, opt){
     if (opt.own && opt.own.p === p) h += '<i class="tl-bar own" style="left:' + x(opt.own.from) + '%;width:' + Math.max(1.2, x(opt.own.to) - x(opt.own.from)) + '%">Du</i>';
     h += '<i class="tl-now" style="left:' + x(now) + '%"></i></div></div>';
   }
-  return h + '<div class="tl-leg">' + (opt.legend || '<span><i class="lg laeuft"></i>belegt</span><span><i class="lg wartet"></i>reserviert</span>' + (opt.own ? '<span><i class="lg own"></i>dein Auto (geschätzt)</span>' : '')) + '</div></div>';
+  return h + '<div class="tl-leg">' + (opt.legend || '<span><i class="lg laeuft"></i>belegt</span><span><i class="lg res"></i>reserviert</span>' + (opt.own ? '<span><i class="lg own"></i>dein Auto (geschätzt)</span>' : '')) + '</div></div>';
 }
 
 /* ---------- Speicher: Demo (localStorage) ---------- */
@@ -140,6 +164,11 @@ function DemoStore(){
     settings: function(cb){ return sub(function(d){ cb(Object.assign({}, DEFAULTS, d.settings)); }); },
     saveSettings: function(s){ var d = read(); d.settings = s; write(d); return Promise.resolve(); },
     belegung: function(cb){ return sub(function(d){ cb(d.belegung || null); }); },
+    createRes: function(r){ var d = read(), i = id(); d.res = d.res || {}; d.belegt = d.belegt || {}; d.res[i] = r; d.belegt[i] = { day: r.day, from: r.from, to: r.to, paid: false, createdAt: r.createdAt }; write(d); return Promise.resolve(i); },
+    getRes: function(i, cb){ return sub(function(d){ var r = d.res && d.res[i]; cb(r ? Object.assign({ id: i }, r) : null); }); },
+    belegtDay: function(day, cb){ return sub(function(d){ var b = d.belegt || {}; cb(Object.keys(b).map(function(k){ return Object.assign({ id: k }, b[k]); }).filter(function(x){ return x.day === day; })); }); },
+    resList: function(cb){ return sub(function(d){ var r = d.res || {}, t = dayKey(); cb(Object.keys(r).map(function(k){ return Object.assign({ id: k }, r[k]); }).filter(function(x){ return x.day >= t; })); }); },
+    updateRes: function(i, p, slotPatch){ var d = read(); if (d.res && d.res[i]) Object.assign(d.res[i], p); if (slotPatch && d.belegt && d.belegt[i]) Object.assign(d.belegt[i], slotPatch); write(d); return Promise.resolve(); },
     setBelegung: function(b){ var d = read(); d.belegung = b; write(d); return Promise.resolve(); },
     create: function(job, key){
       var d = read(), old = d.lookup[key];
@@ -170,6 +199,17 @@ function FireStore(){
     settings: function(cb){ return db.doc("einstellungen/preise").onSnapshot(function(s){ cb(Object.assign({}, DEFAULTS, s.exists ? s.data() : {})); }, function(){ cb(Object.assign({}, DEFAULTS)); }); },
     saveSettings: function(s){ return db.doc("einstellungen/preise").set(s); },
     belegung: function(cb){ return db.doc("einstellungen/belegung").onSnapshot(function(s){ cb(s.exists ? s.data() : null); }, function(){ cb(null); }); },
+    createRes: function(r){
+      var ref = db.collection("reservierungen").doc(), b = db.batch();
+      b.set(ref, r); b.set(db.doc("belegt/" + ref.id), { day: r.day, from: r.from, to: r.to, paid: false, createdAt: r.createdAt });
+      return b.commit().then(function(){ return ref.id; });
+    },
+    getRes: function(i, cb){ return db.doc("reservierungen/" + i).onSnapshot(function(s){ cb(withId(s)); }, function(){ cb(null); }); },
+    belegtDay: function(day, cb){ return db.collection("belegt").where("day", "==", day).onSnapshot(function(qs){ cb(qs.docs.map(withId)); }, function(){ cb([]); }); },
+    resList: function(cb){ return db.collection("reservierungen").where("day", ">=", dayKey()).onSnapshot(function(qs){ cb(qs.docs.map(withId)); }, function(){ cb([]); }); },
+    updateRes: function(i, p, slotPatch){
+      var b = db.batch(); b.update(db.doc("reservierungen/" + i), p); if (slotPatch) b.update(db.doc("belegt/" + i), slotPatch); return b.commit();
+    },
     setBelegung: function(b){ return db.doc("einstellungen/belegung").set(b); },
     create: function(job, key){
       var ref = db.collection("auftraege").doc(), b = db.batch();
@@ -198,17 +238,42 @@ var store, S = Object.assign({}, DEFAULTS);
    KUNDEN-APP
    ========================================================= */
 function Kunde(){
-  var MY = "ccvShopClean.meinAuftrag";
-  var st = { step: "welcome", est: 30, plate: "", phone: "", prefs: [], note: "", acc1: false, acc2: false, val: false, key: false, err: "", jobId: null, job: null, confirmStop: false, busy: false, ba: "kofferraum" };
+  var MY = "ccvShopClean.meinAuftrag", MYRES = "ccvShopClean.meineReservierung";
+  var st = { step: "welcome", est: 30, plate: "", phone: "", prefs: [], note: "", acc1: false, acc2: false, val: false, key: false, err: "", jobId: null, job: null, confirmStop: false, busy: false, ba: "kofferraum",
+    rDay: "", rTime: 0, rName: "", rAcc1: false, rAcc2: false, res: null };
   var unsubJob = null;
   var STEPS = ["welcome","zeit","daten","auto","schluessel"];
 
   var mine = lsGet(MY);
   if (mine && mine.id && mine.until > Date.now()) { st.step = "status"; watch(mine.id); }
+  var myRes = lsGet(MYRES), unsubRes = null, unsubDay = null, dayBlocks = [];
+  if (myRes && myRes.id && myRes.until > Date.now()){
+    watchRes(myRes.id);
+    if (/[?&]reserviert=1/.test(location.search) && st.step !== "status") st.step = "resok";
+  } else myRes = null;
+  function watchRes(id){ if (unsubRes) unsubRes(); unsubRes = store.getRes(id, function(r){ st.res = r; if (["resok","welcome"].indexOf(st.step) >= 0){ st._keepScroll = true; render(); } }); }
+
+  function openDays(){
+    var now = Date.now(), t = dayKey(now);
+    return String(S.tage || "").split(/[,;\s]+/).map(function(x){ return x.trim(); }).filter(function(x){ return /^\d{4}-\d{2}-\d{2}$/.test(x); })
+      .filter(function(x){ return x > t || (x === t && now < todayAt(S.schliesst, now) - 30 * 60000); }).sort();
+  }
+  function dayLabel(day){ var p = day.split("-"), d = new Date(+p[0], +p[1] - 1, +p[2]); return d.toLocaleDateString("de-DE", { weekday: "short", day: "2-digit", month: "2-digit" }); }
+  function dayStart(day, hm){ var p = day.split("-"), q = String(hm).split(":"); return new Date(+p[0], +p[1] - 1, +p[2], +q[0] || 0, +q[1] || 0).getTime(); }
+  function watchDay(day){ if (unsubDay) unsubDay(); dayBlocks = []; unsubDay = store.belegtDay(day, function(list){ dayBlocks = list; if (st.step === "res"){ st._keepScroll = true; render(); } }); }
+  function freeStarts(day){
+    var now = Date.now(), dur = resDur(S, st.est), cap = Math.max(1, S.plaetze || 1);
+    var blocks = activeRes(dayBlocks, S, now).map(function(r){ return { from: r.from, to: r.to }; });
+    if (day === dayKey(now) && B && B.updatedAt > now - 15 * 60000){ (B.frei || []).forEach(function(f){ if (f > now) blocks.push({ from: now, to: f }); }); }
+    var out = [], open = dayStart(day, S.oeffnet), close = dayStart(day, S.schliesst);
+    var t = Math.max(open, Math.ceil((now + 20 * 60000) / (15 * 60000)) * 15 * 60000);
+    for (; t + (st.est || 30) * 60000 <= close; t += 15 * 60000){ if (overlapCount(blocks, t, t + dur) < cap) out.push(t); }
+    return out;
+  }
 
   var B = null;
   store.settings(function(s){ S = s; if (["welcome","zeit"].indexOf(st.step) >= 0 || st.step === "status") render(); });
-  store.belegung(function(b){ B = b; if (["welcome","zeit"].indexOf(st.step) >= 0){ st._keepScroll = true; render(); } });
+  store.belegung(function(b){ B = b; if (["welcome","zeit","res"].indexOf(st.step) >= 0){ st._keepScroll = true; render(); } });
 
   function belegungCard(withOwn){
     var now = Date.now(), open = todayAt(S.oeffnet, now), close = todayAt(S.schliesst, now);
@@ -222,8 +287,12 @@ function Kunde(){
       if (next <= now + 2 * 60000) head = '<b class="free">Jetzt frei</b> – du kannst dein Auto direkt abgeben.';
       else head = '<b class="busy">Gerade belegt.</b> Nächster freier Platz ca. <b>' + hhmm(next) + ' Uhr</b> (in ' + Math.round((next - now) / 60000) + ' Min.).';
       if (withOwn){
-        var p = 0, bf = Infinity; for (var i = 0; i < (B.plaetze || 1); i++){ var f = Math.max(now, (B.frei && B.frei[i]) || now); if (f < bf){ bf = f; p = i; } }
-        own = { p: p, from: Math.max(next, now), to: Math.max(next, now) + st.est * 60000 };
+        var p = 0, bf = Infinity, dur = resDur(S, st.est);
+        for (var i = 0; i < (B.plaetze || 1); i++){
+          var blocks = (B.bars || []).filter(function(b){ return b.k === "res" && b.p === i; });
+          var f = earliestFree(Math.max(now, (B.frei && B.frei[i]) || now), dur, blocks); if (f < bf){ bf = f; p = i; }
+        }
+        own = { p: p, from: bf, to: bf + st.est * 60000 };
         if (own.from > now + 2 * 60000) warn += '<p class="small" style="margin-top:6px;">Wenn du jetzt abgibst, starten wir voraussichtlich um ' + hhmm(own.from) + ' Uhr. Die Zeit läuft erst ab Start.</p>';
         if (own.to > close) warn += '<p class="small" style="margin-top:6px;color:var(--danger)">Achtung: Das wird knapp – wir schließen um ' + esc(S.schliesst) + ' Uhr.</p>';
       }
@@ -262,6 +331,8 @@ function Kunde(){
     '<div class="price-box"><span>Mindestbetrag</span><b>' + euroS(S.minCents) + '</b></div></div></div>' +
 
     belegungCard(false) +
+    (st.res && st.res.status !== "storniert" ? '<button class="cz-btn cz-btn-secondary" data-act="showRes" type="button">Deine Reservierung: ' + dayLabel(st.res.day) + ', ' + hhmm(st.res.from) + ' Uhr ansehen</button>'
+      : (openDays().length && CFG.stripeLink ? '<button class="cz-btn cz-btn-secondary" data-act="toRes" type="button">📅 Platz vorab reservieren · ' + euroS(S.resCents) + '</button><p class="small center" style="margin-top:6px;">Wird mit dem Pflegepreis verrechnet.</p>' : '')) +
     '<div class="label">So funktioniert’s</div>' +
     '<div class="cz-card"><div class="cz-steps">' +
       '<div class="step"><div><b>Einkaufszeit schätzen</b><span>Du siehst sofort, was es ungefähr kostet.</span></div></div>' +
@@ -321,6 +392,7 @@ function Kunde(){
       '<div class="cz-chips">' + chipsHtml + '</div>' +
       '<div class="est"><div><div class="small">ca. Preis</div><div class="small">zurück ca. <b id="ccvBack" style="font-size:14px;color:var(--ink)">' + hhmm(back) + ' Uhr</b></div></div><b id="ccvEstPrice">' + euro(est) + '</b></div>' +
       '<div id="ccvBel">' + belegungCard(true) + '</div>' +
+      (openDays().length && CFG.stripeLink ? '<button class="cz-btn-link" data-act="toRes" type="button">Lieber einen festen Platz reservieren (' + euroS(S.resCents) + ')</button>' : '') +
       '<button class="cz-btn cz-btn-primary" data-act="next" type="button">Weiter</button>';
   }
 
@@ -402,6 +474,54 @@ function Kunde(){
       '<button class="cz-btn-link" data-act="cancelJob" type="button" style="color:var(--danger)">Doch nicht – abbrechen</button>';
   }
 
+  function vRes(){
+    var days = openDays();
+    if (!days.length) return '<h2 class="h2">Reservierung</h2><div class="empty" style="margin-top:14px;">Gerade sind keine Termine zum Reservieren freigegeben.</div><button class="cz-btn-link" data-act="home" type="button">Zurück</button>';
+    if (days.indexOf(st.rDay) < 0){ st.rDay = days[0]; watchDay(st.rDay); st.rTime = 0; }
+    var starts = freeStarts(st.rDay);
+    if (starts.indexOf(st.rTime) < 0) st.rTime = 0;
+    var dayChips = days.map(function(d){ return '<button class="chip" data-rday="' + d + '" type="button" aria-pressed="' + (d === st.rDay) + '">' + dayLabel(d) + '</button>'; }).join("");
+    var estChips = [15,20,30,45,60,90].map(function(m){ return '<button class="chip" data-rest="' + m + '" type="button" aria-pressed="' + (st.est === m) + '">' + m + ' Min</button>'; }).join("");
+    var timeChips = starts.length ? starts.map(function(t){ return '<button class="chip" data-rtime="' + t + '" type="button" aria-pressed="' + (t === st.rTime) + '">' + hhmm(t) + '</button>'; }).join("")
+      : '<div class="empty" style="width:100%">An diesem Tag ist leider nichts mehr frei.</div>';
+    var ok = st.rTime && normPlate(st.plate).length >= 4 && digits(st.phone).length >= 7 && st.rName.length > 1 && st.rAcc1 && st.rAcc2;
+    return '<h2 class="h2">Platz reservieren</h2><p class="cz-lead">Sicher dir eine feste Uhrzeit. Die ' + euroS(S.resCents) + ' werden später mit dem Pflegepreis verrechnet.</p>' +
+      '<div class="label">Tag</div><div class="cz-chips">' + dayChips + '</div>' +
+      '<div class="label">Wie lange kaufst du ungefähr ein?</div><div class="cz-chips">' + estChips + '</div>' +
+      '<div class="label">Freie Uhrzeiten (Ankunft am Zelt)</div><div class="cz-chips times">' + timeChips + '</div>' +
+      '<div class="field"><label for="ccvRName">Dein Name</label><input id="ccvRName" type="text" autocomplete="name" value="' + esc(st.rName) + '"></div>' +
+      '<div class="field"><label for="ccvPlate">Kennzeichen</label><input id="ccvPlate" class="plate" type="text" autocomplete="off" autocapitalize="characters" placeholder="FB-CC 123" value="' + esc(st.plate) + '"></div>' +
+      '<div class="field"><label for="ccvPhone">Handynummer</label><input id="ccvPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0170 1234567" value="' + esc(st.phone) + '"></div>' +
+      '<div class="warn" style="margin-top:14px;"><b>Verbindlich:</b> Die Reservierung kostet ' + euroS(S.resCents) + ' und wird sofort per Karte, Apple Pay o. ä. bezahlt. Den Betrag ziehen wir beim Bezahlen am Zelt vom Pflegepreis ab. ' +
+        'Bist du ' + S.kulanzMin + ' Minuten nach der reservierten Zeit nicht da, verfällt die Reservierung und wir behalten die ' + euroS(S.resCents) + ' als Ausfallentschädigung; dir bleibt der Nachweis, dass uns kein oder ein geringerer Schaden entstanden ist. ' +
+        'Absage bis 24 Stunden vorher (Anruf/WhatsApp): Betrag zurück.</div>' +
+      '<button class="check" data-act="rAcc1" type="button" aria-pressed="' + st.rAcc1 + '"><span class="box">' + (st.rAcc1 ? "✓" : "") + '</span><span class="t">Ich akzeptiere die Reservierungs- und <a href="agb.html" target="_blank" rel="noopener">Geschäftsbedingungen</a> und habe die <a href="' + esc(CFG.datenschutzUrl) + '" target="_blank" rel="noopener">Datenschutzhinweise</a> gelesen.</span></button>' +
+      '<button class="check" data-act="rAcc2" type="button" aria-pressed="' + st.rAcc2 + '"><span class="box">' + (st.rAcc2 ? "✓" : "") + '</span><span class="t">Ich verlange ausdrücklich, dass ihr den Platz für mich reserviert und die Leistung zum gewählten Termin erbringt – auch vor Ablauf der <a href="widerruf.html" target="_blank" rel="noopener">Widerrufsfrist</a>.</span></button>' +
+      (st.err ? '<div class="err">' + esc(st.err) + '</div>' : '') +
+      '<button class="cz-btn cz-btn-primary" data-act="payRes" type="button"' + (ok && !st.busy ? '' : ' disabled') + '>' + (st.busy ? 'Einen Moment …' : 'Weiter zur Bezahlung · ' + euroS(S.resCents)) + '</button>' +
+      '<p class="small center" style="margin-top:8px;">Bezahlt wird sicher über Stripe. Dort gibst du noch einmal dein Kennzeichen ein.</p>' +
+      '<button class="cz-btn-link" data-act="home" type="button">Zurück zum Start</button>';
+  }
+
+  function vResOk(){
+    var r = st.res;
+    if (!r) return '<h2 class="h2">Reservierung</h2><div class="empty" style="margin-top:14px;">Wird geladen …</div><button class="cz-btn-link" data-act="home" type="button">Zum Start</button>';
+    var bis = r.from + (S.kulanzMin || 15) * 60000;
+    var stat = r.status === "verfallen" ? '<b style="color:var(--danger)">verfallen</b>' : r.status === "storniert" ? '<b style="color:var(--danger)">storniert</b>' :
+      r.status === "erschienen" ? '<b class="free">eingecheckt ✓</b>' : (r.paid ? '<b class="free">bezahlt ✓ – dein Platz ist fest</b>' : '<b class="busy">Zahlung wird geprüft …</b>');
+    return '<h2 class="h2">Danke, dein Platz ist reserviert!</h2>' +
+      '<div class="center" style="margin:14px 0;"><div class="plate-badge"><i>D</i><span>' + esc(r.plate) + '</span></div></div>' +
+      '<div class="cz-card"><div class="rows">' +
+        '<div class="row"><span>Tag</span><span>' + dayLabel(r.day) + '</span></div>' +
+        '<div class="row"><span>Ankunft am Zelt</span><span>' + hhmm(r.from) + ' Uhr</span></div>' +
+        '<div class="row"><span>Spätestens da bis</span><span>' + hhmm(bis) + ' Uhr</span></div>' +
+        '<div class="row"><span>Einkaufszeit (geschätzt)</span><span>' + (r.estMin || 30) + ' Min</span></div>' +
+        '<div class="row"><span>Reservierung</span><span>' + euro(r.resCents || S.resCents) + '</span></div>' +
+        '<div class="row"><span>Status</span><span>' + stat + '</span></div></div></div>' +
+      '<p class="small" style="margin-top:12px;">Am Tag einfach zum Zelt kommen und wie gewohnt einchecken (QR-Code oder diese Seite). Die ' + euroS(r.resCents || S.resCents) + ' werden beim Bezahlen abgezogen. Absagen bis 24 Std. vorher: ' + '<a href="tel:+4915126718415">0151 26718415</a> oder WhatsApp.</p>' +
+      '<button class="cz-btn cz-btn-primary" data-act="home" type="button">Zur Startseite</button>';
+  }
+
   function vFind(){
     return '<h2 class="h2">Status ansehen</h2><p class="cz-lead">Gib einfach dein Kennzeichen ein.</p>' +
       '<div class="field"><label for="ccvFPlate">Kennzeichen</label><input id="ccvFPlate" class="plate" type="text" autocomplete="off" autocapitalize="characters" placeholder="FB-CC 123" value="' + esc(st.plate) + '"></div>' +
@@ -436,6 +556,7 @@ function Kunde(){
         '<div class="cz-card" style="margin-top:12px;"><div class="rows">' +
           '<div class="row"><span>Pflege (' + c.min + ' Min)</span><span class="cz-mono">' + euro(c.work) + '</span></div>' +
           '<div class="row"><span>Standgebühr</span><span class="cz-mono" id="ccvFee">' + euro(c.fee) + '</span></div>' +
+          (c.deposit ? '<div class="row"><span>Reservierung (bereits bezahlt)</span><span class="cz-mono">−' + euro(c.deposit) + '</span></div>' : '') +
           '<div class="row total"><span>Zu zahlen</span><span class="cz-mono" id="ccvTot">' + euro(c.total) + '</span></div></div></div>' +
         '<p class="small center" style="margin-top:10px;">Am Auto wird nichts mehr gemacht. Bezahlung mit Karte oder bar am Zelt.</p>';
     }
@@ -444,7 +565,7 @@ function Kunde(){
   }
 
   function render(){
-    var v = { welcome: vWelcome, zeit: vZeit, daten: vDaten, auto: vAuto, schluessel: vSchluessel, find: vFind, status: vStatus }[st.step]();
+    var v = { welcome: vWelcome, zeit: vZeit, daten: vDaten, auto: vAuto, schluessel: vSchluessel, find: vFind, status: vStatus, res: vRes, resok: vResOk }[st.step]();
     var y = st._keepScroll ? window.scrollY : null;
     root.innerHTML = (DEMO ? '<div class="demo-bar">Demo-Modus – Daten nur in diesem Browser</div>' : '') + '<div class="cz-wrap">' + header() + v + '</div>';
     bind();
@@ -460,6 +581,16 @@ function Kunde(){
     on('[data-act="val"]', "click", function(){ st.val = !st.val; st._keepScroll = true; render(); });
     on('[data-act="key"]', "click", function(){ st.key = !st.key; st._keepScroll = true; render(); });
     on('[data-act="find"]', "click", function(){ go("find"); });
+    on('[data-act="toRes"]', "click", function(){ saveInputs(); go("res"); });
+    on('[data-act="showRes"]', "click", function(){ go("resok"); });
+    on("[data-rday]", "click", function(e, el){ saveInputs(); st.rDay = el.getAttribute("data-rday"); st.rTime = 0; watchDay(st.rDay); st._keepScroll = true; render(); });
+    on("[data-rest]", "click", function(e, el){ saveInputs(); st.est = +el.getAttribute("data-rest"); st._keepScroll = true; render(); });
+    on("[data-rtime]", "click", function(e, el){ saveInputs(); st.rTime = +el.getAttribute("data-rtime"); st._keepScroll = true; render(); });
+    on('[data-act="rAcc1"]', "click", function(e){ if (e.target.tagName === "A") return; saveInputs(); st.rAcc1 = !st.rAcc1; st._keepScroll = true; render(); });
+    on('[data-act="rAcc2"]', "click", function(e){ if (e.target.tagName === "A") return; saveInputs(); st.rAcc2 = !st.rAcc2; st._keepScroll = true; render(); });
+    on('[data-act="payRes"]', "click", payRes);
+    ["#ccvRName","#ccvPlate","#ccvPhone"].forEach(function(sel){ var el = $(sel); if (el && st.step === "res") el.addEventListener("input", function(){ saveInputs(); var b = $('[data-act="payRes"]');
+      if (b) b.disabled = !(st.rTime && normPlate(st.plate).length >= 4 && digits(st.phone).length >= 7 && st.rName.length > 1 && st.rAcc1 && st.rAcc2); }); });
     on('[data-act="home"]', "click", function(){ go("welcome"); });
     on('[data-act="back"]', "click", function(){ var i = STEPS.indexOf(st.step); saveInputs(); go(STEPS[Math.max(0, i - 1)]); });
     on('[data-act="next"]', "click", next);
@@ -488,7 +619,8 @@ function Kunde(){
     on('[data-act="leave"]', "click", function(){ lsSet(MY, null); reset(); });
   }
   function saveInputs(){
-    var p = $("#ccvPlate"), t = $("#ccvPhone"), n = $("#ccvNote");
+    var p = $("#ccvPlate"), t = $("#ccvPhone"), n = $("#ccvNote"), rn = $("#ccvRName");
+    if (rn) st.rName = rn.value.trim();
     if (p) st.plate = p.value.trim(); if (t) st.phone = t.value.trim(); if (n) st.note = n.value.trim();
   }
   function next(){
@@ -520,6 +652,22 @@ function Kunde(){
       render();
     });
   }
+  function payRes(){
+    saveInputs();
+    if (st.busy) return;
+    var dur = resDur(S, st.est);
+    if (!st.rTime || freeStarts(st.rDay).indexOf(st.rTime) < 0){ st.err = "Diese Uhrzeit ist gerade nicht mehr frei. Bitte wähle eine andere."; return render(); }
+    st.busy = true; st.err = ""; render();
+    var now = Date.now();
+    var r = { day: st.rDay, from: st.rTime, to: st.rTime + dur, estMin: st.est, name: st.rName.slice(0, 80),
+      plate: st.plate.toUpperCase().replace(/\s+/g, " "), plateKey: normPlate(st.plate), phone: st.phone.slice(0, 29),
+      resCents: S.resCents, paid: false, status: "offen", createdAt: now, consentAt: now };
+    store.createRes(r).then(function(id){
+      lsSet(MYRES, { id: id, until: st.rTime + 24 * 3600000 });
+      location.href = CFG.stripeLink + (CFG.stripeLink.indexOf("?") < 0 ? "?" : "&") + "client_reference_id=" + encodeURIComponent(id);
+    }).catch(function(){ st.busy = false; st.err = "Reservierung konnte nicht angelegt werden. Bitte nochmal versuchen."; render(); });
+  }
+
   function doFind(){
     var p = $("#ccvFPlate").value;
     st.plate = p;
@@ -556,7 +704,7 @@ function Kunde(){
    TEAM-KASSE (für dich)
    ========================================================= */
 function Team(){
-  var jobs = [], user = null, err = "", unsub = null, settingsOpen = false, undoFor = null;
+  var resv = [], jobs = [], user = null, err = "", unsub = null, settingsOpen = false, undoFor = null;
 
   store.settings(function(s){ S = s; if (user) render(); });
   store.onAuth(function(u){
@@ -565,6 +713,7 @@ function Team(){
     if (unsub){ unsub(); unsub = null; }
     if (user){
       unsub = store.all(function(list){ jobs = list; publish(false); render(); }, function(e){ err = "Fehler: " + e.message; render(); });
+      store.resList(function(list){ resv = list; publish(false); render(); });
       store.cleanup();
     }
     render();
@@ -573,9 +722,9 @@ function Team(){
   var lastPub = 0, lastSig = "";
   function publish(force){ // anonyme Belegung für die Kunden-App veröffentlichen (ohne Kennzeichen)
     if (!user) return;
-    var now = Date.now(), pl = plan(jobs, S, now);
-    var cap = pl.plaetze, frei = []; for (var i = 0; i < cap; i++) frei.push(now);
-    pl.bars.forEach(function(b){ frei[b.p] = Math.max(frei[b.p], b.to); });
+    var now = Date.now(), pl = plan(jobs, S, now, resv);
+    var cap = pl.plaetze, frei = pl.free.slice();
+    pl.bars.forEach(function(b){ if (b.k !== "res") frei[b.p] = Math.max(frei[b.p], b.to); });
     var bars = pl.bars.map(function(b){ return { p: b.p, from: b.from, to: b.to, k: b.k }; });
     var sig = JSON.stringify([bars.map(function(b){ return [b.p, Math.round(b.from/60000), Math.round(b.to/60000), b.k]; }), cap]);
     if (!force && sig === lastSig && now - lastPub < 2 * 60000) return;
@@ -585,12 +734,12 @@ function Team(){
   setInterval(function(){ publish(false); }, 60000);
 
   function vBelegung(){
-    var now = Date.now(), pl = plan(jobs, S, now), labels = {};
-    jobs.forEach(function(j){ labels[j.id] = j.plate; });
+    var now = Date.now(), pl = plan(jobs, S, now, resv), labels = {};
+    jobs.forEach(function(j){ labels[j.id] = j.plate; }); resv.forEach(function(r){ labels["res:" + r.id] = r.plate; });
     var next = Math.max(pl.next, now);
     var head = next <= now + 2 * 60000 ? '<b class="free">Jetzt frei</b>' : 'Nächster freier Platz ca. <b>' + hhmm(next) + ' Uhr</b> (in ' + Math.round((next - now) / 60000) + ' Min.)';
     return '<div class="label">Heute im Zelt</div><div class="cz-card belegung"><p class="bel-head">' + head + ' · ' + pl.plaetze + (pl.plaetze > 1 ? ' Plätze' : ' Platz') + '</p>' +
-      timeline(pl, S, now, { labels: labels, legend: '<span><i class="lg laeuft"></i>läuft</span><span><i class="lg gestoppt"></i>gestoppt</span><span><i class="lg wartet"></i>wartet auf Schlüssel</span>' }) +
+      timeline(pl, S, now, { labels: labels, legend: '<span><i class="lg laeuft"></i>läuft</span><span><i class="lg gestoppt"></i>gestoppt</span><span><i class="lg wartet"></i>wartet auf Schlüssel</span><span><i class="lg res"></i>reserviert</span>' }) +
       '<p class="small" style="margin-top:6px;">Geschätzt aus der Einkaufszeit der Kunden + ' + Math.min(S.graceMin, 10) + ' Min. Abholung + ' + S.pufferMin + ' Min. Puffer. Kunden sehen das anonym.</p></div>';
   }
 
@@ -610,9 +759,11 @@ function Team(){
   }
   function tel(j){ return j.phone ? '<a href="tel:' + esc(digits(j.phone).replace(/^00/, "+")) + '">' + esc(j.phone) + '</a>' : "–"; }
 
+  function matchRes(j){ var t = dayKey(); return resv.find(function(r){ return r.status === "offen" && r.paid && r.day === t && r.plateKey === j.plateKey; }); }
   function cardWaiting(j){
     return '<div class="job"><div class="job-h"><div class="pl">' + esc(j.plate) + '</div><div class="fig"><span>Code</span><b style="color:var(--ink)">' + esc(j.pin) + '</b></div></div>' +
       '<div class="meta">angemeldet ' + hhmm(j.createdAt) + ' · ca. ' + j.estMin + ' Min einkaufen · ' + tel(j) + '</div>' + prefsTags(j) +
+      (matchRes(j) ? '<p class="small" style="margin-top:6px;color:#2f7a45;font-weight:700;">✓ Hat für ' + hhmm(matchRes(j).from) + ' Uhr reserviert – ' + euro(matchRes(j).resCents || S.resCents) + ' werden verrechnet.</p>' : '') +
       '<button class="cz-btn cz-btn-primary" data-start="' + j.id + '" type="button">Schlüssel erhalten – Zeit starten</button>' +
       '<button class="cz-btn-link" data-reject="' + j.id + '" type="button" style="color:var(--danger);padding-top:8px;">Ablehnen</button></div>';
   }
@@ -625,10 +776,20 @@ function Team(){
   function cardStopped(j){
     var c = calc(j, S), over = c.graceLeft < 0;
     return '<div class="job' + (over ? " over-b" : " warn-b") + '"><div class="job-h"><div class="pl">' + esc(j.plate) + '</div><div class="fig"><span data-g="' + j.id + '">' + (over ? "+" + clock(-c.graceLeft) + " drüber" : clock(c.graceLeft) + " frei") + '</span><b data-tot="' + j.id + '">' + euro(c.total) + '</b></div></div>' +
-      '<div class="meta">Pflege ' + c.min + ' Min = ' + euro(c.work) + ' · Standgebühr <span data-fee="' + j.id + '">' + euro(c.fee) + '</span> · Code ' + esc(j.pin) + ' · ' + tel(j) + '</div>' +
+      '<div class="meta">Pflege ' + c.min + ' Min = ' + euro(c.work) + ' · Standgebühr <span data-fee="' + j.id + '">' + euro(c.fee) + '</span>' + (c.deposit ? ' · Reservierung −' + euro(c.deposit) : '') + ' · Code ' + esc(j.pin) + ' · ' + tel(j) + '</div>' +
       '<p class="small" style="margin-top:6px;">Nicht mehr am Auto arbeiten. Schlüssel nur gegen Code ' + esc(j.pin) + '.</p>' +
       '<div class="cz-btn-row"><button class="cz-btn cz-btn-money" data-pay="' + j.id + '" data-via="bar" type="button">Bar bezahlt</button><button class="cz-btn cz-btn-primary" data-pay="' + j.id + '" data-via="karte" type="button">Karte (SumUp)</button></div></div>';
   }
+
+  function cardRes(r){
+    var now = Date.now(), bis = r.from + (S.kulanzMin || 15) * 60000, over = r.status === "offen" && now > bis, stale = !r.paid && r.createdAt < now - 30 * 60000;
+    return '<div class="job' + (over ? " over-b" : (r.paid ? "" : " warn-b")) + '"><div class="job-h"><div class="pl">' + esc(r.plate) + '</div><div class="fig"><span>' + (r.day === dayKey(now) ? "heute" : dayLabel(r.day)) + '</span><b style="color:var(--ink)">' + hhmm(r.from) + '</b></div></div>' +
+      '<div class="meta">' + esc(r.name || "") + ' · ' + tel(r) + ' · ca. ' + (r.estMin || 30) + ' Min · ' + (r.paid ? '<b style="color:#2f7a45">' + euro(r.resCents || S.resCents) + ' bezahlt</b>' : '<b style="color:var(--money)">Zahlung offen' + (stale ? ' (vermutlich abgebrochen)' : '') + '</b>') +
+      (over ? ' · <b style="color:var(--danger)">nicht erschienen</b>' : '') + '</div>' +
+      '<div class="cz-btn-row">' + (r.paid ? '' : '<button class="cz-btn cz-btn-primary" data-respaid="' + r.id + '" type="button">In Stripe bezahlt ✓</button>') +
+      '<button class="cz-btn cz-btn-secondary" data-resend="' + r.id + '" data-to="' + (over ? "verfallen" : "storniert") + '" type="button">' + (over ? "Verfallen" : (r.paid ? "Storniert (erstatten)" : "Löschen")) + '</button></div></div>';
+  }
+  function dayLabel(day){ var p = day.split("-"), d = new Date(+p[0], +p[1] - 1, +p[2]); return d.toLocaleDateString("de-DE", { weekday: "short", day: "2-digit", month: "2-digit" }); }
 
   function vMain(){
     var today = dayKey();
@@ -636,7 +797,7 @@ function Team(){
     var run = jobs.filter(function(j){ return j.status === "laeuft"; }).sort(function(a,b){ return a.startedAt - b.startedAt; });
     var stop = jobs.filter(function(j){ return j.status === "gestoppt"; }).sort(function(a,b){ return a.stoppedAt - b.stoppedAt; });
     var paid = jobs.filter(function(j){ return j.status === "bezahlt" && dayKey(j.paidAt) === today; }).sort(function(a,b){ return b.paidAt - a.paidAt; });
-    var sum = paid.reduce(function(s,j){ return s + (j.paidCents || 0); }, 0);
+    var sum = paid.reduce(function(s,j){ return s + (j.paidCents || 0) + (j.depositCents || 0); }, 0);
     var mins = paid.reduce(function(s,j){ return s + (j.workMin || 0); }, 0);
     var sec = function(title, arr, fn, emptyTxt){ return '<div class="label">' + title + (arr.length ? " (" + arr.length + ")" : "") + '</div>' + (arr.length ? arr.map(fn).join("") : '<div class="empty">' + emptyTxt + '</div>'); };
 
@@ -645,6 +806,7 @@ function Team(){
       (err ? '<div class="err">' + esc(err) + '</div>' : '') +
       '<div class="stats"><div class="cz-stat"><small>Umsatz heute</small><b>' + euro(sum) + '</b></div><div class="cz-stat"><small>Autos</small><b>' + paid.length + '</b></div><div class="cz-stat"><small>Ø €/Std</small><b>' + (mins ? euroS(Math.round(sum / mins * 60 / 100) * 100) : "–") + '</b></div></div>' +
       vBelegung() +
+      sec("Reservierungen", resv.filter(function(r){ return r.status === "offen"; }).sort(function(a,b){ return a.from - b.from; }), cardRes, "Keine offenen Reservierungen.") +
       sec("Wartet auf Schlüssel", wait, cardWaiting, "Niemand wartet.") +
       sec("Läuft", run, cardRunning, "Gerade kein Auto in Pflege.") +
       sec("Gestoppt – wartet auf Zahlung", stop, cardStopped, "Nichts offen.") +
@@ -670,6 +832,10 @@ function Team(){
       '<div class="h2" style="margin-top:18px;font-size:18px;">Belegung</div>' +
       f("ccvSPl", "Plätze gleichzeitig (Autos in Pflege)", S.plaetze, "1", "1 = du allein. Mit Helfer z. B. 2.") +
       f("ccvSPuf", "Puffer zwischen zwei Autos (Min)", S.pufferMin, "1") +
+      '<div class="h2" style="margin-top:18px;font-size:18px;">Reservierung</div>' +
+      '<div class="field"><label for="ccvSTage">Reservierbare Tage (JJJJ-MM-TT, mit Komma)</label><input id="ccvSTage" type="text" value="' + esc(S.tage) + '"><div class="hint">z. B. 2027-01-16, 2027-01-23</div></div>' +
+      f("ccvSRes", "Reservierungsgebühr (€)", (S.resCents/100).toFixed(2), "0.5", "Muss zum Betrag im Stripe-Link passen.") +
+      f("ccvSKul", "Kulanz bei Verspätung (Min)", S.kulanzMin, "1") +
       '<div class="field"><label for="ccvSOpen">Öffnungszeit heute</label><div class="cz-btn-row"><input id="ccvSOpen" type="time" value="' + esc(S.oeffnet) + '"><input id="ccvSClose" type="time" value="' + esc(S.schliesst) + '"></div></div>' +
       '<div class="cz-btn-row"><button class="cz-btn cz-btn-secondary" data-act="closeSettings2" type="button">Abbrechen</button><button class="cz-btn cz-btn-primary" data-act="saveSettings" type="button">Speichern</button></div></div></div>';
   }
@@ -683,13 +849,20 @@ function Team(){
       err = ""; store.login($("#ccvMail").value.trim(), $("#ccvPw").value).catch(function(){ err = "Login fehlgeschlagen."; render(); });
     });
     on('[data-act="logout"]', "click", function(){ store.logout(); });
-    on("[data-start]", "click", function(e, el){ var n = Date.now(); store.update(el.getAttribute("data-start"), { status: "laeuft", startedAt: n, keyStaffAt: n }); });
+    on("[data-start]", "click", function(e, el){
+      var n = Date.now(), id = el.getAttribute("data-start"), j = jobs.find(function(x){ return x.id === id; }), r = j && matchRes(j);
+      var p = { status: "laeuft", startedAt: n, keyStaffAt: n };
+      if (r){ p.depositCents = r.resCents || S.resCents; p.resId = r.id; store.updateRes(r.id, { status: "erschienen", jobId: id }, { aus: true }); }
+      store.update(id, p);
+    });
+    on("[data-respaid]", "click", function(e, el){ var id = el.getAttribute("data-respaid"); store.updateRes(id, { paid: true, paidMarkedAt: Date.now() }, { paid: true }); });
+    on("[data-resend]", "click", function(e, el){ var id = el.getAttribute("data-resend"); store.updateRes(id, { status: el.getAttribute("data-to"), closedAt: Date.now() }, { aus: true }); });
     on("[data-reject]", "click", function(e, el){ store.update(el.getAttribute("data-reject"), { status: "storniert" }); });
     on("[data-stop]", "click", function(e, el){ store.update(el.getAttribute("data-stop"), { status: "gestoppt", stoppedAt: Date.now(), stoppedBy: "team" }); });
     on("[data-pay]", "click", function(e, el){
       var j = jobs.find(function(x){ return x.id === el.getAttribute("data-pay"); }); if (!j) return;
       var n = Date.now(), c = calc(j, S, n);
-      store.update(j.id, { status: "bezahlt", paidAt: n, paidVia: el.getAttribute("data-via"), workMin: c.min, workCents: c.work, feeCents: c.fee, paidCents: c.total, rateCents: S.rateCents, keyReturnedAt: n });
+      store.update(j.id, { status: "bezahlt", paidAt: n, paidVia: el.getAttribute("data-via"), workMin: c.min, workCents: c.work, feeCents: c.fee, paidCents: c.total, depositCents: c.deposit || 0, rateCents: S.rateCents, keyReturnedAt: n });
     });
     on("[data-ask-undo]", "click", function(e, el){ undoFor = el.getAttribute("data-ask-undo"); render(); });
     on("[data-undo]", "click", function(e, el){ undoFor = null; store.update(el.getAttribute("data-undo"), { status: "gestoppt", paidAt: null, paidVia: null, paidCents: null }); });
@@ -703,7 +876,8 @@ function Team(){
       var s = { rateCents: Math.round(n("ccvSRate", S.rateCents/100)*100), minCents: Math.round(n("ccvSMin", S.minCents/100)*100),
         graceMin: Math.round(n("ccvSGrace", S.graceMin)), blockMin: Math.max(1, Math.round(n("ccvSBlock", S.blockMin))), blockCents: Math.round(n("ccvSBlockC", S.blockCents/100)*100),
         plaetze: Math.max(1, Math.round(n("ccvSPl", S.plaetze))), pufferMin: Math.round(n("ccvSPuf", S.pufferMin)),
-        oeffnet: $("#ccvSOpen").value || S.oeffnet, schliesst: $("#ccvSClose").value || S.schliesst };
+        oeffnet: $("#ccvSOpen").value || S.oeffnet, schliesst: $("#ccvSClose").value || S.schliesst,
+        tage: $("#ccvSTage").value.trim(), resCents: Math.round(n("ccvSRes", S.resCents/100)*100), kulanzMin: Math.round(n("ccvSKul", S.kulanzMin)) };
       settingsOpen = false; store.saveSettings(s).then(function(){ S = Object.assign({}, S, s); publish(true); });
     });
   }
@@ -711,8 +885,9 @@ function Team(){
     var today = dayKey();
     var paid = jobs.filter(function(j){ return j.status === "bezahlt" && dayKey(j.paidAt) === today; }).sort(function(a,b){ return a.paidAt - b.paidAt; });
     var num = function(c){ return ((c||0)/100).toFixed(2).replace(".", ","); };
-    var rows = [["Datum","Kennzeichen","Start","Stopp","Bezahlt","Minuten","Pflege €","Standgebühr €","Gesamt €","Zahlart"]];
-    paid.forEach(function(j){ rows.push([today, j.plate, hhmm(j.startedAt), hhmm(j.stoppedAt), hhmm(j.paidAt), j.workMin, num(j.workCents), num(j.feeCents), num(j.paidCents), j.paidVia === "bar" ? "Bar" : "Karte (SumUp)"]); });
+    var rows = [["Datum","Kennzeichen","Start","Stopp","Bezahlt","Minuten","Pflege €","Standgebühr €","davon Reservierung (Stripe) €","vor Ort kassiert €","Zahlart vor Ort"]];
+    paid.forEach(function(j){ rows.push([today, j.plate, hhmm(j.startedAt), hhmm(j.stoppedAt), hhmm(j.paidAt), j.workMin, num(j.workCents), num(j.feeCents), num(j.depositCents), num(j.paidCents), j.paidVia === "bar" ? "Bar" : "Karte (SumUp)"]); });
+    resv.filter(function(r){ return r.status === "verfallen" && r.paid && r.day === today; }).forEach(function(r){ rows.push([today, r.plate, hhmm(r.from), "", "", "", "", "", num(r.resCents), "0,00", "Reservierung verfallen (Stripe)"]); });
     var txt = "﻿" + rows.map(function(r){ return r.map(function(c){ return '"' + String(c == null ? "" : c).replace(/"/g, '""') + '"'; }).join(";"); }).join("\n");
     var a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([txt], { type: "text/csv;charset=utf-8" }));
     a.download = "CCV-Shop-Clean-" + today + ".csv"; document.body.appendChild(a); a.click();

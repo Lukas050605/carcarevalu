@@ -43,5 +43,27 @@ service cloud.firestore {
       allow update: if request.resource.data.keys().hasOnly(['id','createdAt'])
         && resource.data.createdAt < request.time.toMillis() - 12 * 3600 * 1000;
     }
+
+    // Reservierungen (5 € über Stripe) – Kunde legt an, nur du siehst die Liste
+    match /reservierungen/{id} {
+      allow get: if true;
+      allow list, update, delete: if isAdmin();
+      allow create: if request.resource.data.paid == false && request.resource.data.status == 'offen'
+        && request.resource.data.keys().hasOnly(['day','from','to','estMin','name','plate','plateKey','phone',
+             'resCents','paid','status','createdAt','consentAt'])
+        && request.resource.data.plate is string && request.resource.data.plate.size() < 20
+        && request.resource.data.phone is string && request.resource.data.phone.size() < 30
+        && request.resource.data.name is string && request.resource.data.name.size() <= 80;
+    }
+
+    // Belegte Zeitfenster ohne persönliche Daten – für die Anzeige freier Zeiten
+    match /belegt/{id} {
+      allow read: if true;
+      allow create: if request.resource.data.paid == false
+        && request.resource.data.keys().hasOnly(['day','from','to','paid','createdAt'])
+        && request.resource.data.to > request.resource.data.from
+        && request.resource.data.to - request.resource.data.from <= 4 * 3600 * 1000;
+      allow update, delete: if isAdmin();
+    }
   }
 }

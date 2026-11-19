@@ -235,3 +235,6 @@
 #ccv-zelt .tl-leg span{display:inline-flex;align-items:center;gap:5px;}
 #ccv-zelt .lg{display:inline-block;width:14px;height:10px;border-radius:3px;}
 #ccv-zelt .cz-btn-row input[type=time]{flex:1;}
+#ccv-zelt .tl-bar.res,#ccv-zelt .lg.res{background:repeating-linear-gradient(135deg,#cdb48a 0 5px,#e3d3b2 5px 10px);color:#14110d;}
+#ccv-zelt .cz-chips.times .chip{min-width:72px;text-align:center;font-family:'JetBrains Mono',monospace;}
+#ccv-zelt .check a{color:var(--accent);text-decoration:underline;}
