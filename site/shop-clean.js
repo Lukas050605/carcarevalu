@@ -3,12 +3,18 @@
 'use strict';
 
 /* =========================================================
-   EINSTELLUNGEN – hier nur die Firebase-Daten eintragen.
-   Solange apiKey leer ist, läuft die App im DEMO-MODUS
-   (alles nur in diesem Browser gespeichert, zum Testen).
+   EINSTELLUNGEN – Firebase ist verbunden (Projekt ccv-shop-clean).
+   Wäre apiKey leer, liefe die App im DEMO-MODUS (nur dieser Browser).
    ========================================================= */
 var CFG = {
-  firebase: { apiKey: "", authDomain: "", projectId: "", appId: "" },
+  firebase: {
+    apiKey: "AIzaSyArSy0MtL8ey933nfoqCOIwIeVgpA4vBWg",
+    authDomain: "ccv-shop-clean.firebaseapp.com",
+    projectId: "ccv-shop-clean",
+    storageBucket: "ccv-shop-clean.firebasestorage.app",
+    messagingSenderId: "73876883164",
+    appId: "1:73876883164:web:f74886d18b8546435ed619"
+  },
   adminEmail: "info@carcarevalu.de",            // nur dieses Login darf die Team-Kasse öffnen
   impressumUrl: "https://www.carcarevalu.de/impressum",
   datenschutzUrl: "https://www.carcarevalu.de/datenschutz",
