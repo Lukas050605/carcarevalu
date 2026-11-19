@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verträge hier kündigen | CAR CARE VALU</title>
+<meta name="description" content="Pflege-Abo von CAR CARE VALU online kündigen.">
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="style.css">
+<meta name="robots" content="noindex">
+</head>
+<body>
+<a class="skip" href="#inhalt">Zum Inhalt springen</a>
+<header>
+  <div class="bar">
+    <a class="logo" href="index.html"><span>CAR CARE</span><b>VALU</b></a>
+    <nav class="desk">
+      <a href="index.html">Start</a>
+        <a href="innenreinigung.html">Innenreinigung</a>
+        <a href="aufbereitung.html">Aufbereitung</a>
+        <a href="abo.html">Pflege-Abo</a>
+        <a href="ergebnisse.html">Ergebnisse</a>
+        <a href="minispiel.html">Minispiel</a>
+      <a class="b2b" href="b2b.html"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M7 18a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM2 3h2.6l.6 2H21l-2.4 8.4a2 2 0 0 1-1.9 1.6H8.4l-.5 2H19v2H5.4l1.3-5.1L3.4 5H2V3z"/></svg><span>Shop &amp; Clean</span></a>
+      <a class="btn" style="padding:11px 20px;font-size:13px" href="innenreinigung.html">Termin buchen</a>
+    </nav>
+    <button class="burger" type="button" aria-label="Menü">☰</button>
+  </div>
+  <nav class="mob">
+      <a href="index.html">Start</a>
+      <a href="innenreinigung.html">Innenreinigung</a>
+      <a href="aufbereitung.html">Aufbereitung</a>
+      <a href="abo.html">Pflege-Abo</a>
+      <a href="ergebnisse.html">Ergebnisse</a>
+      <a href="minispiel.html">Minispiel</a>
+      <a href="gutschein.html">Gutschein</a>
+      <a href="b2b.html">Shop &amp; Clean</a>
+      <a href="einsatzgebiet.html">Einsatzgebiet</a>
+      <a href="impressum.html">Impressum</a>
+  </nav>
+</header>
+
+<main id="inhalt">
+<section class="hero">
+  <div class="wrap narrow">
+    <div class="eyebrow"><i></i><span class="mono">ABO · KÜNDIGUNG</span></div>
+    <h1>Verträge hier kündigen</h1>
+    <p class="lead">Hier kannst du dein Pflege-Abo (Komfort-Abo oder Exklusiv-Paket) direkt online kündigen. Ein Login ist nicht nötig.</p>
+  </div>
+</section>
+
+<section class="legal">
+  <div class="wrap narrow">
+    <form class="card b2bform block" id="kuend-form" action="https://formspree.io/f/xrpgbypy" method="POST" style="display:flex;flex-direction:column">
+      <input type="hidden" name="_subject" value="KÜNDIGUNG Abo über carcarevalu.de">
+      <input type="hidden" name="herkunft" value="Kündigungsbutton">
+      <input type="hidden" name="eingang" id="k-zeit" value="">
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
+      <label>Art der Kündigung
+        <select name="art" id="k-art" required>
+          <option value="Ordentliche Kündigung">Ordentliche Kündigung</option>
+          <option value="Außerordentliche Kündigung">Außerordentliche Kündigung (aus wichtigem Grund)</option>
+        </select>
+      </label>
+      <label id="k-grund-l" hidden>Kündigungsgrund<textarea name="grund" id="k-grund" rows="3" placeholder="Bitte kurz den wichtigen Grund nennen"></textarea></label>
+      <label>Welcher Vertrag?
+        <select name="vertrag" required>
+          <option>Komfort-Abo</option>
+          <option>Exklusiv-Paket</option>
+          <option>Sonstiger laufender Vertrag</option>
+        </select>
+      </label>
+      <label>Vor- und Nachname<input name="name" required autocomplete="name"></label>
+      <label>E-Mail-Adresse, mit der du gebucht hast<input type="email" name="email" required autocomplete="email" placeholder="für die Bestätigung"></label>
+      <label>Telefonnummer oder Kennzeichen (optional, hilft bei der Zuordnung)<input name="zuordnung"></label>
+      <label>Zu wann kündigen?
+        <select name="zeitpunkt" id="k-zp">
+          <option value="Zum nächstmöglichen Zeitpunkt">Zum nächstmöglichen Zeitpunkt</option>
+          <option value="Zu einem bestimmten Datum">Zu einem bestimmten Datum</option>
+        </select>
+      </label>
+      <label id="k-datum-l" hidden>Gewünschtes Datum<input type="date" name="datum" id="k-datum"></label>
+      <button class="btn full" type="submit">jetzt kündigen</button>
+      <p style="margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.6;color:#58503f">Mit „jetzt kündigen“ geht deine Kündigung direkt an uns. Du siehst danach eine Bestätigung, die du speichern oder drucken kannst. Zusätzlich bestätigen wir den Eingang per E-Mail. <a href="datenschutz.html">Datenschutz</a></p>
+    </form>
+    <div class="block" id="kuend-ok" hidden></div>
+  </div>
+</section>
+<script>
+(function () {
+  var f = document.getElementById("kuend-form"), ok = document.getElementById("kuend-ok");
+  var art = document.getElementById("k-art"), zp = document.getElementById("k-zp");
+  art.addEventListener("change", function () { var a = art.value.indexOf("Außer") === 0; document.getElementById("k-grund-l").hidden = !a; document.getElementById("k-grund").required = a; });
+  zp.addEventListener("change", function () { var d = zp.value.indexOf("bestimmten") > 0; document.getElementById("k-datum-l").hidden = !d; document.getElementById("k-datum").required = d; });
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  f.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!f.reportValidity()) return;
+    var jetzt = new Date();
+    var zeit = jetzt.toLocaleDateString("de-DE") + ", " + jetzt.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" }) + " Uhr";
+    document.getElementById("k-zeit").value = zeit;
+    var btn = f.querySelector("button[type=submit]");
+    btn.disabled = true; btn.textContent = "Wird gesendet …";
+    var fd = new FormData(f);
+    fetch(f.action, { method: "POST", body: fd, headers: { Accept: "application/json" } })
+      .then(function (r) {
+        if (!r.ok) throw new Error();
+        var rows = [["Eingegangen am", zeit], ["Art", fd.get("art")], ["Vertrag", fd.get("vertrag")], ["Name", fd.get("name")], ["E-Mail", fd.get("email")],
+          ["Zeitpunkt", fd.get("zeitpunkt") + (fd.get("datum") ? " (" + fd.get("datum") + ")" : "")]];
+        if (fd.get("grund")) rows.push(["Grund", fd.get("grund")]);
+        ok.innerHTML = '<h2>Deine Kündigung ist eingegangen</h2>' +
+          '<p>Wir haben deine Kündigung erhalten und bestätigen dir den Eingang zusätzlich per E-Mail.</p>' +
+          '<ul>' + rows.map(function (r) { return '<li><strong>' + esc(r[0]) + ':</strong> ' + esc(r[1]) + '</li>'; }).join("") + '</ul>' +
+          '<p style="margin-top:14px"><button class="btn" type="button" onclick="window.print()">Bestätigung speichern / drucken</button></p>';
+        f.hidden = true; ok.hidden = false; ok.scrollIntoView({ block: "start" });
+      })
+      .catch(function () {
+        btn.disabled = false; btn.textContent = "jetzt kündigen";
+        alertBox();
+      });
+  });
+  function alertBox() {
+    var w = f.querySelector(".ferr");
+    if (!w) { w = document.createElement("p"); w.className = "note ferr"; w.style.color = "#a33"; f.insertBefore(w, f.querySelector("button")); }
+    w.innerHTML = 'Das Senden hat nicht geklappt. Bitte kündige per E-Mail an <a href="mailto:info@carcarevalu.de?subject=K%C3%BCndigung%20Abo">info@carcarevalu.de</a> – das ist genauso gültig.';
+  }
+})();
+</script>
+</main>
+<a class="wa" href="https://wa.me/4915126718415?text=Hallo%2C%20ich%20interessiere%20mich%20f%C3%BCr%20eine%20Fahrzeugreinigung." target="_blank" rel="noopener" aria-label="Per WhatsApp schreiben">
+  <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.15-.15.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.6-.92-2.19-.24-.57-.49-.5-.67-.5h-.57c-.2 0-.52.07-.79.37-.27.3-1.03 1.01-1.03 2.46 0 1.45 1.06 2.85 1.2 3.05.15.2 2.05 3.28 5.02 4.46 2.48.98 2.98.78 3.52.73.54-.05 1.75-.71 2-1.4.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35z"/><path fill="currentColor" d="M12.04 2C6.6 2 2.17 6.43 2.17 11.88c0 1.74.46 3.44 1.32 4.94L2 22l5.34-1.4a9.83 9.83 0 0 0 4.7 1.2c5.44 0 9.87-4.43 9.87-9.88C21.91 6.43 17.48 2 12.04 2zm0 17.96a8.1 8.1 0 0 1-4.13-1.13l-.3-.18-3.07.8.82-3-.19-.31a8.06 8.06 0 0 1-1.24-4.3c0-4.46 3.64-8.09 8.11-8.09 4.47 0 8.1 3.63 8.1 8.1 0 4.46-3.63 8.1-8.1 8.1z"/></svg>
+  <span>WhatsApp</span>
+</a>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <a class="logo" href="index.html"><span>CAR CARE</span><b>VALU</b></a>
+        <p style="margin:14px 0 0;font-size:14px;line-height:1.7;color:#6b6152;max-width:30ch">Mobile Fahrzeugpflege und Innenraumaufbereitung. Wir kommen zu dir.</p>
+      </div>
+      <div>
+        <h4>LEISTUNGEN</h4>
+        <div class="col">
+          <a href="innenreinigung.html">Innenreinigung</a>
+          <a href="aufbereitung.html">Premium-Aufbereitung</a>
+          <a href="abo.html">Pflege-Abo</a>
+          <a href="abo-termin.html">Abo-Termin buchen</a>
+        </div>
+      </div>
+      <div>
+        <h4>MEHR</h4>
+        <div class="col">
+          <a href="ergebnisse.html">Vorher / Nachher</a>
+          <a href="minispiel.html">Minispiel</a>
+          <a href="index.html#anfahrt">Anfahrt prüfen</a>
+          <a href="einsatzgebiet.html">Einsatzgebiet</a>
+          <a href="wetter.html">Wetter &amp; Termine</a>
+          <a href="anfrage.html">Anfrage senden</a>
+          <a href="gutschein.html">Geschenkgutschein</a>
+          <a href="b2b.html">B2B · Geschäftskunden</a>
+          <a href="fitnessstudio.html">Fitnessgeräte &amp; Lackservice</a>
+          <a href="autohaus.html">Autohäuser &amp; Fuhrpark</a>
+          <a href="vermietung.html">Vermietungen &amp; Mietwagen</a>
+        </div>
+      </div>
+      <div>
+        <h4>KONTAKT</h4>
+        <div class="col">
+          <span>Car Care Valu<br>Himbacher Str. 10<br>63694 Limeshain</span>
+          <a href="mailto:info@carcarevalu.de">info@carcarevalu.de</a>
+          <a href="tel:+4915126718415">+49 151 26718415</a>
+        </div>
+      </div>
+    </div>
+    <div class="base">
+      <span>© 2026 CAR CARE VALU · Inhaber Lukas Scheuermann</span>
+      <div>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="agb.html">AGB</a>
+        <a href="widerruf.html">Widerruf</a>
+        <a href="kuendigen.html">Verträge hier kündigen</a>
+      </div>
+    </div>
+  </div>
+</footer>
+<script src="app.js"></script>
+
+</body>
+</html>
