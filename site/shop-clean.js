@@ -18,7 +18,9 @@ var CFG = {
   adminEmail: "info@carcarevalu.de",            // nur dieses Login darf die Team-Kasse öffnen
   impressumUrl: "https://www.carcarevalu.de/impressum",
   datenschutzUrl: "https://www.carcarevalu.de/datenschutz",
-  standort: "REWE Center Nidderau",
+  standort: "Nidder Forum Nidderau",
+  premiere: "2027-01-16T10:00:00+01:00",       // vor diesem Datum zeigt die App den Starttermin an
+  premiereText: "Premiere: Sa, 16. Januar 2027 · 10–21 Uhr",
   imgBase: "images/",                          // Ordner mit deinen Website-Fotos
   firma: "CAR CARE VALU"
 };
@@ -181,6 +183,7 @@ function Kunde(){
     return '' +
     '<div class="cz-hero"><img class="hero-pic" src="' + img(IMG.hero) + '" alt=""><div class="eyebrow">Pop-up · ' + esc(CFG.standort) + '</div><h1 class="h1">Herzlich willkommen bei CCV Shop &amp; Clean</h1>' +
     '<p class="cz-lead">Du gehst einkaufen – wir pflegen in der Zeit den Innenraum deines Autos.</p>' +
+    (CFG.premiere && Date.now() < new Date(CFG.premiere).getTime() ? '<div class="premiere">' + esc(CFG.premiereText) + '</div>' : '') +
     '<div class="price-row"><div class="price-box"><span>pro Minute</span><b>' + euro(S.rateCents) + '</b></div>' +
     '<div class="price-box"><span>Mindestbetrag</span><b>' + euroS(S.minCents) + '</b></div></div></div>' +
 
