@@ -1,0 +1,47 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Nur DEIN Login darf die Kasse benutzen – E-Mail anpassen, falls du eine andere nimmst
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == 'info@carcarevalu.de';
+    }
+
+    // Preise: jeder darf lesen (Kunden-App zeigt sie an), nur du darfst ändern
+    match /einstellungen/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Aufträge
+    match /auftraege/{id} {
+      allow get: if true;            // Kunde sieht nur seinen eigenen Auftrag (zufällige ID)
+      allow list, delete: if isAdmin();
+
+      allow create: if request.resource.data.status == 'angemeldet'
+        && request.resource.data.keys().hasOnly(['plate','plateKey','phone','pin','estMin','prefs','note',
+             'status','createdAt','keyCustomerAt','consentAt','startedAt','stoppedAt','paidAt','dayKey'])
+        && request.resource.data.plate is string && request.resource.data.plate.size() < 20
+        && request.resource.data.phone is string && request.resource.data.phone.size() < 30
+        && request.resource.data.note is string && request.resource.data.note.size() <= 300
+        && request.resource.data.startedAt == null
+        && request.resource.data.paidAt == null;
+
+      allow update: if isAdmin()
+        // Kunde darf nur: laufenden Auftrag stoppen …
+        || (resource.data.status == 'laeuft' && request.resource.data.status == 'gestoppt'
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','stoppedAt']))
+        // … oder vor der Schlüsselübergabe abbrechen
+        || (resource.data.status == 'angemeldet' && request.resource.data.status == 'storniert'
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']));
+    }
+
+    // Status-Suche über Kennzeichen + Code
+    match /lookup/{key} {
+      allow get: if true;
+      allow create: if request.resource.data.keys().hasOnly(['id','createdAt']);
+      allow update: if request.resource.data.keys().hasOnly(['id','createdAt'])
+        && resource.data.createdAt < request.time.toMillis() - 12 * 3600 * 1000;
+    }
+  }
+}
