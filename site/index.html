@@ -131,78 +131,6 @@
   </div>
 </section>
 
-<section class="sc-teaser" id="shop-clean" aria-labelledby="sc-t-h">
-  <div class="wrap sc-grid">
-    <div class="sc-copy">
-      <div class="eyebrow"><i></i><span class="mono">NEU · PREMIERE IM NIDDER FORUM</span></div>
-      <h2 id="sc-t-h">Du kaufst ein.<br>Wir pflegen dein Auto.</h2>
-      <p class="sc-lead">CCV Shop &amp; Clean kommt nach Nidderau: Schlüssel am Zelt abgeben, in Ruhe einkaufen, per Handy auf Stopp drücken – und in ein sauberes Auto steigen. Bezahlt wird nur die Zeit, die du wirklich einkaufst.</p>
-      <div class="sc-facts">
-        <div><span>Wann</span><b>Sa, 16. Januar 2027</b><em>10 – 21 Uhr</em></div>
-        <div><span>Wo</span><b>Nidder Forum</b><em>Nidderau, auf dem Parkplatz</em></div>
-        <div><span>Preis</span><b>0,90 € / Min.</b><em>mind. 25 €</em></div>
-      </div>
-      <div class="sc-count" id="sc-count" aria-live="polite">
-        <div><b id="sc-d">–</b><span>Tage</span></div>
-        <div><b id="sc-h">–</b><span>Std.</span></div>
-        <div><b id="sc-m">–</b><span>Min.</span></div>
-      </div>
-      <p class="sc-live" id="sc-live" hidden></p>
-      <div class="sc-cta">
-        <a class="btn" href="shop-clean.html">So funktioniert's →</a>
-        <a class="btn ghost sc-ghost" id="sc-ics" href="#" download="CCV-Shop-Clean-16-01-2027.ics">In den Kalender</a>
-      </div>
-    </div>
-    <div class="sc-pic">
-      <img src="images/hero-car.jpg" alt="" loading="lazy">
-      <div class="sc-badge"><b>16.01.</b><span>Premiere</span></div>
-    </div>
-  </div>
-</section>
-<style>
-.sc-teaser{background:#0d0c0a;color:#f3efe7;padding:clamp(48px,6vw,88px) 0;overflow:hidden}
-.sc-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(28px,4vw,64px);align-items:center}
-.sc-teaser .eyebrow i{background:var(--gold)}
-.sc-teaser .mono{color:var(--gold)}
-.sc-teaser h2{color:#fff;margin-top:16px;max-width:none}
-.sc-lead{color:rgba(243,239,231,.78);font-size:17px;line-height:1.65;margin:18px 0 0;max-width:56ch}
-.sc-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:26px}
-.sc-facts div{border:1px solid rgba(205,180,138,.3);background:rgba(205,180,138,.08);border-radius:14px;padding:14px}
-.sc-facts span{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
-.sc-facts b{display:block;font-family:var(--display);font-size:17px;margin-top:6px;color:#fff}
-.sc-facts em{display:block;font-style:normal;font-size:13px;color:rgba(243,239,231,.7);margin-top:2px}
-.sc-count{display:flex;gap:10px;margin-top:18px}
-.sc-count div{min-width:78px;text-align:center;border-radius:12px;background:#1b1712;padding:10px 12px}
-.sc-count b{display:block;font-family:var(--mono);font-size:26px;color:var(--gold);font-variant-numeric:tabular-nums}
-.sc-count span{font-size:11.5px;color:rgba(243,239,231,.65)}
-.sc-live{margin:18px 0 0;font-family:var(--display);font-weight:700;font-size:18px;color:var(--gold)}
-.sc-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
-.sc-teaser .sc-ghost{border-color:rgba(243,239,231,.3);color:#f3efe7}
-.sc-teaser .sc-ghost:hover{background:rgba(205,180,138,.18);color:#fff}
-.sc-pic{position:relative}
-.sc-pic img{width:100%;aspect-ratio:1400/759;object-fit:cover;border-radius:18px;-webkit-mask-image:linear-gradient(180deg,#000 75%,transparent);mask-image:linear-gradient(180deg,#000 75%,transparent)}
-.sc-badge{position:absolute;right:14px;top:14px;background:var(--gold);color:#14110d;border-radius:14px;padding:10px 14px;text-align:center;box-shadow:0 12px 30px -12px rgba(0,0,0,.6)}
-.sc-badge b{display:block;font-family:var(--display);font-size:22px;line-height:1}
-.sc-badge span{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase}
-@media(max-width:860px){.sc-grid{grid-template-columns:1fr}.sc-pic{order:-1}.sc-facts{grid-template-columns:1fr}}
-</style>
-<script>
-(function(){
-  var START=new Date("2027-01-16T10:00:00+01:00").getTime(), ENDE=new Date("2027-01-16T21:00:00+01:00").getTime();
-  var c=document.getElementById("sc-count"), live=document.getElementById("sc-live");
-  function tick(){
-    var n=Date.now(), d=START-n;
-    if(d>0){var m=Math.floor(d/60000);document.getElementById("sc-d").textContent=Math.floor(m/1440);document.getElementById("sc-h").textContent=Math.floor(m%1440/60);document.getElementById("sc-m").textContent=m%60;return;}
-    c.hidden=true; live.hidden=false;
-    live.textContent = n<ENDE ? "Heute live bis 21 Uhr im Nidder Forum – komm vorbei!" : "Danke an alle, die beim Probetag dabei waren! Die nächsten Termine folgen hier.";
-  }
-  tick(); setInterval(tick,30000);
-  var ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//CAR CARE VALU//Shop & Clean//DE","BEGIN:VEVENT","UID:shop-clean-20270116@carcarevalu.de","DTSTAMP:20261119T120000Z",
-    "DTSTART:20270116T090000Z","DTEND:20270116T200000Z","SUMMARY:CCV Shop & Clean – Auto pflegen lassen beim Einkaufen","LOCATION:Nidder Forum\\, Nidderau",
-    "DESCRIPTION:Schlüssel am CCV-Zelt abgeben\\, einkaufen\\, per Handy stoppen. 0\\,90 € pro Minute\\, mind. 25 €. Infos: https://www.carcarevalu.de/shop-clean.html","END:VEVENT","END:VCALENDAR"].join("\r\n");
-  document.getElementById("sc-ics").href="data:text/calendar;charset=utf-8,"+encodeURIComponent(ics);
-})();
-</script>
 
 <section class="abostrip">
   <div class="wrap abostrip-in" data-reveal>
@@ -414,5 +342,6 @@
 <script src="tweaks.js"></script>
 
 <script src="promo.js"></script>
+<script src="teaser.js"></script>
 </body>
 </html>
