@@ -25,7 +25,7 @@ var CFG = {
   imgBase: "images/",                          // Ordner mit deinen Website-Fotos
   firma: "CAR CARE VALU"
 };
-var DEFAULTS = { rateCents: 90, minCents: 2500, graceMin: 15, blockMin: 15, blockCents: 500, plaetze: 1, pufferMin: 5, oeffnet: "10:00", schliesst: "21:00", tage: "2027-01-16", resCents: 500, kulanzMin: 15 };
+var DEFAULTS = { rateCents: 90, minCents: 2500, graceMin: 15, blockMin: 15, blockCents: 500, plaetze: 1, pufferMin: 5, oeffnet: "10:00", schliesst: "21:00", tage: "2027-01-16", resCents: 500, kulanzMin: 15, resBis: "15:00" };
 var ZONES = [
   { id: "cockpit",    label: "Cockpit & Armaturen", car: true },
   { id: "vorne",      label: "Vordersitze",         car: true },
@@ -259,7 +259,7 @@ function Kunde(){
   function openDays(){
     var now = Date.now(), t = dayKey(now);
     return String(S.tage || "").split(/[,;\s]+/).map(function(x){ return x.trim(); }).filter(function(x){ return /^\d{4}-\d{2}-\d{2}$/.test(x); })
-      .filter(function(x){ return x > t || (x === t && now < todayAt(S.schliesst, now) - 30 * 60000); }).sort();
+      .filter(function(x){ return x > t || (x === t && now + 20 * 60000 <= todayAt(S.resBis || S.schliesst, now)); }).sort();
   }
   function dayLabel(day){ var p = day.split("-"), d = new Date(+p[0], +p[1] - 1, +p[2]); return d.toLocaleDateString("de-DE", { weekday: "short", day: "2-digit", month: "2-digit" }); }
   function dayStart(day, hm){ var p = day.split("-"), q = String(hm).split(":"); return new Date(+p[0], +p[1] - 1, +p[2], +q[0] || 0, +q[1] || 0).getTime(); }
@@ -270,7 +270,8 @@ function Kunde(){
     if (day === dayKey(now) && B && B.updatedAt > now - 15 * 60000){ (B.frei || []).forEach(function(f){ if (f > now) blocks.push({ from: now, to: f }); }); }
     var out = [], open = dayStart(day, S.oeffnet), close = dayStart(day, S.schliesst);
     var t = Math.max(open, Math.ceil((now + 20 * 60000) / (15 * 60000)) * 15 * 60000);
-    for (; t + (st.est || 30) * 60000 <= close; t += 15 * 60000){ if (overlapCount(blocks, t, t + dur) < cap) out.push(t); }
+    var last = Math.min(close - (st.est || 30) * 60000, dayStart(day, S.resBis || S.schliesst));
+    for (; t <= last; t += 15 * 60000){ if (overlapCount(blocks, t, t + dur) < cap) out.push(t); }
     return out;
   }
 
@@ -491,7 +492,7 @@ function Kunde(){
     return '<h2 class="h2">Platz reservieren</h2><p class="cz-lead">Sicher dir eine feste Uhrzeit. Die ' + euroS(S.resCents) + ' werden später mit dem Pflegepreis verrechnet.</p>' +
       '<div class="label">Tag</div><div class="cz-chips">' + dayChips + '</div>' +
       '<div class="label">Wie lange kaufst du ungefähr ein?</div><div class="cz-chips">' + estChips + '</div>' +
-      '<div class="label">Freie Uhrzeiten (Ankunft am Zelt)</div><div class="cz-chips times">' + timeChips + '</div>' +
+      '<div class="label">Freie Uhrzeiten (Ankunft am Zelt)</div><p class="small" style="margin:-2px 0 8px 2px;">Reservierbar bis ' + esc(S.resBis || S.schliesst) + ' Uhr – danach einfach spontan vorbeikommen.</p><div class="cz-chips times">' + timeChips + '</div>' +
       '<div class="field"><label for="ccvRName">Dein Name</label><input id="ccvRName" type="text" autocomplete="name" value="' + esc(st.rName) + '"></div>' +
       '<div class="field"><label for="ccvPlate">Kennzeichen</label><input id="ccvPlate" class="plate" type="text" autocomplete="off" autocapitalize="characters" placeholder="FB-CC 123" value="' + esc(st.plate) + '"></div>' +
       '<div class="field"><label for="ccvPhone">Handynummer</label><input id="ccvPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0170 1234567" value="' + esc(st.phone) + '"></div>' +
@@ -839,6 +840,7 @@ function Team(){
       '<div class="field"><label for="ccvSTage">Reservierbare Tage (JJJJ-MM-TT, mit Komma)</label><input id="ccvSTage" type="text" value="' + esc(S.tage) + '"><div class="hint">z. B. 2027-01-16, 2027-01-23</div></div>' +
       f("ccvSRes", "Reservierungsgebühr (€)", (S.resCents/100).toFixed(2), "0.5", "Muss zum Betrag im Stripe-Link passen.") +
       f("ccvSKul", "Kulanz bei Verspätung (Min)", S.kulanzMin, "1") +
+      '<div class="field"><label for="ccvSResBis">Reservierbar bis (letzte Uhrzeit)</label><input id="ccvSResBis" type="time" value="' + esc(S.resBis || "15:00") + '"><div class="hint">Danach nur noch spontan ohne Reservierung.</div></div>' +
       '<div class="field"><label for="ccvSOpen">Öffnungszeit heute</label><div class="cz-btn-row"><input id="ccvSOpen" type="time" value="' + esc(S.oeffnet) + '"><input id="ccvSClose" type="time" value="' + esc(S.schliesst) + '"></div></div>' +
       '<div class="cz-btn-row"><button class="cz-btn cz-btn-secondary" data-act="closeSettings2" type="button">Abbrechen</button><button class="cz-btn cz-btn-primary" data-act="saveSettings" type="button">Speichern</button></div></div></div>';
   }
@@ -880,7 +882,7 @@ function Team(){
         graceMin: Math.round(n("ccvSGrace", S.graceMin)), blockMin: Math.max(1, Math.round(n("ccvSBlock", S.blockMin))), blockCents: Math.round(n("ccvSBlockC", S.blockCents/100)*100),
         plaetze: Math.max(1, Math.round(n("ccvSPl", S.plaetze))), pufferMin: Math.round(n("ccvSPuf", S.pufferMin)),
         oeffnet: $("#ccvSOpen").value || S.oeffnet, schliesst: $("#ccvSClose").value || S.schliesst,
-        tage: $("#ccvSTage").value.trim(), resCents: Math.round(n("ccvSRes", S.resCents/100)*100), kulanzMin: Math.round(n("ccvSKul", S.kulanzMin)) };
+        tage: $("#ccvSTage").value.trim(), resCents: Math.round(n("ccvSRes", S.resCents/100)*100), kulanzMin: Math.round(n("ccvSKul", S.kulanzMin)), resBis: $("#ccvSResBis").value || S.resBis };
       settingsOpen = false; store.saveSettings(s).then(function(){ S = Object.assign({}, S, s); publish(true); });
     });
   }
