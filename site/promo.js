@@ -68,6 +68,7 @@
   var gezeigt = false;
   function zeigePopup() {
     if (gezeigt || !popupErlaubt || document.querySelector(".pm-ov")) return;
+    try { if (sessionStorage.getItem("ccv_popup_besuch")) return; sessionStorage.setItem("ccv_popup_besuch", "abo"); } catch (e) {}
     gezeigt = true;
     merken();
     modal(POPUP, "pm-promo");

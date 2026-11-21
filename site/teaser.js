@@ -22,6 +22,7 @@
     ".sct a.go:hover{color:#fff}" +
     ".sct .x{position:absolute;right:8px;top:8px;width:26px;height:26px;border-radius:8px;border:none;background:rgba(243,239,231,.08);color:#f3efe7;cursor:pointer;font-size:13px}" +
     ".sct .x:hover{background:rgba(243,239,231,.18)}" +
+    "@media(max-width:620px){.sct{bottom:84px}}" +
     "@media(prefers-reduced-motion:reduce){.sct{transition:none}}";
   document.head.appendChild(css);
 
@@ -37,7 +38,7 @@
     '<button type="button" class="x" aria-label="Schließen">✕</button>';
 
   function zeigen() {
-    if (document.querySelector(".pm-ov")) { return setTimeout(zeigen, 1500); } // Abo-Pop-up ist offen: warten
+    try { if (sessionStorage.getItem("ccv_popup_besuch")) return; sessionStorage.setItem("ccv_popup_besuch", "teaser"); } catch (e) {} // nur ein Pop-up pro Besuch
     document.body.appendChild(el);
     requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add("open"); }); });
   }

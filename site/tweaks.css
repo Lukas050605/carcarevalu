@@ -49,7 +49,7 @@ body:has(#tw-panel.open) .wa{opacity:0;pointer-events:none}
 /* ---- Auftritt: Rhythmus, Typo, Bewegung ---- */
 section{padding-top:calc(clamp(56px,7vw,100px) * var(--tw-sec,1));
   padding-bottom:calc(clamp(56px,7vw,100px) * var(--tw-sec,1))}
-.hero h1{font-size:calc(clamp(32px,5vw,62px) * var(--tw-h1,1))}
+.hero h1{font-size:calc(clamp(32px,4.1vw,54px) * var(--tw-h1,1))}
 .grid{gap:calc(18px * var(--tw-sec,1))}
 .card{border-radius:calc(16px * var(--tw-rund,1))}
 [data-reveal]{transition-duration:calc(.8s * var(--tw-mot,1))}

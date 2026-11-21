@@ -443,3 +443,13 @@
       });
   });
 })();
+
+/* Handy: feste Leiste „Termin buchen“ unten (WhatsApp-Knopf bleibt rechts daneben) */
+(function () {
+  var seite = location.pathname.split("/").pop() || "index.html";
+  if (["shop-clean.html", "shop-clean-team.html", "impressum.html", "datenschutz.html", "agb.html", "widerruf.html", "kuendigen.html", "abo-termin.html"].indexOf(seite) >= 0) return;
+  var a = document.createElement("a");
+  a.className = "mbar"; a.href = "innenreinigung.html"; a.textContent = "Termin buchen";
+  if (seite === "innenreinigung.html") { a.href = "#pakete"; }
+  document.body.appendChild(a);
+})();

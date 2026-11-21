@@ -33,16 +33,16 @@
   /* ---------- Ansprache: Copy über die ganze Seite ---------- */
   var TEXTE = {
     du: {
-      h1: "Wir kommen zu dir. Prüf kurz die Anfahrt.",
-      lead: "Bis 50 km Entfernung von Limeshain fahren wir ohne Aufschlag. Darüber kommen Spritkosten dazu — der Rechner zeigt sie dir vorher.",
-      cta1: "Leistungen ansehen →", cta2: "Abo-Kunde: direkt buchen",
+      h1: "Mobile Innenreinigung – direkt bei dir vor der Tür.",
+      lead: "Wir pflegen dein Auto zu Hause oder auf der Arbeit. Festpreise ab 59 €, bis 50 km ab Limeshain ohne Anfahrtskosten.",
+      cta1: "Termin buchen →", cta2: "Anfahrt & Preis prüfen",
       tick3: "Termine auch samstags", such: "Ort suchen",
       buchen: "Termin buchen", rechner: "Pakete ansehen & buchen →"
     },
     sie: {
-      h1: "Wir kommen zu Ihnen. Prüfen Sie kurz die Anfahrt.",
-      lead: "Bis 50 km Entfernung von Limeshain fahren wir ohne Aufschlag. Darüber kommen Spritkosten hinzu — der Rechner zeigt sie Ihnen vorab.",
-      cta1: "Leistungen ansehen →", cta2: "Als Abo-Kunde direkt buchen",
+      h1: "Mobile Innenreinigung – direkt bei Ihnen vor der Tür.",
+      lead: "Wir pflegen Ihr Auto zu Hause oder am Arbeitsplatz. Festpreise ab 59 €, bis 50 km ab Limeshain ohne Anfahrtskosten.",
+      cta1: "Termin buchen →", cta2: "Anfahrt & Preis prüfen",
       tick3: "Termine auch samstags", such: "Ort eingeben",
       buchen: "Termin buchen", rechner: "Pakete ansehen & buchen →"
     }
@@ -129,7 +129,9 @@
     })) +
     '<button type="button" id="tw-reset">Zurücksetzen</button>';
 
-  document.body.appendChild(knopf);
+  var fussLeiste = document.querySelector("footer .base > div:last-child") || document.querySelector("footer .base");
+  if (fussLeiste) { knopf.classList.add("tw-foot"); knopf.innerHTML = "<span>Darstellung</span>"; fussLeiste.appendChild(knopf); }
+  else document.body.appendChild(knopf);
   document.body.appendChild(panel);
 
   function offen(v) {

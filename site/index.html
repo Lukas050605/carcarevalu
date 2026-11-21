@@ -24,12 +24,10 @@
   <div class="bar">
     <a class="logo" href="index.html"><span>CAR CARE</span><b>VALU</b></a>
     <nav class="desk">
-      <a href="index.html" aria-current="page">Start</a>
         <a href="innenreinigung.html">Innenreinigung</a>
         <a href="aufbereitung.html">Aufbereitung</a>
         <a href="abo.html">Pflege-Abo</a>
         <a href="ergebnisse.html">Ergebnisse</a>
-        <a href="minispiel.html">Minispiel</a>
       <a class="b2b" href="shop-clean.html"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M7 18a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM2 3h2.6l.6 2H21l-2.4 8.4a2 2 0 0 1-1.9 1.6H8.4l-.5 2H19v2H5.4l1.3-5.1L3.4 5H2V3z"/></svg><span>Shop &amp; Clean</span></a>
       <a class="btn" style="padding:11px 20px;font-size:13px" href="innenreinigung.html">Termin buchen</a>
     </nav>
@@ -55,19 +53,20 @@
   <div class="wrap" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(30px,4vw,56px);align-items:start">
     <div>
       <div class="eyebrow"><i></i><span class="mono">START IN LIMESHAIN · 63694</span></div>
-      <h1>Wir kommen zu dir. Prüf kurz die Anfahrt.</h1>
-      <p class="lead">Bis 50 km Entfernung von Limeshain fahren wir ohne Aufschlag. Darüber kommen Spritkosten dazu — der Rechner zeigt sie dir vorher.</p>
-      <div class="ticks"><span>Bis 50 km ohne Aufschlag</span><span>Transparente Festpreise</span><span>Termine auch samstags</span></div>
+      <h1>Mobile Innenreinigung – direkt bei dir vor der Tür.</h1>
+      <p class="lead">Wir pflegen dein Auto zu Hause oder auf der Arbeit. Festpreise ab 59 €, bis 50 km ab Limeshain ohne Anfahrtskosten.</p>
+      <div class="ticks"><span>Festpreise ab 59 €</span><span>Bis 50 km ohne Anfahrtskosten</span><span>Termine auch samstags</span><span>★ 4,9 bei Google</span></div>
       <div class="cta-row">
-        <a class="btn" href="innenreinigung.html">Leistungen ansehen →</a>
-        <a class="btn ghost" href="abo-termin.html">Abo-Kunde: direkt buchen</a>
+        <a class="btn" href="innenreinigung.html">Termin buchen →</a>
+        <a class="btn ghost" href="#ccv-anfahrt">Anfahrt &amp; Preis prüfen</a>
       </div>
+      <a class="hero-abo" href="abo-termin.html">Schon Abo-Kunde? Hier direkt buchen →</a>
       <div class="heroimg" style="background-image:url('images/hero-car.jpg')"></div>
     </div>
     
   <div id="ccv-anfahrt" class="calc">
     <div class="calc-head">
-      <h2 style="margin:0;font-size:clamp(20px,2.4vw,26px);max-width:none">Anfahrt &amp; Spritkosten</h2>
+      <h2 style="margin:0;font-size:clamp(20px,2.4vw,26px);max-width:none">Anfahrt &amp; Preis prüfen</h2>
       <span class="mono" style="color:var(--muted2);font-size:10px">AB 63694 LIMESHAIN</span>
     </div>
     <label class="lbl">Ort suchen
@@ -105,15 +104,6 @@
         <a class="btn ghost" href="tel:+4915126718415">+49 151 26718415</a>
       </div>
     </div>
-    <div class="ktable">
-      <div><span>Kostenlose Anfahrt</span><b id="ccv-frei">bis 50 km</b></div>
-      <div><span>Grundlage je km darüber</span><b id="ccv-rate">0,89 € / km</b></div>
-      <div><span>Zonenbereich</span><b id="ccv-extra">bis 50 km</b></div>
-      <div><span>Anfahrtspauschale</span><b id="ccv-calc">keine</b></div>
-      <div><span>Fahrzeugklasse</span><b id="ccv-klasse">Normalpreis</b></div>
-      <div><span>Über 110 km</span><b>Preis nach Absprache</b></div>
-      <div id="ccv-frost-row" hidden><span id="ccv-frost-label">Frost-Pauschale</span><b id="ccv-frost">19,00 €</b></div>
-    </div>
     <div class="ksum">
       <span class="mono" style="font-size:10px">GESAMT INKLUSIVE ANFAHRT · <b id="ccv-zone" style="font-weight:500">Zone A</b></span>
       <div><span>BASIS · 90 Min.</span><b id="ccv-sum-basis">59,00 €</b></div>
@@ -124,8 +114,21 @@
       <a class="btn" id="ccv-go-basis" href="innenreinigung.html" target="_blank" rel="noopener">BASIS buchen</a>
       <a class="btn ghost" id="ccv-go-premium" href="innenreinigung.html" target="_blank" rel="noopener">PREMIUM buchen</a>
     </div>
+    <details class="calc-more">
+      <summary>Alle Details: Zonen, Fahrzeugklasse, Wetter &amp; Frost</summary>
+      <div id="wx-slot"></div>
+    <div class="ktable">
+      <div><span>Kostenlose Anfahrt</span><b id="ccv-frei">bis 50 km</b></div>
+      <div><span>Grundlage je km darüber</span><b id="ccv-rate">0,89 € / km</b></div>
+      <div><span>Zonenbereich</span><b id="ccv-extra">bis 50 km</b></div>
+      <div><span>Anfahrtspauschale</span><b id="ccv-calc">keine</b></div>
+      <div><span>Fahrzeugklasse</span><b id="ccv-klasse">Normalpreis</b></div>
+      <div><span>Über 110 km</span><b>Preis nach Absprache</b></div>
+      <div id="ccv-frost-row" hidden><span id="ccv-frost-label">Frost-Pauschale</span><b id="ccv-frost">19,00 €</b></div>
+    </div>
     <p class="khint"><strong>Alles inklusive:</strong> Die Anfahrtspauschale ist im Buchungspreis bereits enthalten — keine Nachzahlung vor Ort. Über 110 km nennen wir dir den Preis auf Anfrage.</p>
     <p class="note" style="margin-top:12px">Entfernungsangaben sind Näherungswerte für die einfache Strecke ab 63694 Limeshain. Jede Zone hat eine feste Pauschale, gerechnet ab Zonenmitte für Hin- und Rückfahrt — so zahlt niemand für die Obergrenze.</p>
+    </details>
     <a class="note" style="display:block;margin-top:14px;text-align:center" href="innenreinigung.html">Alle Leistungen im Detail ansehen →</a>
   </div>
   </div>
@@ -212,10 +215,10 @@
 
     <div class="revhead" data-reveal>
       <div>
-        <span class="revscore" data-count="5" data-dez="1">5,0</span>
+        <span class="revscore" data-count="4.9" data-dez="1">4,9</span>
         <span class="stars">★★★★★</span>
       </div>
-      <p>Durchschnitt aller Google-Bewertungen</p>
+      <p>Durchschnitt aus 13 Google-Bewertungen</p>
       <div class="revbtns">
         <a class="btn ghost" href="https://g.page/r/CeRb2FzpsNIDEAE" target="_blank" rel="noopener">Alle ansehen</a>
         <a class="btn" href="https://g.page/r/CeRb2FzpsNIDEAE/review" target="_blank" rel="noopener">Bewertung schreiben →</a>
@@ -249,6 +252,7 @@
         <figcaption>Google-Bewertung · vor 3 Tagen</figcaption>
       </figure>
     </div>
+    <button class="btn ghost revmore" type="button" onclick="this.previousElementSibling.classList.add('all');this.remove()">Weitere Bewertungen anzeigen</button>
   </div>
 </section>
 
