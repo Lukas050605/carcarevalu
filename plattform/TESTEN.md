@@ -26,6 +26,15 @@ npm run demo:reset && npm run demo
 
 Die Demo-Daten sind nur zum Testen gedacht und gehören nicht auf die echte Website.
 
+## Öffentlicher Link (Render.com, kostenlos)
+
+1. Öffne https://render.com/deploy?repo=https://github.com/Lukas050605/carcarevalu/tree/claude/practical-euler-l8jwmn
+2. Melde dich mit **„GitHub“** an und erlaube Render den Zugriff auf das Repository `carcarevalu`.
+3. Klicke auf **„Deploy Blueprint“** bzw. **„Apply“**. Die Einstellungen kommen aus `render.yaml`, du musst nichts eintragen.
+4. Nach etwa 3–5 Minuten steht oben ein Link wie `https://mhl-agentur-demo.onrender.com`. Das ist deine Website.
+
+Im Gratis-Tarif schläft die Seite nach 15 Minuten ohne Besucher ein. Der erste Aufruf dauert dann etwa 1 Minute. Die Daten werden bei jedem Neustart auf die Demo-Daten zurückgesetzt, und oben auf der Seite steht ein gelber DEMO-Hinweis. Neue Änderungen auf dem Branch landen automatisch dort.
+
 ## B) Automatische Tests auf GitHub
 
 Bei jeder Änderung im Ordner `plattform/` laufen auf GitHub automatisch:

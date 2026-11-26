@@ -165,6 +165,7 @@ function createApp({ dataDir, secureCookies = false, authLimit = 10 } = {}) {
     requestStatus: C.REQUEST_STATUS, commissionStatus: C.COMMISSION_STATUS,
     commissionBp: Number(db.setting('commission_bp')), agencyVatBp: Number(db.setting('agency_vat_bp')),
     geoAvailable: geoAvailable(),
+    demo: process.env.DEMO_MODE === '1',
   })));
 
   // ================= Anfragen (Kunde) =================

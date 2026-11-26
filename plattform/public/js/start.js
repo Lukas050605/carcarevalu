@@ -13,6 +13,10 @@
     document.getElementById('app').replaceChildren(A.page(A.errorBox(e, () => location.reload())));
     return;
   }
+  if (A.meta.demo) {
+    document.body.prepend(A.el('div', { class: 'demo-banner', role: 'note' },
+      A.el('b', {}, 'DEMO-Version zum Testen. '), 'Keine echten Aufträge. Daten werden bei jedem Neustart zurückgesetzt. Zugänge: kunde@demo.test / demo-kunde-1234 · betrieb@demo.test / demo-betrieb-1234 · admin@demo.test / demo-admin-1234'));
+  }
   window.addEventListener('hashchange', () => A.render());
   A.render();
 })();

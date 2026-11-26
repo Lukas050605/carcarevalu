@@ -1,0 +1,23 @@
+# Render-Blueprint: öffentliche DEMO der MHL-Agentur-Plattform (kostenloser Tarif).
+# Achtung: Im Gratis-Tarif gibt es keinen dauerhaften Speicher – Daten werden bei jedem Neustart
+# zurückgesetzt und neu mit Demo-Daten befüllt. Für den echten Betrieb: Tarif mit "disk" wählen.
+services:
+  - type: web
+    name: mhl-agentur-demo
+    runtime: node
+    plan: free
+    region: frankfurt
+    branch: claude/practical-euler-l8jwmn
+    rootDir: plattform
+    buildCommand: npm ci
+    startCommand: npm run start:demo
+    healthCheckPath: /api/meta
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: DEMO_MODE
+        value: "1"
+      - key: DATA_DIR
+        value: /tmp/mhl-demo-data
+      - key: SECURE_COOKIES
+        value: "1"
