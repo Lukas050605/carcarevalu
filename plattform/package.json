@@ -4,12 +4,18 @@
   "private": true,
   "description": "MHL Agentur – Aufbereitung mobil, in der Halle & Lackschäden: Vermittlungsplattform",
   "main": "src/server.js",
-  "engines": { "node": ">=22.5" },
+  "engines": {
+    "node": ">=22.5"
+  },
   "scripts": {
     "start": "node --disable-warning=ExperimentalWarning src/server.js",
     "test": "node --disable-warning=ExperimentalWarning --test test/*.test.js",
     "create-admin": "node --disable-warning=ExperimentalWarning scripts/create-admin.js",
-    "import-plz": "node --disable-warning=ExperimentalWarning scripts/import-plz.js"
+    "import-plz": "node --disable-warning=ExperimentalWarning scripts/import-plz.js",
+    "demo-data": "node --disable-warning=ExperimentalWarning scripts/demo-data.js",
+    "demo": "DATA_DIR=${DATA_DIR:-./demo-data} npm run demo-data && DATA_DIR=${DATA_DIR:-./demo-data} npm start",
+    "demo:reset": "rm -rf ./demo-data",
+    "e2e": "node test/e2e/flow.js"
   },
   "dependencies": {
     "express": "4.21.2",

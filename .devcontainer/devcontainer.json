@@ -1,0 +1,15 @@
+{
+  "name": "MHL Agentur – Plattform zum Testen",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
+  "postCreateCommand": "cd plattform && npm ci && DATA_DIR=./demo-data npm run demo-data",
+  "postAttachCommand": {
+    "website": "cd plattform && DATA_DIR=./demo-data npm start"
+  },
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": { "label": "MHL Agentur Website", "onAutoForward": "openBrowser" }
+  },
+  "customizations": {
+    "codespaces": { "openFiles": ["plattform/TESTEN.md"] }
+  }
+}

@@ -31,6 +31,10 @@ Umgebungsvariablen:
 - `DATA_DIR` (Ordner für Datenbank und Uploads, Standard `plattform/data`)
 - `SECURE_COOKIES=1` hinter HTTPS
 
+## Testen (Codespaces, Demo-Zugänge, automatische Tests)
+
+Siehe **[TESTEN.md](TESTEN.md)**. Kurz: `npm run demo` startet die Website mit Demo-Konten, und auf GitHub laufen bei jeder Änderung alle Tests automatisch.
+
 ## Tests
 
 ```bash
