@@ -1,0 +1,18 @@
+{
+  "name": "mhl-agentur-plattform",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MHL Agentur – Aufbereitung mobil, in der Halle & Lackschäden: Vermittlungsplattform",
+  "main": "src/server.js",
+  "engines": { "node": ">=22.5" },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning src/server.js",
+    "test": "node --disable-warning=ExperimentalWarning --test test/*.test.js",
+    "create-admin": "node --disable-warning=ExperimentalWarning scripts/create-admin.js",
+    "import-plz": "node --disable-warning=ExperimentalWarning scripts/import-plz.js"
+  },
+  "dependencies": {
+    "express": "4.21.2",
+    "multer": "2.0.2"
+  }
+}
