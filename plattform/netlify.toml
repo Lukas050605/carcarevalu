@@ -1,0 +1,9 @@
+# Netlify: Browser-DEMO der Plattform (statisch, ohne Server).
+# In Netlify als Base directory "plattform" eintragen – dann gelten diese Einstellungen.
+# Deine bestehende Website (anderes Base directory) wird davon nicht berührt.
+[build]
+  command = "npm ci && npm run build:demo"
+  publish = "demo-dist"
+
+[build.environment]
+  NODE_VERSION = "22"

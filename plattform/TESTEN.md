@@ -1,5 +1,27 @@
 # Website testen – so geht's
 
+## ⭐ Netlify-Demo: fester Link, immer wieder testen
+
+Das ist eine Demo, die komplett im Browser läuft. Der echte Plattform-Code läuft dabei direkt im Browser. Die Daten bleiben **nur in deinem Browser**. Oben auf der Seite wechselst du per Klick zwischen **Kunde, Mobiler Betrieb, Lack-Werkstatt und Verwaltung**. Mit **„Demo zurücksetzen“** fängst du neu an.
+
+**Einmalig einrichten:**
+1. Melde dich auf https://app.netlify.com an.
+2. Wähle **„Add new project“** (bzw. „Add new site“) → **„Import an existing project“** → **GitHub**.
+3. Wähle das Repository **`carcarevalu`**.
+4. Stelle ein:
+   - **Branch to deploy:** `claude/practical-euler-l8jwmn`
+   - **Base directory:** `plattform`
+   - Build command und Publish directory werden automatisch aus `plattform/netlify.toml` übernommen. Lass die Felder leer bzw. so, wie sie vorausgefüllt sind.
+5. Klicke auf **„Deploy“**. Nach etwa 1–2 Minuten bekommst du einen Link wie `https://irgendwas-123.netlify.app`.
+6. Optional: Unter **Project configuration → Change project name** einen schönen Namen vergeben, z. B. `mhl-agentur-demo` → `https://mhl-agentur-demo.netlify.app`.
+
+Danach wird der Link bei jeder Änderung auf dem Branch **automatisch aktualisiert**.
+
+Deine bestehende Website auf Netlify bleibt davon unberührt, weil das ein **neues, eigenes Projekt** ist.
+
+**Grenzen der Demo:** Andere Personen sehen deine Testdaten nicht, denn jeder Browser hat seine eigene Demo. Für echte Kunden braucht es die Server-Version mit Datenbank.
+
+
 ## A) Im Browser über GitHub Codespaces (ohne eigenen Server)
 
 1. Öffne das Repository auf GitHub und wähle den Branch, den du testen willst.

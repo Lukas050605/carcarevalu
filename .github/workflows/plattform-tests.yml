@@ -45,6 +45,13 @@ jobs:
           mkdir -p "$RUNNER_TEMP/screenshots"
           BASE=http://localhost:3000 SHOTS="$RUNNER_TEMP/screenshots" npm run e2e
 
+      - name: Netlify-Demo bauen und testen (statisch, Daten im Browser)
+        run: |
+          npm run build:demo
+          (cd demo-dist && nohup python3 -m http.server 3200 >/dev/null 2>&1 &)
+          sleep 1
+          BASE=http://localhost:3200 SHOTS="$RUNNER_TEMP/screenshots" node test/e2e/demo.js
+
       - name: Screenshots hochladen
         if: always()
         uses: actions/upload-artifact@v4
